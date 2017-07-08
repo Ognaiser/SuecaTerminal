@@ -16,7 +16,11 @@ public class Game {
 
     }
 
-    private void turn(){
+    public void askNames(){
+        
+    }
+
+    public void turn(){
 
         int turn = 1;
 

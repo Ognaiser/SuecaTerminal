@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
-public class ClientHandler implements Runnable {
+public class ClientHandler {
 
     private List<Card> hand;
     private String name;
@@ -51,8 +51,4 @@ public class ClientHandler implements Runnable {
 
     }
 
-    @Override
-    public void run() {
-        askNick();
-    }
 }
