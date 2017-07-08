@@ -3,6 +3,12 @@ package org.academia.sueca;
 public class Server {
 
     public static final int PORT = 8080;
+    private ClientHandler[] clients;
+    private Game game;
+
+    public void init(){
+
+    }
 
     public void start(){
 
@@ -12,13 +18,4 @@ public class Server {
 
     }
 
-
-    //What is this
-    public void showLastPlay(String msg){
-
-    }
-
-    public void sendAll(String msg){
-
-    }
 }

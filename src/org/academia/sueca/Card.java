@@ -2,15 +2,15 @@ package org.academia.sueca;
 
 public class Card {
 
-    private Suites suite;
+    private Suits suite;
     private CardsNumber cardNumber;
 
-    public Card(Suites suite, CardsNumber cardNumber) {
+    public Card(Suits suite, CardsNumber cardNumber) {
         this.suite = suite;
         this.cardNumber = cardNumber;
     }
 
-    public Suites getSuite() {
+    public Suits getSuite() {
         return suite;
     }
 
@@ -18,4 +18,12 @@ public class Card {
         return cardNumber;
     }
 
+    public int getValue(){
+        return cardNumber.getValue();
+    }
+
+    @Override
+    public String toString() {
+        return suite.getSymbol() + cardNumber.getNumber();
+    }
 }
