@@ -10,17 +10,16 @@ public class Game {
     private final int INITIAL_HANDSIZE = 10;
     private LinkedList<Card> deck = new LinkedList<>();
     private List<ClientHandler> players;
-    private Card trunfo;
+    private Card trump;
 
 
     public Game(List<ClientHandler> players) {
 
         this.players = players;
-        generateDeck();
     }
 
 
-    public void start(){
+    public void start() {
 
         generateDeck();
         distributeHands();
@@ -34,7 +33,7 @@ public class Game {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 10; j++) {
-                deck.add(new Card(Suits.values()[i], CardsNumber.values()[j]));
+                deck.add(new Card(Suit.values()[i], CardsNumber.values()[j]));
             }
         }
     }
@@ -49,12 +48,12 @@ public class Game {
             player.setHand(hand);
         }
 
-        assignTrunfo();
+        assignTrump();
     }
 
-    private void assignTrunfo() {
+    private void assignTrump() {
 
-        trunfo = players.get(players.size() - 1).getHand().get(0);
+        trump = players.get(players.size() - 1).getHand().get(0);
     }
 
     public LinkedList<Card> generateHand() {
@@ -137,10 +136,61 @@ public class Game {
         //TODO: Joao
         //devolve a posição da carta vencedora pelo naipe e pelo ordinal do numero
         //o naipe da jogada é o naipe da posição 0
-        //atenção a propriedade trunfo;
+        //atenção a propriedade trump;
 
-        return 0;
+        Card winnerCard = turnCards[0];
+
+        for (int playerCard = 1; playerCard < MAX_PLAYERS; playerCard++) {
+
+            winnerCard = compareCards(winnerCard, turnCards[playerCard]);
+        }
+
+        return getIndex(turnCards, winnerCard);
     }
+
+    private int getIndex(Card[] turnCards, Card winnerCard) {
+
+        int index = -1;
+
+        for (int i = 0; i < turnCards.length; i++) {
+            if (turnCards[i].equals(winnerCard)) {
+                index = i;
+            }
+        }
+
+        return index;
+    }
+
+    private Card compareCards(Card first, Card second) {
+
+        if (sameSuit(first, second)) {
+            return compareCardValue(first, second);
+        }
+
+        if (!isTrump(second)) {
+            return first;
+
+        } else {
+            return second;
+        }
+
+    }
+
+    private Card compareCardValue(Card first, Card second) {
+        return (first.getCardNumber().ordinal() > second.getCardNumber().ordinal()) ? first : second;
+    }
+
+    private boolean sameSuit(Card first, Card second) {
+
+        return first.getSuit().equals(second.getSuit());
+    }
+
+
+    private boolean isTrump(Card first) {
+
+        return first.getSuit().equals(trump.getSuit());
+    }
+
 
     private void showScore() {
 

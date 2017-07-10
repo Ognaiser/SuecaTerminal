@@ -12,13 +12,13 @@ public class Main {
 
         Card[] hand = new Card[7];
 
-        hand[0] = new Card(Suits.HEARTS,CardsNumber.SEVEN);
-        hand[1] = new Card(Suits.SPADES,CardsNumber.SIX);
-        hand[2] = new Card(Suits.DIAMONDS,CardsNumber.ACE);
-        hand[3] = new Card(Suits.CLUBS,CardsNumber.KING);
-        hand[4] = new Card(Suits.HEARTS,CardsNumber.JACK);
-        hand[5] = new Card(Suits.HEARTS,CardsNumber.JACK);
-        hand[6] = new Card(Suits.CLUBS,CardsNumber.QUEEN);
+        hand[0] = new Card(Suit.HEARTS,CardsNumber.SEVEN);
+        hand[1] = new Card(Suit.SPADES,CardsNumber.SIX);
+        hand[2] = new Card(Suit.DIAMONDS,CardsNumber.ACE);
+        hand[3] = new Card(Suit.CLUBS,CardsNumber.KING);
+        hand[4] = new Card(Suit.HEARTS,CardsNumber.JACK);
+        hand[5] = new Card(Suit.HEARTS,CardsNumber.JACK);
+        hand[6] = new Card(Suit.CLUBS,CardsNumber.QUEEN);
 
 
         for (int j = 0; j < 7; j++) {
