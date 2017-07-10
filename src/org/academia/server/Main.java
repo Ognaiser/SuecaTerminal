@@ -42,7 +42,7 @@ public class Main {
         System.out.println();
 
 
-        System.out.println(hand[0].getRepresentacion());
+        System.out.println(hand[0].getRepresentation());
     }
 
 

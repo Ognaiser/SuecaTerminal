@@ -33,7 +33,7 @@ public class Card {
 
     }
 
-    public String getRepresentacion(){
+    public String getRepresentation(){
         return  "┌───────┐" +"\r\n"+
                 "│"+cardNumber.getNumber()+ suit.getSymbol()+"     │" +"\r\n"+
                 "│       │" +"\r\n"+

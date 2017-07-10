@@ -68,22 +68,25 @@ public class ClientHandler {
 
         showHand();
         out.println("Please pick a card number:");
-        int cardPlayer;
+        int cardPlayed;
 
         try {
 
-            cardPlayer = Integer.parseInt(in.readLine());
+            cardPlayed = Integer.parseInt(in.readLine());
 
-            while (cardPlayer < 0 || cardPlayer > hand.size()){
+            while (cardPlayed < 0 || cardPlayed > hand.size()) {
 
                 out.println("That is not a valid card number. \nPlease insert a number between 1 and " + hand.size());
-                cardPlayer = Integer.parseInt(in.readLine());
+                cardPlayed = Integer.parseInt(in.readLine());
+
 
             }
 
-            cardPlayer-=1;
+            hand.remove(cardPlayed);
 
-            return cardPlayer;
+            cardPlayed -= 1;
+
+            return cardPlayed;
 
         } catch (IOException e) {
 
@@ -104,7 +107,7 @@ public class ClientHandler {
     }
 
     public void addScore(Card[] cards) {
-    //TODO: decide on where this logic should be
+        //TODO: decide on where this logic should be
         for (int i = 0; i < cards.length; i++) {
             score += cards[i].getValue();
         }
