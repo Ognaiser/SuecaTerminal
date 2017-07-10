@@ -67,4 +67,7 @@ public class ClientHandler {
 
     }
 
+    public List<Card> getHand() {
+        return hand;
+    }
 }

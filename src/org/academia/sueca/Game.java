@@ -9,6 +9,8 @@ public class Game {
     private final int MAX_PLAYERS = 4;
     private LinkedList<Card> deck = new LinkedList<>();
     private List<ClientHandler> players;
+    private Card trunfo;
+    private Suits trunfoSuit;
 
     public Game(List<ClientHandler> players) {
 
@@ -35,6 +37,8 @@ public class Game {
             player.setHand(hands);
         }
 
+        trunfo = players.get(players.size() - 1).getHand().get(0);
+        trunfoSuit= trunfo.getSuite();
     }
 
     public LinkedList<Card> generateHand() {
@@ -61,9 +65,9 @@ public class Game {
     public void turn() {
 
         int turn = 1;
-        Card[] turnCards = new Card[4];
+        Card[] turnCards = new Card[MAX_PLAYERS];
         Card turnCard = null;
-        int i=0;
+        int i = 0;
 
         while (turn < MAX_TURNS) {
 
@@ -72,7 +76,7 @@ public class Game {
                 turnCard = player.play();
                 sendAll(turnCard.toString());
 
-                turnCards[i]=turnCard;
+                turnCards[i] = turnCard;
                 i++;
             }
 
@@ -110,6 +114,10 @@ public class Game {
     }
 
     private int getWinner(Card[] turnCards) {
+
+        //devolve a posição da carta vencedora pelo naipe e pellllo ordinal do numero
+        //o naipe da jogada é o naipe da posição 0
+        //atenção a propriedade trunfo;
 
         return 0;
     }
