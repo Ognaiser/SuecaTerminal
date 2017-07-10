@@ -7,15 +7,27 @@ public class Game {
 
     private final int MAX_TURNS = 10;
     private final int MAX_PLAYERS = 4;
+    private final int INITIAL_HANDSIZE = 10;
     private LinkedList<Card> deck = new LinkedList<>();
     private List<ClientHandler> players;
     private Card trunfo;
-    private Suits trunfoSuit;
+
 
     public Game(List<ClientHandler> players) {
 
         this.players = players;
         generateDeck();
+    }
+
+
+    public void start(){
+
+        generateDeck();
+        distributeHands();
+
+        askNames();
+        playGame();
+        showScore();
     }
 
     private void generateDeck() {
@@ -29,16 +41,20 @@ public class Game {
 
     public void distributeHands() {
 
-        LinkedList<Card> hands;
+        LinkedList<Card> hand;
 
         for (ClientHandler player : players) {
 
-            hands = generateHand();
-            player.setHand(hands);
+            hand = generateHand();
+            player.setHand(hand);
         }
 
+        assignTrunfo();
+    }
+
+    private void assignTrunfo() {
+
         trunfo = players.get(players.size() - 1).getHand().get(0);
-        trunfoSuit= trunfo.getSuite();
     }
 
     public LinkedList<Card> generateHand() {
@@ -46,7 +62,7 @@ public class Game {
         LinkedList<Card> hand = new LinkedList<>();
         int randomCard;
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < INITIAL_HANDSIZE; i++) {
             randomCard = ((int) (Math.random() * deck.size()));
             hand.add(deck.remove(randomCard));
         }
@@ -62,7 +78,7 @@ public class Game {
         }
     }
 
-    public void turn() {
+    public void playGame() {
 
         int turn = 1;
         Card[] turnCards = new Card[MAX_PLAYERS];
@@ -84,15 +100,14 @@ public class Game {
 
             players.get(winner).addScore(turnCards);
 
-            organize(players.get(winner));
+            setFirstPlayer(players.get(winner));
 
             turn++;
         }
 
-        displayScore();
     }
 
-    private void organize(ClientHandler roundWinner) {
+    private void setFirstPlayer(ClientHandler roundWinner) {
 
         int i = 0;
 
@@ -111,19 +126,27 @@ public class Game {
 
     private void sendAll(String text) {
 
+        for (ClientHandler player : players) {
+
+            player.sendMessage(text);
+        }
     }
 
     private int getWinner(Card[] turnCards) {
 
-        //devolve a posição da carta vencedora pelo naipe e pellllo ordinal do numero
+        //TODO: Joao
+        //devolve a posição da carta vencedora pelo naipe e pelo ordinal do numero
         //o naipe da jogada é o naipe da posição 0
         //atenção a propriedade trunfo;
 
         return 0;
     }
 
-    private void displayScore() {
+    private void showScore() {
 
+        //TODO:  Miguel
+
+        //contruir score, somar os pontos da equipa e contruir uma msg paneleira
     }
 
 }

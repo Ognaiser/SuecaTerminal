@@ -7,7 +7,7 @@ public class Server {
     private Game game;
 
     public void init(){
-
+//TODO:Monte de esterco
     }
 
     public void start(){
