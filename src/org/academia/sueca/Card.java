@@ -3,9 +3,9 @@ package org.academia.sueca;
 public class Card {
 
     private Suits suite;
-    private CardsNumber cardNumber;
+    private SuecaCards cardNumber;
 
-    public Card(Suits suite, CardsNumber cardNumber) {
+    public Card(Suits suite, SuecaCards cardNumber) {
         this.suite = suite;
         this.cardNumber = cardNumber;
     }
@@ -14,7 +14,7 @@ public class Card {
         return suite;
     }
 
-    public CardsNumber getCardNumber() {
+    public SuecaCards getCardNumber() {
         return cardNumber;
     }
 

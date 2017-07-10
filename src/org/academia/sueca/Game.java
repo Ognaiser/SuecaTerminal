@@ -34,7 +34,7 @@ public class Game {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 10; j++) {
-                deck.add(new Card(Suits.values()[i], CardsNumber.values()[j]));
+                deck.add(new Card(Suits.values()[i], SuecaCards.values()[j]));
             }
         }
     }
