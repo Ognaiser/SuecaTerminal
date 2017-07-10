@@ -63,7 +63,7 @@ public class ClientHandler {
         this.hand = hand;
     }
 
-    public int play() {
+    public Card play() {
 
 
         showHand();
@@ -74,19 +74,18 @@ public class ClientHandler {
 
             cardPlayed = Integer.parseInt(in.readLine());
 
-            while (cardPlayed < 0 || cardPlayed > hand.size()) {
+            while (cardPlayed < 1 || cardPlayed > hand.size()) {
 
-                out.println("That is not a valid card number. \nPlease insert a number between 1 and " + hand.size());
+                out.println("That is not a valid card number. \nPlease insert a number between 1 and " + (hand.size()));
                 cardPlayed = Integer.parseInt(in.readLine());
-
 
             }
 
-            hand.remove(cardPlayed);
-
             cardPlayed -= 1;
 
-            return cardPlayed;
+            return hand.remove(cardPlayed);
+
+
 
         } catch (IOException e) {
 
@@ -94,7 +93,7 @@ public class ClientHandler {
             System.exit(1);
 
         }
-        return -1;
+        return null;
     }
 
     public void sendMessage(String msg) {

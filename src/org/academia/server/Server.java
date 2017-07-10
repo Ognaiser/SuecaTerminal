@@ -11,7 +11,7 @@ public class Server {
 
     public static final int PORT = 8080;
     private ServerSocket ss;
-    private List<ClientHandler> clients;
+    private LinkedList<ClientHandler> clients;
 
     public void init(){
 

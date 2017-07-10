@@ -9,11 +9,11 @@ public class Game {
     private final int MAX_PLAYERS = 4;
     private final int INITIAL_HANDSIZE = 10;
     private LinkedList<Card> deck = new LinkedList<>();
-    private List<ClientHandler> players;
+    private LinkedList<ClientHandler> players;
     private Card trump;
 
 
-    public Game(List<ClientHandler> players) {
+    public Game(LinkedList<ClientHandler> players) {
 
         this.players = players;
     }
@@ -53,7 +53,7 @@ public class Game {
 
     private void assignTrump() {
 
-        trump = players.get(players.size() - 1).getHand().get(0);
+        trump = players.get(players.size() - 1).getHand().get(9);
     }
 
     public LinkedList<Card> generateHand() {
@@ -90,12 +90,12 @@ public class Game {
 
         showHands();
 
-        while (turn < MAX_TURNS) {
+        while (turn <= MAX_TURNS) {
             i = 0;
 
             for (ClientHandler player : players) {
 
-                turnCard = player.getHand().get(player.play());
+                turnCard = player.play();
 
                 sendAll(player.getName() + " played: \n\r" + turnCard.getRepresentation());
 
@@ -105,7 +105,9 @@ public class Game {
 
             int winner = getWinner(turnCards);
             players.get(winner).addScore(turnCards);
-            setFirstPlayer(players.get(winner));
+            setFirstPlayer(winner);
+
+            sendAll("______________________________"+turn+"------------------------------------");
 
             turn++;
         }
@@ -120,16 +122,42 @@ public class Game {
 
     }
 
-    private void setFirstPlayer(ClientHandler roundWinner) {
+    private void setFirstPlayer(int roundWinner) {
+
+        //TODO: Bugfix reorganizing
+
+        System.out.println("Winner is: " + players.get(roundWinner).getName());
+        ClientHandler toRemove;
+
+        System.out.print("BEFORE: ");
+        for (ClientHandler each : players) {
+            System.out.print(each.getName() + " ");
+        }
 
         for (int i = 0; i < players.size(); i++) {
 
-            if (players.get(i) == roundWinner) {
+            if ( i == roundWinner) {
+                System.out.println();
+
+                System.out.print("NEW order of players: ");
+                for (ClientHandler each : players) {
+                    System.out.print(each.getName() + " ");
+                }
                 return;
             }
 
-            players.add(players.remove(i));
+            toRemove = players.removeFirst();
+            System.out.println("\nto Remove -> " + toRemove.getName());
+            players.addLast(toRemove);
+
         }
+        System.out.println();
+
+        System.out.print("NEW order of players: ");
+        for (ClientHandler each : players) {
+            System.out.print(each.getName() + " ");
+        }
+
     }
 
     private void sendAll(String text) {
@@ -147,7 +175,10 @@ public class Game {
         for (int playerCard = 1; playerCard < MAX_PLAYERS; playerCard++) {
 
             winnerCard = compareCards(winnerCard, turnCards[playerCard]);
+
+
         }
+        System.out.println("Winner Card is \n " + winnerCard.getRepresentation());
 
         return getIndex(turnCards, winnerCard);
     }
@@ -161,7 +192,7 @@ public class Game {
                 index = i;
             }
         }
-
+        System.out.println("Index of winner card is: " + index);
         return index;
     }
 
@@ -181,7 +212,7 @@ public class Game {
     }
 
     private Card compareCardValue(Card first, Card second) {
-        return (first.getCardNumber().ordinal() > second.getCardNumber().ordinal()) ? first : second;
+        return (first.getCardNumber().ordinal() < second.getCardNumber().ordinal()) ? first : second;
     }
 
     private boolean sameSuit(Card first, Card second) {
