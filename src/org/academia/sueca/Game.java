@@ -129,6 +129,7 @@ public class Game {
             }
 
             players.add(players.remove(i));
+
         }
     }
 
