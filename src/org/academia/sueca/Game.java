@@ -10,7 +10,7 @@ public class Game {
     private final int INITIAL_HANDSIZE = 10;
     private LinkedList<Card> deck = new LinkedList<>();
     private List<ClientHandler> players;
-    private Card trunfo;
+    private Card trump;
 
 
     public Game(List<ClientHandler> players) {
@@ -20,7 +20,7 @@ public class Game {
     }
 
 
-    public void start(){
+    public void start() {
 
         generateDeck();
         distributeHands();
@@ -49,12 +49,12 @@ public class Game {
             player.setHand(hand);
         }
 
-        assignTrunfo();
+        assignTrump();
     }
 
-    private void assignTrunfo() {
+    private void assignTrump() {
 
-        trunfo = players.get(players.size() - 1).getHand().get(0);
+        trump = players.get(players.size() - 1).getHand().get(0);
     }
 
     public LinkedList<Card> generateHand() {
@@ -137,7 +137,7 @@ public class Game {
         //TODO: Joao
         //devolve a posição da carta vencedora pelo naipe e pelo ordinal do numero
         //o naipe da jogada é o naipe da posição 0
-        //atenção a propriedade trunfo;
+        //atenção a propriedade trump;
 
         return 0;
     }
@@ -145,8 +145,18 @@ public class Game {
     private void showScore() {
 
         //TODO:  Miguel
+        int team1 = players.get(0).getScore() + players.get(2).getScore();
+        int team2 = players.get(1).getScore() + players.get(3).getScore();
 
-        //contruir score, somar os pontos da equipa e contruir uma msg paneleira
+
+        String scoreText = "FINAL SCORE:\n" +
+                "TEAM 1 - " + players.get(0).getName() + " and " + players.get(2).getName() + ":\n" +
+                team1 + "\n ____________________________________________\n" +
+                "TEAM 2 - " + players.get(1).getName() + " and " + players.get(3).getName() + ":\n" +
+                team2 + "\n ____________________________________________\n" +
+                "THE WINNER IS " + (team1 > team2 ? "TEAM 1!" : "TEAM 2!");
+
+        sendAll(scoreText);
     }
 
 }
