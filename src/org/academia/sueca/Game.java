@@ -84,7 +84,7 @@ public class Game {
         Card turnCard = null;
         int i = 0;
 
-        sendAll("Trump is: " + trump.getRepresentacion());
+        sendAll("Trump is: \r\n"+ trump.getRepresentacion());
 
         while (turn < MAX_TURNS) {
 
@@ -188,7 +188,6 @@ public class Game {
 
     private void showScore() {
 
-        //TODO:  Miguel
         int team1 = players.get(0).getScore() + players.get(2).getScore();
         int team2 = players.get(1).getScore() + players.get(3).getScore();
 
