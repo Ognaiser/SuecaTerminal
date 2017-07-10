@@ -45,7 +45,6 @@ public class ClientHandler {
     }
 
     public void askNick() {
-        //TODO:
         out.println("Enter your nickname:");
 
         try {
@@ -67,6 +66,26 @@ public class ClientHandler {
     public Card play() {
 
         //TODO: check number
+        out.println("Please pick a card number:");
+        int cardPlayer;
+
+        try {
+
+            cardPlayer = Integer.parseInt(in.readLine());
+
+            while (cardPlayer < 0 || cardPlayer > hand.size()){
+
+                out.println("That is not a valid card number. \nPlease insert a number between 1 and " + hand.size());
+                cardPlayer = Integer.parseInt(in.readLine());
+
+            }
+
+        } catch (IOException e) {
+
+            System.err.println(e.getMessage());
+            System.exit(1);
+
+        }
         return null;
     }
 
@@ -80,7 +99,7 @@ public class ClientHandler {
     }
 
     public void addScore(Card[] cards) {
-//TODO: decide on where this logic should be
+    //TODO: decide on where this logic should be
         for (int i = 0; i < cards.length; i++) {
             score += cards[i].getValue();
         }
