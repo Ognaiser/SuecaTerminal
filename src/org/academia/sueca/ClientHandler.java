@@ -63,9 +63,10 @@ public class ClientHandler {
         this.hand = hand;
     }
 
-    public Card play() {
+    public int play() {
 
-        //TODO: check number
+
+        showHand();
         out.println("Please pick a card number:");
         int cardPlayer;
 
@@ -80,13 +81,17 @@ public class ClientHandler {
 
             }
 
+            cardPlayer-=1;
+
+            return cardPlayer;
+
         } catch (IOException e) {
 
             System.err.println(e.getMessage());
             System.exit(1);
 
         }
-        return null;
+        return -1;
     }
 
     public void sendMessage(String msg) {

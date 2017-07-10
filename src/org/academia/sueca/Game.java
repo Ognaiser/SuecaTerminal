@@ -84,11 +84,13 @@ public class Game {
         Card turnCard = null;
         int i = 0;
 
+        sendAll("Trump is: "+ trump.getRepresentacion());
+
         while (turn < MAX_TURNS) {
 
             for (ClientHandler player : players) {
 
-                turnCard = player.play();
+                turnCard = player.getHand().get(player.play());
                 sendAll(turnCard.getRepresentacion());
 
                 turnCards[i] = turnCard;
