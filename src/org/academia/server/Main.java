@@ -1,4 +1,8 @@
-package org.academia.sueca;
+package org.academia.server;
+
+import org.academia.sueca.Card;
+import org.academia.sueca.SuecaCards;
+import org.academia.sueca.Suits;
 
 public class Main {
 
@@ -12,13 +16,13 @@ public class Main {
 
         Card[] hand = new Card[7];
 
-        hand[0] = new Card(Suits.HEARTS,CardsNumber.SEVEN);
-        hand[1] = new Card(Suits.SPADES,CardsNumber.SIX);
-        hand[2] = new Card(Suits.DIAMONDS,CardsNumber.ACE);
-        hand[3] = new Card(Suits.CLUBS,CardsNumber.KING);
-        hand[4] = new Card(Suits.HEARTS,CardsNumber.JACK);
-        hand[5] = new Card(Suits.HEARTS,CardsNumber.JACK);
-        hand[6] = new Card(Suits.CLUBS,CardsNumber.QUEEN);
+        hand[0] = new Card(Suits.HEARTS, SuecaCards.SEVEN);
+        hand[1] = new Card(Suits.SPADES, SuecaCards.SIX);
+        hand[2] = new Card(Suits.DIAMONDS, SuecaCards.ACE);
+        hand[3] = new Card(Suits.CLUBS, SuecaCards.KING);
+        hand[4] = new Card(Suits.HEARTS, SuecaCards.JACK);
+        hand[5] = new Card(Suits.HEARTS, SuecaCards.JACK);
+        hand[6] = new Card(Suits.CLUBS, SuecaCards.QUEEN);
 
 
         for (int j = 0; j < 7; j++) {

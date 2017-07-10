@@ -1,4 +1,7 @@
-package org.academia.sueca;
+package org.academia.server;
+
+import org.academia.sueca.ClientHandler;
+import org.academia.sueca.Game;
 
 public class Server {
 
