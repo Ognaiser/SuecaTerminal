@@ -25,6 +25,22 @@ public class ClientHandler {
         }
     }
 
+    public void showHand(){
+
+        for (int j = 0; j < 7; j++) {
+            for (int i = 0; i < hand.size(); i++) {
+                out.print(hand.get(i).getHandRep().split(":")[j]);
+                out.print(" ");
+            }
+            out.println();
+        }
+
+        for (int i = 1; i <= hand.size(); i++){
+            out.print("    "+i+"     ");
+        }
+        out.println();
+    }
+
     public void askNick(){}
 
     public void setHand(List<Card> hand) {

@@ -1,8 +1,10 @@
 package org.academia.sueca;
 
+import java.util.LinkedList;
+
 public class Game {
 
-    private Card[] deck;
+    private LinkedList<Card> deck = new LinkedList<>();
     private ClientHandler[] players;
     private final int MAX_TURNS = 10;
     private final int MAX_PLAYERS = 4;
@@ -13,11 +15,39 @@ public class Game {
     }
 
     private void generateDeck(){
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 10; j++) {
+                deck.add(new Card(Suits.values()[i],CardsNumber.values()[j]));
+            }
+        }
+    }
+
+    public void distributeHands(){
+
+        LinkedList<Card> hands;
+
+        for (int i = 0; i < MAX_PLAYERS; i++) {
+            hands = generateHand();
+            players[i].setHand(hands);
+        }
 
     }
 
+    public LinkedList<Card> generateHand(){
+
+        LinkedList<Card> hand  = new LinkedList<>();
+        int randomCard;
+
+        for (int i = 0; i < 10; i++) {
+            randomCard = ((int) Math.random() * deck.size() );
+            hand.add(deck.remove(randomCard));
+        }
+
+        return hand;
+    }
+
     public void askNames(){
-        
+
     }
 
     public void turn(){
@@ -48,6 +78,9 @@ public class Game {
     }
 
     private void organize() {
+
+        //TODO: Bruno! you are retarded!
+
 
     }
 

@@ -22,6 +22,27 @@ public class Card {
         return cardNumber.getValue();
     }
 
+    public String getHandRep(){
+        return  "┌───────┐"+":"+
+                "│"+cardNumber.getNumber()+suite.getSymbol()+"     │:"+
+                "│       │" +":"+
+                "│   "+suite.getSymbol()+"   │" +":"+
+                "│       │" +":"+
+                "│     "+suite.getSymbol()+cardNumber.getNumber()+"│" +":"+
+                "└───────┘";
+
+    }
+
+    public String getRepresentacion(){
+        return  "┌───────┐" +"\r\n"+
+                "│"+cardNumber.getNumber()+suite.getSymbol()+"     │" +"\r\n"+
+                "│       │" +"\r\n"+
+                "│   "+suite.getSymbol()+"   │" +"\r\n"+
+                "│       │" +"\r\n"+
+                "│     "+suite.getSymbol()+cardNumber.getNumber()+"│" +"\r\n"+
+                "└───────┘";
+    }
+
     @Override
     public String toString() {
         return suite.getSymbol() + cardNumber.getNumber();
