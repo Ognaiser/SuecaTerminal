@@ -2,18 +2,9 @@ package org.academia.server;
 
 import org.academia.sueca.ClientHandler;
 import org.academia.sueca.Game;
-
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.LinkedList;
-import java.util.List;
-
-
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Server {
@@ -26,7 +17,7 @@ public class Server {
 
         try {
             ss = new ServerSocket(PORT);
-            clients = new ArrayList<>();
+            clients = new LinkedList<>();
         } catch (IOException e) {
             System.err.println("Error on the creation the server! " + e.getMessage());
             System.exit(1);
@@ -53,7 +44,4 @@ public class Server {
     }
 
 
-    private class clientHandler {
-
-    }
 }

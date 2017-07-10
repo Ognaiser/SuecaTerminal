@@ -84,7 +84,7 @@ public class Game {
         Card turnCard = null;
         int i = 0;
 
-        sendAll("Trump is: "+ trump.getRepresentacion());
+        sendAll("Trump is: " + trump.getRepresentacion());
 
         while (turn < MAX_TURNS) {
 
@@ -110,19 +110,16 @@ public class Game {
 
     private void setFirstPlayer(ClientHandler roundWinner) {
 
-        int i = 0;
 
-        for (ClientHandler player : players) {
 
-            if (player == roundWinner) {
+        for (int i = 0; i < players.size() ; i++) {
+
+            if (players.get(i) == roundWinner) {
                 return;
             }
 
-            players.add(players.get(i));
-            players.remove(player);
-            i++;
+            players.add(players.remove(i));
         }
-
     }
 
     private void sendAll(String text) {
@@ -134,11 +131,6 @@ public class Game {
     }
 
     private int getWinner(Card[] turnCards) {
-
-        //TODO: Joao
-        //devolve a posição da carta vencedora pelo naipe e pelo ordinal do numero
-        //o naipe da jogada é o naipe da posição 0
-        //atenção a propriedade trump;
 
         Card winnerCard = turnCards[0];
 
