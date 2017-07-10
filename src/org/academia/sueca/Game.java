@@ -4,25 +4,25 @@ import java.util.LinkedList;
 
 public class Game {
 
-    private LinkedList<Card> deck = new LinkedList<>();
-    private ClientHandler[] players;
     private final int MAX_TURNS = 10;
     private final int MAX_PLAYERS = 4;
+    private LinkedList<Card> deck = new LinkedList<>();
+    private ClientHandler[] players;
 
     public Game(ClientHandler[] players) {
         this.players = players;
         generateDeck();
     }
 
-    private void generateDeck(){
+    private void generateDeck() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 10; j++) {
-                deck.add(new Card(Suits.values()[i],CardsNumber.values()[j]));
+                deck.add(new Card(Suits.values()[i], CardsNumber.values()[j]));
             }
         }
     }
 
-    public void distributeHands(){
+    public void distributeHands() {
 
         LinkedList<Card> hands;
 
@@ -33,24 +33,24 @@ public class Game {
 
     }
 
-    public LinkedList<Card> generateHand(){
+    public LinkedList<Card> generateHand() {
 
-        LinkedList<Card> hand  = new LinkedList<>();
+        LinkedList<Card> hand = new LinkedList<>();
         int randomCard;
 
         for (int i = 0; i < 10; i++) {
-            randomCard = ((int) Math.random() * deck.size() );
+            randomCard = ((int) (Math.random() * deck.size()));
             hand.add(deck.remove(randomCard));
         }
 
         return hand;
     }
 
-    public void askNames(){
+    public void askNames() {
 
     }
 
-    public void turn(){
+    public void turn() {
 
         int turn = 1;
 
@@ -70,7 +70,6 @@ public class Game {
             organize();
 
 
-
             turn++;
         }
 
@@ -84,16 +83,16 @@ public class Game {
 
     }
 
-    private void sendAll(String text){
+    private void sendAll(String text) {
 
     }
 
-    private int getWinner(Card[] turnCards){
+    private int getWinner(Card[] turnCards) {
 
         return 0;
     }
 
-    private void displayScore(){
+    private void displayScore() {
 
     }
 
