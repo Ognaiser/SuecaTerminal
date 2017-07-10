@@ -47,7 +47,7 @@ public class ClientHandler {
 
         try {
 
-            name = in.readLine();
+            this.name = in.readLine();
 
         } catch (IOException e) {
 
@@ -82,6 +82,10 @@ public class ClientHandler {
             score += cards[i].getValue();
         }
 
+    }
+
+    public String getName() {
+        return name;
     }
 
     public List<Card> getHand() {

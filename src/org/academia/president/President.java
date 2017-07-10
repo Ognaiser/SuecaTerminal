@@ -1,19 +1,27 @@
-package org.academia.sueca;
+package org.academia.president;
+
+/**
+ * Created by codecadet on 10/07/2017.
+ */
+
+import org.academia.sueca.Card;
+import org.academia.sueca.ClientHandler;
+import org.academia.sueca.SuecaCards;
+import org.academia.sueca.Suits;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Game {
 
-    private final int MAX_TURNS = 10;
-    private final int MAX_PLAYERS = 4;
+public class President {
+
+    private final int MAX_PLAYERS = 5;
     private final int INITIAL_HANDSIZE = 10;
     private LinkedList<Card> deck = new LinkedList<>();
     private List<ClientHandler> players;
-    private Card trump;
 
 
-    public Game(List<ClientHandler> players) {
+    public President(List<ClientHandler> players) {
 
         this.players = players;
     }
@@ -33,7 +41,7 @@ public class Game {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 10; j++) {
-                deck.add(new Card(Suit.values()[i], SuecaCards.values()[j]));
+                deck.add(new Card(Suits.values()[i], SuecaCards.values()[j]));
             }
         }
     }
@@ -48,13 +56,8 @@ public class Game {
             player.setHand(hand);
         }
 
-        assignTrump();
     }
 
-    private void assignTrump() {
-
-        trump = players.get(players.size() - 1).getHand().get(0);
-    }
 
     public LinkedList<Card> generateHand() {
 
@@ -79,12 +82,12 @@ public class Game {
 
     public void playGame() {
 
-        int turn = 1;
+
         Card[] turnCards = new Card[MAX_PLAYERS];
         Card turnCard = null;
         int i = 0;
 
-        while (turn < MAX_TURNS) {
+        while (getWinner().equals(null)) {
 
             for (ClientHandler player : players) {
 
@@ -92,7 +95,6 @@ public class Game {
                 sendAll(turnCard.getRepresentacion());
 
                 turnCards[i] = turnCard;
-                i++;
             }
 
             int winner = getWinner(turnCards);
@@ -101,9 +103,25 @@ public class Game {
 
             setFirstPlayer(players.get(winner));
 
-            turn++;
         }
 
+    }
+
+    private ClientHandler getWinner() {
+
+        int i = 0;
+
+        for (ClientHandler player : players) {
+
+            if (player.getHand().isEmpty()) {
+
+                return player;
+            }
+
+            i++;
+        }
+
+        return null;
     }
 
     private void setFirstPlayer(ClientHandler roundWinner) {
@@ -136,77 +154,17 @@ public class Game {
         //TODO: Joao
         //devolve a posição da carta vencedora pelo naipe e pelo ordinal do numero
         //o naipe da jogada é o naipe da posição 0
-        //atenção a propriedade trump;
+        //atenção a propriedade trunfo;
 
-        Card winnerCard = turnCards[0];
-
-        for (int playerCard = 1; playerCard < MAX_PLAYERS; playerCard++) {
-
-            winnerCard = compareCards(winnerCard, turnCards[playerCard]);
-        }
-
-        return getIndex(turnCards, winnerCard);
+        return 0;
     }
-
-    private int getIndex(Card[] turnCards, Card winnerCard) {
-
-        int index = -1;
-
-        for (int i = 0; i < turnCards.length; i++) {
-            if (turnCards[i].equals(winnerCard)) {
-                index = i;
-            }
-        }
-
-        return index;
-    }
-
-    private Card compareCards(Card first, Card second) {
-
-        if (sameSuit(first, second)) {
-            return compareCardValue(first, second);
-        }
-
-        if (!isTrump(second)) {
-            return first;
-
-        } else {
-            return second;
-        }
-
-    }
-
-    private Card compareCardValue(Card first, Card second) {
-        return (first.getCardNumber().ordinal() > second.getCardNumber().ordinal()) ? first : second;
-    }
-
-    private boolean sameSuit(Card first, Card second) {
-
-        return first.getSuit().equals(second.getSuit());
-    }
-
-
-    private boolean isTrump(Card first) {
-
-        return first.getSuit().equals(trump.getSuit());
-    }
-
 
     private void showScore() {
 
         //TODO:  Miguel
-        int team1 = players.get(0).getScore() + players.get(2).getScore();
-        int team2 = players.get(1).getScore() + players.get(3).getScore();
 
-
-        String scoreText = "FINAL SCORE:\n" +
-                "TEAM 1 - " + players.get(0).getName() + " and " + players.get(2).getName() + ":\n" +
-                team1 + "\n ____________________________________________\n" +
-                "TEAM 2 - " + players.get(1).getName() + " and " + players.get(3).getName() + ":\n" +
-                team2 + "\n ____________________________________________\n" +
-                "THE WINNER IS " + (team1 > team2 ? "TEAM 1!" : "TEAM 2!");
-
-        sendAll(scoreText);
+        //contruir score, somar os pontos da equipa e contruir uma msg paneleira
     }
 
 }
+
