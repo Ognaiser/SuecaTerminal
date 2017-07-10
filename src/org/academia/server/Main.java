@@ -4,9 +4,12 @@ import org.academia.sueca.Card;
 import org.academia.sueca.SuecaCards;
 import org.academia.sueca.Suit;
 
+import java.io.IOException;
+
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Server server = new Server();
         server.init();
         server.start();
