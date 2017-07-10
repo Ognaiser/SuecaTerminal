@@ -1,26 +1,33 @@
-package org.academia.sueca;
+package org.academia.president;
+
+/**
+ * Created by codecadet on 10/07/2017.
+ */
+
+import org.academia.sueca.Card;
+import org.academia.sueca.ClientHandler;
+import org.academia.sueca.SuecaCards;
+import org.academia.sueca.Suits;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Game {
 
-    private final int MAX_TURNS = 10;
-    private final int MAX_PLAYERS = 4;
+public class President {
+
+    private final int MAX_PLAYERS = 5;
     private final int INITIAL_HANDSIZE = 10;
     private LinkedList<Card> deck = new LinkedList<>();
     private List<ClientHandler> players;
-    private Card trunfo;
 
 
-    public Game(List<ClientHandler> players) {
+    public President(List<ClientHandler> players) {
 
         this.players = players;
-        generateDeck();
     }
 
 
-    public void start(){
+    public void start() {
 
         generateDeck();
         distributeHands();
@@ -49,13 +56,8 @@ public class Game {
             player.setHand(hand);
         }
 
-        assignTrunfo();
     }
 
-    private void assignTrunfo() {
-
-        trunfo = players.get(players.size() - 1).getHand().get(0);
-    }
 
     public LinkedList<Card> generateHand() {
 
@@ -80,12 +82,12 @@ public class Game {
 
     public void playGame() {
 
-        int turn = 1;
+
         Card[] turnCards = new Card[MAX_PLAYERS];
         Card turnCard = null;
         int i = 0;
 
-        while (turn < MAX_TURNS) {
+        while (getWinner().equals(null)) {
 
             for (ClientHandler player : players) {
 
@@ -93,7 +95,6 @@ public class Game {
                 sendAll(turnCard.getRepresentacion());
 
                 turnCards[i] = turnCard;
-                i++;
             }
 
             int winner = getWinner(turnCards);
@@ -102,9 +103,25 @@ public class Game {
 
             setFirstPlayer(players.get(winner));
 
-            turn++;
         }
 
+    }
+
+    private ClientHandler getWinner() {
+
+        int i = 0;
+
+        for (ClientHandler player : players) {
+
+            if (player.getHand().isEmpty()) {
+
+                return player;
+            }
+
+            i++;
+        }
+
+        return null;
     }
 
     private void setFirstPlayer(ClientHandler roundWinner) {
@@ -150,3 +167,4 @@ public class Game {
     }
 
 }
+
