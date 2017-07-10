@@ -1,20 +1,23 @@
 package org.academia.sueca;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class Game {
 
     private final int MAX_TURNS = 10;
     private final int MAX_PLAYERS = 4;
     private LinkedList<Card> deck = new LinkedList<>();
-    private ClientHandler[] players;
+    private List<ClientHandler> players;
 
-    public Game(ClientHandler[] players) {
+    public Game(List<ClientHandler> players) {
+
         this.players = players;
         generateDeck();
     }
 
     private void generateDeck() {
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 10; j++) {
                 deck.add(new Card(Suits.values()[i], CardsNumber.values()[j]));
@@ -26,9 +29,10 @@ public class Game {
 
         LinkedList<Card> hands;
 
-        for (int i = 0; i < MAX_PLAYERS; i++) {
+        for (ClientHandler player : players) {
+
             hands = generateHand();
-            players[i].setHand(hands);
+            player.setHand(hands);
         }
 
     }
@@ -48,27 +52,35 @@ public class Game {
 
     public void askNames() {
 
+        for (ClientHandler player : players) {
+
+            player.askNick();
+        }
     }
 
     public void turn() {
 
         int turn = 1;
+        Card[] turnCards = new Card[4];
+        Card turnCard = null;
+        int i=0;
 
         while (turn < MAX_TURNS) {
 
-            Card[] turnCards = new Card[MAX_PLAYERS];
+            for (ClientHandler player : players) {
 
-            for (int i = 0; i < MAX_PLAYERS; i++) {
-                turnCards[i] = players[i].play();
-                sendAll(turnCards[i].toString());
+                turnCard = player.play();
+                sendAll(turnCard.toString());
+
+                turnCards[i]=turnCard;
+                i++;
             }
 
             int winner = getWinner(turnCards);
 
-            players[winner].addScore(turnCards);
+            players.get(winner).addScore(turnCards);
 
-            organize();
-
+            organize(players.get(winner));
 
             turn++;
         }
@@ -76,10 +88,20 @@ public class Game {
         displayScore();
     }
 
-    private void organize() {
+    private void organize(ClientHandler roundWinner) {
 
-        //TODO: Bruno! you are retarded!
+        int i = 0;
 
+        for (ClientHandler player : players) {
+
+            if (player == roundWinner) {
+                return;
+            }
+
+            players.add(players.get(i));
+            players.remove(player);
+            i++;
+        }
 
     }
 
