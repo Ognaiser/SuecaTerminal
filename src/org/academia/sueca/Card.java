@@ -2,16 +2,16 @@ package org.academia.sueca;
 
 public class Card {
 
-    private Suits suite;
+    private Suit suit;
     private SuecaCards cardNumber;
 
-    public Card(Suits suite, SuecaCards cardNumber) {
-        this.suite = suite;
+    public Card(Suit suit,SuecaCards cardNumber) {
+        this.suit = suit;
         this.cardNumber = cardNumber;
     }
 
-    public Suits getSuite() {
-        return suite;
+    public Suit getSuit() {
+        return suit;
     }
 
     public SuecaCards getCardNumber() {
@@ -24,27 +24,27 @@ public class Card {
 
     public String getHandRep(){
         return  "┌───────┐"+":"+
-                "│"+cardNumber.getNumber()+suite.getSymbol()+"     │:"+
+                "│"+cardNumber.getNumber()+ suit.getSymbol()+"     │:"+
                 "│       │" +":"+
-                "│   "+suite.getSymbol()+"   │" +":"+
+                "│   "+ suit.getSymbol()+"   │" +":"+
                 "│       │" +":"+
-                "│     "+suite.getSymbol()+cardNumber.getNumber()+"│" +":"+
+                "│     "+ suit.getSymbol()+cardNumber.getNumber()+"│" +":"+
                 "└───────┘";
 
     }
 
     public String getRepresentacion(){
         return  "┌───────┐" +"\r\n"+
-                "│"+cardNumber.getNumber()+suite.getSymbol()+"     │" +"\r\n"+
+                "│"+cardNumber.getNumber()+ suit.getSymbol()+"     │" +"\r\n"+
                 "│       │" +"\r\n"+
-                "│   "+suite.getSymbol()+"   │" +"\r\n"+
+                "│   "+ suit.getSymbol()+"   │" +"\r\n"+
                 "│       │" +"\r\n"+
-                "│     "+suite.getSymbol()+cardNumber.getNumber()+"│" +"\r\n"+
+                "│     "+ suit.getSymbol()+cardNumber.getNumber()+"│" +"\r\n"+
                 "└───────┘";
     }
 
     @Override
     public String toString() {
-        return suite.getSymbol() + cardNumber.getNumber();
+        return suit.getSymbol() + cardNumber.getNumber();
     }
 }
