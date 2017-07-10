@@ -1,6 +1,6 @@
 package org.academia.sueca;
 
-public enum CardsNumber {
+public enum SuecaCards {
     ACE("A", 11),
     SEVEN("7",10),
     KING("K",4),
@@ -15,7 +15,7 @@ public enum CardsNumber {
     private String number;
     private int value;
 
-    CardsNumber(String number , int value) {
+    SuecaCards(String number , int value) {
         this.number = number;
         this.value = value;
     }

@@ -33,7 +33,7 @@ public class Game {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 10; j++) {
-                deck.add(new Card(Suit.values()[i], CardsNumber.values()[j]));
+                deck.add(new Card(Suit.values()[i], SuecaCards.values()[j]));
             }
         }
     }
@@ -195,8 +195,18 @@ public class Game {
     private void showScore() {
 
         //TODO:  Miguel
+        int team1 = players.get(0).getScore() + players.get(2).getScore();
+        int team2 = players.get(1).getScore() + players.get(3).getScore();
 
-        //contruir score, somar os pontos da equipa e contruir uma msg paneleira
+
+        String scoreText = "FINAL SCORE:\n" +
+                "TEAM 1 - " + players.get(0).getName() + " and " + players.get(2).getName() + ":\n" +
+                team1 + "\n ____________________________________________\n" +
+                "TEAM 2 - " + players.get(1).getName() + " and " + players.get(3).getName() + ":\n" +
+                team2 + "\n ____________________________________________\n" +
+                "THE WINNER IS " + (team1 > team2 ? "TEAM 1!" : "TEAM 2!");
+
+        sendAll(scoreText);
     }
 
 }
