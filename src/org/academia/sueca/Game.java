@@ -84,7 +84,7 @@ public class Game {
         Card turnCard = null;
         int i = 0;
 
-        sendAll("Trump is: "+ trump.getRepresentacion());
+        sendAll("Trump is: \r\n"+ trump.getRepresentacion());
 
         while (turn < MAX_TURNS) {
 
