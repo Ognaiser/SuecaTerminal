@@ -135,10 +135,6 @@ public class Game {
 
     private int getWinner(Card[] turnCards) {
 
-        //TODO: Joao
-        //devolve a posição da carta vencedora pelo naipe e pelo ordinal do numero
-        //o naipe da jogada é o naipe da posição 0
-        //atenção a propriedade trump;
 
         Card winnerCard = turnCards[0];
 
@@ -196,7 +192,6 @@ public class Game {
 
     private void showScore() {
 
-        //TODO:  Miguel
         int team1 = players.get(0).getScore() + players.get(2).getScore();
         int team2 = players.get(1).getScore() + players.get(3).getScore();
 
