@@ -16,6 +16,7 @@ public class ClientHandler {
     private PrintWriter out;
 
     public ClientHandler(Socket socket) {
+
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
@@ -23,6 +24,8 @@ public class ClientHandler {
             System.err.println("Error:" + e.getMessage());
             System.exit(1);
         }
+
+        out.println("Hello my niggas");
     }
 
     public void showHand() {
