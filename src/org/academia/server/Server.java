@@ -1,11 +1,10 @@
 package org.academia.server;
 
-import org.academia.sueca.ClientHandler;
-import org.academia.sueca.Game;
+import org.academia.sueca.SuecaGame;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Server {
 
@@ -39,8 +38,8 @@ public class Server {
             }
         }
 
-        Game game = new Game(clients);
-        game.start();
+        SuecaGame suecaGame = new SuecaGame(clients);
+        suecaGame.start();
     }
 
 

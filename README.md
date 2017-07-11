@@ -1,2 +1,2 @@
 # SuecaTerminal
-Sueca game in the terminal!
+Sueca suecaGame in the terminal!
