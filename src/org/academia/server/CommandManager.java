@@ -22,7 +22,14 @@ public class CommandManager {
                 clientHandler.delete();
                 gameHandler.addSueca(clientHandler);
                 break;
+            default:
+                defaultMsg(clientHandler);
+                break;
         }
+    }
+
+    private void defaultMsg(Server.ClientHandler clientHandler) {
+        clientHandler.send("Command not Found! type !help for help!");
     }
 
     private void list(Server.ClientHandler handler){

@@ -31,7 +31,7 @@ public class Server {
             ss = new ServerSocket(PORT);
             clientHandlers = new ArrayList<>();
             commandManager = new CommandManager(clientHandlers);
-
+            System.out.println("Server started");
             //TODO: to remove!
             clients = new LinkedList<>();
         } catch (IOException e) {
@@ -45,11 +45,14 @@ public class Server {
 
         pool = Executors.newFixedThreadPool(25);
 
-        while (ss.isBound()) {
+        System.out.println("before loop!");
 
+        while (true){
+            System.out.println("started loop!");
             try {
 
                 ClientHandler clientHandler = new ClientHandler(ss.accept());
+                System.out.println("client connected!");
                 clientHandlers.add(clientHandler);
                 pool.submit(clientHandler);
 
@@ -68,7 +71,7 @@ public class Server {
 
     public void sendAll(String msg) {
         for (ClientHandler handler : clientHandlers) {
-            handler.send(msg);
+            handler.send(handler.getClient().getName() + " said: "+msg);
         }
     }
 
@@ -119,7 +122,7 @@ public class Server {
                 this.client.setSocket(socket);
                 this.client.setChips(500);
                 this.client.setAdmin(false);
-                this.out = new PrintWriter(socket.getOutputStream());
+                this.out = new PrintWriter(socket.getOutputStream(), true);
                 this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             } catch (IOException e) {
                 System.err.println("Error: " + e.getMessage());
