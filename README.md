@@ -10,9 +10,9 @@ Simple Sueca game on Terminal!
 
 ### Future Developments
 
-	--Client
-	--More Games
-	--Lobby with chat!
+	-Client
+	-More Games
+	-Lobby with chat!
 
 ## Deployment
 
