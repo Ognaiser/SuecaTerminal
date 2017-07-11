@@ -1,5 +1,6 @@
 package org.academia.sueca;
 
+import org.academia.server.ClientHandler;
 import org.academia.server.Game;
 
 import java.util.LinkedList;
@@ -98,6 +99,10 @@ public class SuecaGame implements Game{
             for (SuecaClient player : players) {
 
                 turnCard = player.play();
+
+                if(!validCard(turnCard, turnCards[0], player)){
+                    player.setCheated();
+                }
 
                 sendAll(player.getName() + " played: \n\r" + turnCard.getRepresentation());
 
@@ -213,7 +218,21 @@ public class SuecaGame implements Game{
 
     }
 
+    //TODO: Miguel faz o validCard()
+    private boolean validCard(Card playedCard, Card firstCard, SuecaClient player){
 
+        if (playedCard.getSuit().equals(firstCard.getSuit())){
+            return true;
+        }
+
+        for (Card card: player.getHand()) {
+            if (card.getSuit().equals(firstCard.getSuit())){
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     private Card compareCardValue(Card first, Card second) {
         return (first.getCardNumber().ordinal() < second.getCardNumber().ordinal()) ? first : second;

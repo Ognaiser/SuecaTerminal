@@ -17,6 +17,7 @@ public class SuecaClient implements GameClient {
     private int score;
     private BufferedReader in;
     private PrintWriter out;
+    private boolean cheated = false;
 
     public SuecaClient(BufferedReader in, PrintWriter out) {
 
@@ -110,14 +111,16 @@ public class SuecaClient implements GameClient {
 
     }
 
+    public boolean hasSuit(Suit suit){
 
-    //TODO: Miguel faz o validateCard()
-    private boolean validateCard(Card playedCard, List<Card> hand){
-
-
-
-        return true;
+        for (Card card: hand) {
+            if(card.getSuit().equals(suit)){
+                return true;
+            }
+        }
+        return false;
     }
+
 
     public String getName() {
         return name;
@@ -125,5 +128,13 @@ public class SuecaClient implements GameClient {
 
     public List<Card> getHand() {
         return hand;
+    }
+
+    public void setCheated() {
+        cheated = true;
+    }
+
+    public boolean hasCheated() {
+        return cheated;
     }
 }
