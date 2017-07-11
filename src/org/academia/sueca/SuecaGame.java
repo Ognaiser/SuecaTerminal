@@ -8,6 +8,8 @@ import java.util.LinkedList;
 
 public class SuecaGame implements Game {
 
+    //TODO: implments runnabel(to see if its ok)
+
     private final int MAX_TURNS = 10;
     private final int MAX_PLAYERS = 4;
     private final int INITIAL_HANDSIZE = 10;

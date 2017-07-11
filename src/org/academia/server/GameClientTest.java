@@ -10,8 +10,8 @@ import java.io.PrintWriter;
  */
 public abstract class GameClientTest {
 
-    private BufferedReader in;
-    private PrintWriter out;
+    public BufferedReader in;
+    public PrintWriter out;
     private ClientPOJO client;
 
     public GameClientTest(ClientPOJO client) {

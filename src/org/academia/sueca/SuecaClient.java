@@ -11,6 +11,8 @@ import java.util.List;
 
 public class SuecaClient implements GameClient {
 
+    //TODO:extend GameClientTest! (to see if its ok)
+
     private List<Card> hand;
     private String name;
     private int score;
