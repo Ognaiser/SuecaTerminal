@@ -2,23 +2,30 @@ package org.academia.server;
 
 import org.academia.sueca.SuecaClient;
 import org.academia.sueca.SuecaGame;
-
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Server {
 
     public static final int PORT = 8080;
     private ServerSocket ss;
+    private List<ClientHandler> clientHandlers;
+    private CommandManager commandManager;
     private LinkedList<SuecaClient> clients;
 
-    public void init(){
+    public void init() {
 
         try {
             ss = new ServerSocket(PORT);
+            clientHandlers = new ArrayList<>();
+            commandManager = new CommandManager(clientHandlers);
             clients = new LinkedList<>();
         } catch (IOException e) {
             System.err.println("Error on the creation the server! " + e.getMessage());
@@ -27,10 +34,35 @@ public class Server {
 
     }
 
-    public void start(){
+    public void start2(){
+
+        while (ss.isBound()){
+
+            try {
+
+                clientHandlers.add(new ClientHandler(ss.accept()));
 
 
-        while (clients.size() <4){
+
+            } catch (IOException e) {
+                System.err.println("Error: " + e.getMessage());
+                System.exit(1);
+            }
+
+        }
+
+    }
+
+    public void sendAll(String msg){
+        for (ClientHandler handler : clientHandlers) {
+            handler.send(msg);
+        }
+    }
+
+    public void start() {
+
+
+        while (clients.size() < 4) {
 
             try {
                 clients.add(new SuecaClient(ss.accept()));
@@ -45,20 +77,86 @@ public class Server {
     }
 
 
-    private class ClientHandler implements Runnable{
+    public class ClientHandler implements Runnable {
 
-        private ClientPOJO client;
-        private boolean isOver;
+        private ClientPOJO client = new ClientPOJO();
+        private boolean connected = true;
         private PrintWriter out;
         private BufferedReader in;
 
-        public ClientHandler() {
+        public ClientHandler(Socket socket) {
 
+
+            try {
+                this.client.setSocket(socket);
+                this.out = new PrintWriter(socket.getOutputStream());
+                this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            } catch (IOException e) {
+                System.err.println("Error: " + e.getMessage());
+            }
+
+            this.out.println(" ___       __    _______    ___        ________   ________   _____ ______    _______      \n" +
+                    "|\\  \\     |\\  \\ |\\  ___ \\  |\\  \\      |\\   ____\\ |\\   __  \\ |\\   _ \\  _   \\ |\\  ___ \\     \n" +
+                    "\\ \\  \\    \\ \\  \\\\ \\   __/| \\ \\  \\     \\ \\  \\___| \\ \\  \\|\\  \\\\ \\  \\\\\\__\\ \\  \\\\ \\   __/|    \n" +
+                    " \\ \\  \\  __\\ \\  \\\\ \\  \\_|/__\\ \\  \\     \\ \\  \\     \\ \\  \\\\\\  \\\\ \\  \\\\|__| \\  \\\\ \\  \\_|/__  \n" +
+                    "  \\ \\  \\|\\__\\_\\  \\\\ \\  \\_|\\ \\\\ \\  \\____ \\ \\  \\____ \\ \\  \\\\\\  \\\\ \\  \\    \\ \\  \\\\ \\  \\_|\\ \\ \n" +
+                    "   \\ \\____________\\\\ \\_______\\\\ \\_______\\\\ \\_______\\\\ \\_______\\\\ \\__\\    \\ \\__\\\\ \\_______\\\n" +
+                    "    \\|____________| \\|_______| \\|_______| \\|_______| \\|_______| \\|__|     \\|__| \\|_______|\n");
+
+            askNick();
+        }
+
+        public void askNick() {
+
+            out.println("Enter your nickname:");
+
+            try {
+
+                this.client.setName(in.readLine());
+
+            } catch (IOException e) {
+
+                System.err.println(e.getMessage());
+                System.exit(1);
+
+            }
         }
 
         @Override
         public void run() {
 
+            String msg;
+
+            while (connected){
+
+                try {
+                    msg = in.readLine();
+
+                    if (msg == null){
+                        disconnect();
+                        continue;
+                    }
+
+                    if (msg.charAt(0) == '!' && msg.length() != 1){
+                        commandManager.handle(this, msg);
+                        continue;
+                    }
+
+                   sendAll(msg);
+
+                } catch (IOException e) {
+                    disconnect();
+                }
+
+            }
+        }
+
+        public void send(String msg){
+            out.println(msg);
+        }
+
+        public void disconnect(){
+            connected = false;
         }
     }
 }
