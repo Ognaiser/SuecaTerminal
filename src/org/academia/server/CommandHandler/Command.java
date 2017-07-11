@@ -1,6 +1,9 @@
 package org.academia.server.CommandHandler;
 
-import org.acdemiadecodigo.Server;
+import org.academia.server.ClientHandler;
+import org.academia.server.Game;
+import org.academia.server.GameClient;
+
 
 import java.io.IOException;
 
@@ -9,6 +12,6 @@ import java.io.IOException;
  */
 public interface Command {
 
-    boolean runCmd(String msg, Server.ClientHandler clientHandler) throws IOException;
+    boolean runCmd(String msg, GameClient gameClient, Game game) throws IOException;
 
 }

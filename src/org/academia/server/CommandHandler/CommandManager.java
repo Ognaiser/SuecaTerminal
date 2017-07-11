@@ -1,6 +1,11 @@
 package org.academia.server.CommandHandler;
 
-import org.acdemiadecodigo.Server;
+
+import org.academia.server.ClientHandler;
+import org.academia.server.Game;
+import org.academia.server.GameClient;
+
+import java.io.IOException;
 
 /**
  * Created by codecadet on 06/07/2017.
@@ -39,9 +44,9 @@ public class CommandManager implements Command {
         return this;
     }
 
-    @Override
-    public boolean runCmd(String msg, Server.ClientHandler clientHandler) {
 
+    @Override
+    public boolean runCmd(String msg, GameClient gameClient, Game game) throws IOException {
         return false;
     }
 }

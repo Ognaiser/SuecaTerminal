@@ -30,10 +30,10 @@ public class ClientHandler {
 
     }
 
-    private boolean handleMessage(String msg, GameClient player) throws IOException {
+    private boolean handleMessage(String msg, Game game) throws IOException {
 
         cmd = new CommandManager();
-        return cmd.getByName(msg).runCmd(msg, player);
+        return cmd.getByName(msg).runCmd(msg, player ,game);
     }
 
 }
