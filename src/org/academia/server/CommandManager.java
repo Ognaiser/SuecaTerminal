@@ -16,11 +16,15 @@ public class CommandManager {
             case "!help":
                 list(clientHandler);
                 break;
+            case "!play sueca":
+
+                break;
         }
     }
 
     private void list(Server.ClientHandler handler){
         handler.send("!help -> List all commands!");
+        handler.send("!play sueca-> Play a game of sueca!");
     }
 
 

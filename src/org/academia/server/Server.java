@@ -11,6 +11,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
 
@@ -18,6 +20,7 @@ public class Server {
     private ServerSocket ss;
     private List<ClientHandler> clientHandlers;
     private CommandManager commandManager;
+    //TODO: TO remove!
     private LinkedList<SuecaClient> clients;
 
     public void init() {
@@ -26,6 +29,8 @@ public class Server {
             ss = new ServerSocket(PORT);
             clientHandlers = new ArrayList<>();
             commandManager = new CommandManager(clientHandlers);
+
+            //TODO: to remove!
             clients = new LinkedList<>();
         } catch (IOException e) {
             System.err.println("Error on the creation the server! " + e.getMessage());
@@ -36,13 +41,15 @@ public class Server {
 
     public void start2(){
 
+        ExecutorService pool = Executors.newFixedThreadPool(25);
+
         while (ss.isBound()){
 
             try {
 
-                clientHandlers.add(new ClientHandler(ss.accept()));
-
-
+                ClientHandler clientHandler = new ClientHandler(ss.accept());
+                clientHandlers.add(clientHandler);
+                pool.submit(clientHandler);
 
             } catch (IOException e) {
                 System.err.println("Error: " + e.getMessage());
@@ -53,12 +60,17 @@ public class Server {
 
     }
 
+    public void removeFromList(ClientHandler clientHandler){
+        clientHandlers.remove(clientHandler);
+    }
+
     public void sendAll(String msg){
         for (ClientHandler handler : clientHandlers) {
             handler.send(msg);
         }
     }
 
+    //TODO: to remove
     public void start() {
 
 
@@ -75,7 +87,6 @@ public class Server {
         SuecaGame suecaGame = new SuecaGame(clients);
         suecaGame.start();
     }
-
 
     public class ClientHandler implements Runnable {
 
@@ -134,6 +145,7 @@ public class Server {
 
                     if (msg == null){
                         disconnect();
+                        delete();
                         continue;
                     }
 
@@ -146,13 +158,22 @@ public class Server {
 
                 } catch (IOException e) {
                     disconnect();
+                    delete();
                 }
 
             }
         }
 
+        public ClientPOJO getClient(){
+            return client;
+        }
+
         public void send(String msg){
             out.println(msg);
+        }
+
+        public void delete(){
+            removeFromList(this);
         }
 
         public void disconnect(){
