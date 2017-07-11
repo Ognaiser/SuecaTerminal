@@ -1,5 +1,7 @@
 package org.academia.server;
 
-public interface GameClient {
+public class CommandManager {
+
+
 
 }

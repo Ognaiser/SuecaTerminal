@@ -4,12 +4,11 @@ import org.academia.server.GameClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.List;
 
-/**
- * Created by codecadet on 11/07/2017.
- */
 public class SuecaClient implements GameClient {
 
     private List<Card> hand;
@@ -17,11 +16,18 @@ public class SuecaClient implements GameClient {
     private int score;
     private BufferedReader in;
     private PrintWriter out;
+    private Socket socket;
 
-    public SuecaClient(BufferedReader in, PrintWriter out) {
+    public SuecaClient(Socket socket) {
 
-            this.in = in;
-            this.out = out;
+        this.socket = socket;
+
+        try {
+            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.out = new PrintWriter(socket.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         out.println("Hello my niggas");
     }
@@ -57,10 +63,6 @@ public class SuecaClient implements GameClient {
         }
     }
 
-    public void setHand(List<Card> hand) {
-        this.hand = hand;
-    }
-
     public Card play() {
 
 
@@ -82,7 +84,6 @@ public class SuecaClient implements GameClient {
             cardPlayed -= 1;
 
             return hand.remove(cardPlayed);
-
 
 
         } catch (IOException e) {
@@ -117,5 +118,13 @@ public class SuecaClient implements GameClient {
 
     public List<Card> getHand() {
         return hand;
+    }
+
+    public void setHand(List<Card> hand) {
+        this.hand = hand;
+    }
+
+    public Socket getSocket() {
+        return socket;
     }
 }
