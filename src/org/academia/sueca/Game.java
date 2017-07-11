@@ -211,6 +211,8 @@ public class Game {
 
     }
 
+
+
     private Card compareCardValue(Card first, Card second) {
         return (first.getCardNumber().ordinal() < second.getCardNumber().ordinal()) ? first : second;
     }

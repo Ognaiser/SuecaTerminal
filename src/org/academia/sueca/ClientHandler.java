@@ -86,7 +86,6 @@ public class ClientHandler {
             return hand.remove(cardPlayed);
 
 
-
         } catch (IOException e) {
 
             System.err.println(e.getMessage());
@@ -111,6 +110,15 @@ public class ClientHandler {
             score += cards[i].getValue();
         }
 
+    }
+
+
+    //TODO: Miguel faz o validateCard()
+    private boolean validateCard(Card playedCard, List<Card> hand){
+
+
+
+        return true;
     }
 
     public String getName() {
