@@ -132,11 +132,11 @@ public class SuecaClient implements GameClient {
         return hand;
     }
 
-    public void setCheated() {
+    public void hasCheated() {
         cheated = true;
     }
 
-    public boolean hasCheated() {
+    public boolean isACheater() {
         return cheated;
     }
 
