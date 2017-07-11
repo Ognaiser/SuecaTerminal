@@ -18,6 +18,7 @@ public class SuecaClient implements GameClient {
     private PrintWriter out;
     private boolean cheated = false;
     private Socket socket;
+    private boolean isCommand;
 
     public SuecaClient(Socket socket) {
 
@@ -73,6 +74,10 @@ public class SuecaClient implements GameClient {
 
         try {
 
+            String input = in.readLine();
+            if (input.length() > 1) {
+                checkCommand(input);
+            }
             cardPlayed = Integer.parseInt(in.readLine());
 
             while (cardPlayed < 1 || cardPlayed > hand.size()) {
@@ -96,6 +101,21 @@ public class SuecaClient implements GameClient {
         return null;
     }
 
+    public void checkCommand(String input) {
+
+        String[] words = input.split(" ");
+        if (words[0].equals("!waived")) {
+            isCommand = true;
+        }
+        //TODO MIGUEL verificar o nome no segundo elemento do array
+
+    }
+
+
+    public boolean isCommand(){
+        return isCommand;
+    }
+
     public void sendMessage(String msg) {
 
         out.println(msg);
@@ -113,10 +133,10 @@ public class SuecaClient implements GameClient {
 
     }
 
-    public boolean hasSuit(Suit suit){
+    public boolean hasSuit(Suit suit) {
 
-        for (Card card: hand) {
-            if(card.getSuit().equals(suit)){
+        for (Card card : hand) {
+            if (card.getSuit().equals(suit)) {
                 return true;
             }
         }

@@ -6,7 +6,7 @@ import org.academia.server.Game;
 import java.util.LinkedList;
 
 
-public class SuecaGame implements Game{
+public class SuecaGame implements Game {
 
     private final int MAX_TURNS = 10;
     private final int MAX_PLAYERS = 4;
@@ -99,8 +99,11 @@ public class SuecaGame implements Game{
             for (SuecaClient player : players) {
 
                 turnCard = player.play();
+                if (player.isCommand()) {
 
-                if(!validCard(turnCard, turnCards[0], player)){
+                }
+
+                if (!validCard(turnCard, turnCards[0], player)) {
                     player.hasCheated();
                     System.out.println("player " + player + " has cheated");
                 }
@@ -115,7 +118,7 @@ public class SuecaGame implements Game{
             players.get(winner).addScore(turnCards);
             setFirstPlayer(winner);
 
-            sendAll("______________________________"+turn+"__________________________________");
+            sendAll("______________________________" + turn + "__________________________________");
 
             turn++;
         }
@@ -128,6 +131,14 @@ public class SuecaGame implements Game{
             players.get(i).showHand();
         }
 
+    }
+
+    private boolean checkForCheater() {
+
+        for (SuecaClient player : players) {
+//TODO MIGUEL
+        }
+        return false;
     }
 
     private void setFirstPlayer(int roundWinner) {
@@ -144,7 +155,7 @@ public class SuecaGame implements Game{
 
         for (int i = 0; i < players.size(); i++) {
 
-            if ( i == roundWinner) {
+            if (i == roundWinner) {
                 System.out.println();
 
                 System.out.print("NEW order of players: ");
@@ -220,18 +231,16 @@ public class SuecaGame implements Game{
     }
 
 
-    private boolean validCard(Card playedCard, Card firstCard, SuecaClient player){
+    private boolean validCard(Card playedCard, Card firstCard, SuecaClient player) {
 
         Suit turnSuit = firstCard.getSuit();
 
-        if (playedCard.getSuit().equals(turnSuit)){
+        if (playedCard.getSuit().equals(turnSuit)) {
             return true;
         }
 
-        for (Card card: player.getHand()) {
-            if (card.getSuit().equals(turnSuit)){
-                return false;
-            }
+        if (player.hasSuit(turnSuit)) {
+            return false;
         }
 
         return true;
