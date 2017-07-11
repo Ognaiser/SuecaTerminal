@@ -1,19 +1,21 @@
 package org.academia.sueca;
 
+import org.academia.server.Game;
+
 import java.util.LinkedList;
 
 
-public class Game {
+public class SuecaGame implements Game{
 
     private final int MAX_TURNS = 10;
     private final int MAX_PLAYERS = 4;
     private final int INITIAL_HANDSIZE = 10;
     private LinkedList<Card> deck = new LinkedList<>();
-    private LinkedList<ClientHandler> players;
+    private LinkedList<SuecaClient> players;
     private Card trump;
 
 
-    public Game(LinkedList<ClientHandler> players) {
+    public SuecaGame(LinkedList<SuecaClient> players) {
 
         this.players = players;
     }
@@ -42,7 +44,7 @@ public class Game {
 
         LinkedList<Card> hand;
 
-        for (ClientHandler player : players) {
+        for (SuecaClient player : players) {
 
             hand = generateHand();
             player.setHand(hand);
@@ -71,7 +73,7 @@ public class Game {
 
     public void askNames() {
 
-        for (ClientHandler player : players) {
+        for (SuecaClient player : players) {
 
             player.askNick();
         }
@@ -93,7 +95,7 @@ public class Game {
         while (turn <= MAX_TURNS) {
             i = 0;
 
-            for (ClientHandler player : players) {
+            for (SuecaClient player : players) {
 
                 turnCard = player.play();
 
@@ -127,10 +129,10 @@ public class Game {
         //TODO: Bugfix reorganizing
 
         System.out.println("Winner is: " + players.get(roundWinner).getName());
-        ClientHandler toRemove;
+        SuecaClient toRemove;
 
         System.out.print("BEFORE: ");
-        for (ClientHandler each : players) {
+        for (SuecaClient each : players) {
             System.out.print(each.getName() + " ");
         }
 
@@ -140,7 +142,7 @@ public class Game {
                 System.out.println();
 
                 System.out.print("NEW order of players: ");
-                for (ClientHandler each : players) {
+                for (SuecaClient each : players) {
                     System.out.print(each.getName() + " ");
                 }
                 return;
@@ -154,7 +156,7 @@ public class Game {
         System.out.println();
 
         System.out.print("NEW order of players: ");
-        for (ClientHandler each : players) {
+        for (SuecaClient each : players) {
             System.out.print(each.getName() + " ");
         }
 
@@ -162,7 +164,7 @@ public class Game {
 
     private void sendAll(String text) {
 
-        for (ClientHandler player : players) {
+        for (SuecaClient player : players) {
 
             player.sendMessage(text);
         }
