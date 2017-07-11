@@ -1,13 +1,16 @@
 package org.academia.sueca;
 
+import org.academia.server.GameClient;
+
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.List;
 
-public class ClientHandler {
+/**
+ * Created by codecadet on 11/07/2017.
+ */
+public class SuecaClient implements GameClient {
 
     private List<Card> hand;
     private String name;
@@ -15,15 +18,10 @@ public class ClientHandler {
     private BufferedReader in;
     private PrintWriter out;
 
-    public ClientHandler(Socket socket) {
+    public SuecaClient(BufferedReader in, PrintWriter out) {
 
-        try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream(), true);
-        } catch (IOException e) {
-            System.err.println("Error:" + e.getMessage());
-            System.exit(1);
-        }
+            this.in = in;
+            this.out = out;
 
         out.println("Hello my niggas");
     }

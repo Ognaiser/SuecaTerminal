@@ -1,4 +1,4 @@
-#SuecaTermina
+#SuecaTerminal
 
 Simple Sueca game on Terminal!
 
