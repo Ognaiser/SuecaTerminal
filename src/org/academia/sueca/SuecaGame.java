@@ -1,11 +1,12 @@
 package org.academia.sueca;
 
+
 import org.academia.server.Game;
 
 import java.util.LinkedList;
 
 
-public class SuecaGame implements Game{
+public class SuecaGame implements Game {
 
     private final int MAX_TURNS = 10;
     private final int MAX_PLAYERS = 4;
@@ -41,7 +42,7 @@ public class SuecaGame implements Game{
         }
     }
 
-    public void distributeHands() {
+    private void distributeHands() {
 
         LinkedList<Card> hand;
 
@@ -59,7 +60,7 @@ public class SuecaGame implements Game{
         trump = players.get(players.size() - 1).getHand().get(9);
     }
 
-    public LinkedList<Card> generateHand() {
+    private LinkedList<Card> generateHand() {
 
         LinkedList<Card> hand = new LinkedList<>();
         int randomCard;
@@ -72,7 +73,7 @@ public class SuecaGame implements Game{
         return hand;
     }
 
-    public void askNames() {
+    private void askNames() {
 
         for (SuecaClient player : players) {
 
@@ -99,6 +100,14 @@ public class SuecaGame implements Game{
             for (SuecaClient player : players) {
 
                 turnCard = player.play();
+                if (player.isCommand()) {
+
+                }
+
+                if (!validCard(turnCard, turnCards[0], player)) {
+                    player.hasCheated();
+                    System.out.println("player " + player + " has cheated");
+                }
 
                 sendAll(player.getName() + " played: \n\r" + turnCard.getRepresentation());
 
@@ -110,7 +119,7 @@ public class SuecaGame implements Game{
             players.get(winner).addScore(turnCards);
             setFirstPlayer(winner);
 
-            sendAll("______________________________"+turn+"------------------------------------");
+            sendAll("______________________________" + turn + "__________________________________");
 
             turn++;
         }
@@ -123,6 +132,14 @@ public class SuecaGame implements Game{
             players.get(i).showHand();
         }
 
+    }
+
+    private boolean checkForCheater() {
+
+        for (SuecaClient player : players) {
+//TODO MIGUEL
+        }
+        return false;
     }
 
     private void setFirstPlayer(int roundWinner) {
@@ -139,7 +156,7 @@ public class SuecaGame implements Game{
 
         for (int i = 0; i < players.size(); i++) {
 
-            if ( i == roundWinner) {
+            if (i == roundWinner) {
                 System.out.println();
 
                 System.out.print("NEW order of players: ");
@@ -214,6 +231,22 @@ public class SuecaGame implements Game{
 
     }
 
+
+    private boolean validCard(Card playedCard, Card firstCard, SuecaClient player) {
+
+        Suit turnSuit = firstCard.getSuit();
+
+        if (playedCard.getSuit().equals(turnSuit)) {
+            return true;
+        }
+
+        if (player.hasSuit(turnSuit)) {
+            return false;
+        }
+
+        return true;
+    }
+
     private Card compareCardValue(Card first, Card second) {
         return (first.getCardNumber().ordinal() < second.getCardNumber().ordinal()) ? first : second;
     }
@@ -246,7 +279,7 @@ public class SuecaGame implements Game{
         sendAll(scoreText);
     }
 
-    public void greetPlayer() {
+    private void greetPlayer() {
         sendAll(" ___       __    _______    ___        ________   ________   _____ ______    _______      \n" +
                 "|\\  \\     |\\  \\ |\\  ___ \\  |\\  \\      |\\   ____\\ |\\   __  \\ |\\   _ \\  _   \\ |\\  ___ \\     \n" +
                 "\\ \\  \\    \\ \\  \\\\ \\   __/| \\ \\  \\     \\ \\  \\___| \\ \\  \\|\\  \\\\ \\  \\\\\\__\\ \\  \\\\ \\   __/|    \n" +
