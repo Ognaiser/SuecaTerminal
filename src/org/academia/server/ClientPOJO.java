@@ -6,7 +6,25 @@ public class ClientPOJO {
 
     private String name;
     private Socket socket;
-    private boolean isAdmin;
+    private boolean isAdmin = false;
+    private int chips = 500;
+    private Server.ClientHandler clientHandler;
+
+    public ClientPOJO(Server.ClientHandler clientHandler) {
+        this.clientHandler = clientHandler;
+    }
+
+    public void getBackToList(){
+        clientHandler.getBackToList();
+    }
+
+    public int getChips() {
+        return chips;
+    }
+
+    public void setChips(int chips) {
+        this.chips = chips;
+    }
 
     public String getName() {
         return name;

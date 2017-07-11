@@ -5,6 +5,7 @@ import java.util.List;
 public class CommandManager {
 
     private List<Server.ClientHandler> clientHandlers ;
+    private GameHandler gameHandler = new GameHandler();
 
     public CommandManager(List<Server.ClientHandler> clientHandlers) {
         this.clientHandlers = clientHandlers;
@@ -17,7 +18,9 @@ public class CommandManager {
                 list(clientHandler);
                 break;
             case "!play sueca":
-
+                clientHandler.disconnect();
+                clientHandler.delete();
+                gameHandler.addSueca(clientHandler);
                 break;
         }
     }
