@@ -108,8 +108,13 @@ public class SuecaGame implements Game, Runnable {
             for (SuecaClient player : players) {
 
                 turnCard = player.play();
+
                 if (player.isCommand()) {
 
+                    if(checkForCheater(player.getAccusedPlayer())){
+                        waivedEndGame();
+                        break;
+                    }
                 }
 
                 if (!validCard(turnCard, turnCards[0], player)) {
@@ -134,6 +139,7 @@ public class SuecaGame implements Game, Runnable {
 
     }
 
+
     private void showHands() {
 
         for (int i = 1; i < players.size(); i++) {
@@ -142,12 +148,20 @@ public class SuecaGame implements Game, Runnable {
 
     }
 
-    private boolean checkForCheater() {
+    private boolean checkForCheater(String playerName) {
 
-        for (SuecaClient player : players) {
-//TODO MIGUEL
+        for (SuecaClient currentPlayer: players) {
+
+            if(currentPlayer.isACheater() && currentPlayer.getName().equals(playerName)){
+                return true;
+            }
         }
         return false;
+    }
+
+    private void waivedEndGame() {
+        //TODO: ends the game when player has waived and has been discovered
+
     }
 
     private void setFirstPlayer(int roundWinner) {

@@ -2,28 +2,37 @@ package org.academia.sueca;
 
 import org.academia.server.ClientPOJO;
 import org.academia.server.GameClient;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.List;
 
 public class SuecaClient extends GameClient {
+
+    //TODO:extend GameClientTest! (to see if its ok)
 
     private List<Card> hand;
     private String name;
     private int score;
     private boolean cheated = false;
     private boolean isCommand;
+    private String accusedPlayer;
 
     public SuecaClient(ClientPOJO client) {
         super(client);
-        out.println("Hello my niggas");
+        out.println("Hello nigas");
     }
+
 
     public void showHand() {
 
         for (int line = 0; line < 7; line++) {
             for (int i = 0; i < hand.size(); i++) {
                 out.print(hand.get(i).getHandRep().split(":")[line]);
-                out.print("  ");
+                out.print(" ");
             }
             out.println();
         }
@@ -34,30 +43,39 @@ public class SuecaClient extends GameClient {
         out.println();
     }
 
-    public void assingNick() {
-        this.name = super.getName();
+    public void askNick() {
+        out.println("Enter your nickname:");
+
+        try {
+
+            this.name = in.readLine();
+
+        } catch (IOException e) {
+
+            System.err.println(e.getMessage());
+            System.exit(1);
+
+        }
     }
 
     public Card play() {
 
 
         showHand();
-        out.println("Please pick a card number and number of cards to play EXAMPLE(K 2) to play 2 kings:");
+        out.println("Please pick a card number:");
         int cardPlayed;
 
         try {
 
             String input = in.readLine();
-
             if (input.length() > 1) {
                 checkCommand(input);
             }
-
-            cardPlayed = Integer.parseInt(input);
+            cardPlayed = Integer.parseInt(in.readLine());
 
             while (cardPlayed < 1 || cardPlayed > hand.size()) {
 
-                out.println("That is not a valid card . \nPlease insert a number between 1 and " + (hand.size()));
+                out.println("That is not a valid card number. \nPlease insert a number between 1 and " + (hand.size()));
                 cardPlayed = Integer.parseInt(in.readLine());
 
             }
@@ -82,6 +100,7 @@ public class SuecaClient extends GameClient {
         if (words[0].equals("!waived")) {
             isCommand = true;
         }
+        accusedPlayer = words[1];
         //TODO MIGUEL verificar o nome no segundo elemento do array
 
     }
@@ -101,7 +120,7 @@ public class SuecaClient extends GameClient {
     }
 
     public void addScore(Card[] cards) {
-
+        //TODO: decide on where this logic should be
         for (int i = 0; i < cards.length; i++) {
             score += cards[i].getValue();
         }
@@ -139,4 +158,7 @@ public class SuecaClient extends GameClient {
         this.hand = hand;
     }
 
+    public String getAccusedPlayer() {
+        return accusedPlayer;
+    }
 }
