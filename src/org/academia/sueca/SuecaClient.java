@@ -7,8 +7,6 @@ import java.util.List;
 
 public class SuecaClient extends GameClient {
 
-    //TODO:extend GameClient! (to see if its ok)
-
     private List<Card> hand;
     private String name;
     private int score;
