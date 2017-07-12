@@ -1,21 +1,18 @@
 package org.academia.president;
 
 
-import org.academia.sueca.*;
-import org.academia.sueca.Card;
-import org.academia.sueca.Suit;
 
+import org.academia.sueca.Card;
 import java.util.LinkedList;
 
 /**
  * Created by codecadet on 12/07/2017.
  */
-public class PresidentGame implements Runnable, {
+public class PresidentGame implements Runnable {
 
 
     private LinkedList<CardPresident> deck = new LinkedList<>();
     private LinkedList<PresidentClient> players;
-    private Card trump;
 
     @Override
     public void run() {
@@ -70,7 +67,7 @@ public class PresidentGame implements Runnable, {
         LinkedList<CardPresident> hand = new LinkedList<>();
         int randomCard;
 
-        for (int i = 0; i < INITIAL_HANDSIZE; i++) {
+        for (int i = 0; i < ; i++) {
             randomCard = ((int) (Math.random() * deck.size()));
             hand.add(deck.remove(randomCard));
         }

@@ -5,7 +5,7 @@ public enum SuitPresident {
     DIAMONDS("\u001B[31m"+"\u2666"+"\u001B[0m"),
     HEARTS("\u001B[31m" +"\u2764" +"\u001B[0m"),
     CLUBS("\u2663"),
-    JOCKER("J");
+    JOCKER("\u1F0DF");
 
     private String symbol;
 

@@ -21,7 +21,7 @@ public enum PresidentCards {
     private String number;
     private int value;
 
-    public PresidentCards(String number) {
+    PresidentCards(String number) {
         this.number = number;
     }
 
