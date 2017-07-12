@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PresidentPlayer {
@@ -18,7 +19,7 @@ public class PresidentPlayer {
     private PrintWriter out;
     private boolean cheated = false;
     private Socket socket;
-    private boolean isCommand;
+    private boolean validPlay;
 
     public PresidentPlayer(Socket socket) {
 
@@ -50,33 +51,43 @@ public class PresidentPlayer {
         out.println();
     }
 
-    public PresidentCard play() {
+    public LinkedList<PresidentCard> play() {
+        LinkedList<PresidentCard> cardsPlayed = null;
+
+        while (!isValidPlay()) {
+
+            showHand();
+            cardsPlayed = getPlay();
+
+        }
+
+        return cardsPlayed;
+
+    }
 
 
-        showHand();
+    private LinkedList<PresidentCard> getPlay() {
+
         out.println("Please pick a card and number of cards:");
-        int cardPlayed;
+        String symbol = "";
+        String numberOfCards = "0";
 
         try {
 
-            String input = in.readLine();
+            String input = in.readLine(); // A 3
 
-            if (input.length() > 1) {
-                checkCommand(input);
+
+            symbol = input.split(" ")[0];
+            numberOfCards = input.split(" ")[1];
+
+            if (!isInputValid(symbol, numberOfCards)) {
+                numberOfCards = "0";
+                validPlay = false;
+
+                return null;
+            } else {
+                validPlay = true;
             }
-            cardPlayed = Integer.parseInt(in.readLine());
-
-            while (cardPlayed < 1 || cardPlayed > hand.size()) {
-
-                out.println("That is not a valid card number. \nPlease insert a number between 1 and " + (hand.size()));
-                cardPlayed = Integer.parseInt(in.readLine());
-
-            }
-
-            cardPlayed -= 1;
-
-            return hand.remove(cardPlayed);
-
 
         } catch (IOException e) {
 
@@ -84,22 +95,105 @@ public class PresidentPlayer {
             System.exit(1);
 
         }
-        return null;
+
+        return updateHand(symbol, numberOfCards);
+
+    }
+
+    private LinkedList<PresidentCard> updateHand(String symbol, String numberOfCards) {
+
+        LinkedList<PresidentCard> cardsPlayed = new LinkedList<>();
+
+        int counter = 0;
+        int iterator = 0;
+
+        for (PresidentCard card : hand) {
+
+            if (card.getValue().getNumber().equals(symbol) &&
+                    counter <= Integer.parseInt(numberOfCards)) {
+
+                cardsPlayed.add(hand.remove(iterator));
+                counter++;
+
+            }
+
+            iterator++;
+        }
+
+        System.out.println("cards played "+cardsPlayed.toString());
+        return cardsPlayed;
+
+    }
+
+    private boolean isInputValid(String symbol, String numberOfCards) {
+
+
+        if (!symbolIsValid(symbol)) {
+            out.println("That's not a valid card, choose other");
+            return false;
+        }
+
+        if (!playerHasCards(symbol, numberOfCards)) {
+            out.println("");
+            return false;
+        }
+
+        return true;
+
+    }
+
+    private boolean playerHasCards(String symbol, String numberOfCards) {
+
+        int counter = 0;
+
+        for (PresidentCard card : hand) {
+
+            if (card.getValue().getNumber().equals(symbol)) {
+
+                counter++;
+            }
+        }
+
+        if (counter == 0) {
+            out.println("You don't have that card");
+            return false;
+        }
+
+        if (Integer.parseInt(numberOfCards) < 0 ||
+                Integer.parseInt(numberOfCards) > 4 ||
+                counter < Integer.parseInt(numberOfCards)) {
+
+            out.println("You only have " + counter + " " + symbol);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean symbolIsValid(String value) {
+
+        for (int i = 0; i < PresidentCards.values().length; i++) {
+
+            if (PresidentCards.values()[i].getNumber().equals(value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void checkCommand(String input) {
 
         String[] words = input.split(" ");
-        if (words[0].equals("!waived")) {
-            isCommand = true;
+        if (words[0].equals("!pass")) {
+            validPlay = true;
         }
-        //TODO MIGUEL verificar o nome no segundo elemento do array
+        //TODO check how to do the pass
 
     }
 
 
-    public boolean isCommand(){
-        return isCommand;
+    public boolean isValidPlay() {
+        return validPlay;
     }
 
     public void sendMessage(String msg) {
@@ -124,17 +218,17 @@ public class PresidentPlayer {
         return socket;
     }
 
-    public void receiveCard(PresidentCard card){
+    public void receiveCard(PresidentCard card) {
 
         hand.add(card);
     }
 
     public boolean hasThreeOfClubs() {
 
-        for (PresidentCard card:hand) {
+        for (PresidentCard card : hand) {
 
             if (card.getValue().equals(PresidentCards.THREE)
-                    && card.getSuit().equals(PresidentSuit.CLUBS)){
+                    && card.getSuit().equals(PresidentSuit.CLUBS)) {
                 return true;
             }
 

@@ -163,32 +163,32 @@ public class SuecaGame implements Game, Runnable {
     }
 
     private void waivedEndGame() {
+
         //TODO: ends the game when player has waived and has been discovered
         //TODO: test Waive methods
-
     }
 
     private void setFirstPlayer(int roundWinner) {
 
-        //TODO: Bugfix reorganizing
-
         System.out.println("Winner is: " + players.get(roundWinner).getName());
         SuecaPlayer toRemove;
-
+/*
         System.out.print("BEFORE: ");
         for (SuecaPlayer each : players) {
             System.out.print(each.getName() + " ");
         }
-
+*/
         for (int i = 0; i < players.size(); i++) {
 
             if (i == roundWinner) {
+/*
                 System.out.println();
 
                 System.out.print("NEW order of players: ");
                 for (SuecaPlayer each : players) {
                     System.out.print(each.getName() + " ");
                 }
+  */
                 return;
             }
 
@@ -196,12 +196,6 @@ public class SuecaGame implements Game, Runnable {
             System.out.println("\nto Remove -> " + toRemove.getName());
             players.addLast(toRemove);
 
-        }
-        System.out.println();
-
-        System.out.print("NEW order of players: ");
-        for (SuecaPlayer each : players) {
-            System.out.print(each.getName() + " ");
         }
 
     }

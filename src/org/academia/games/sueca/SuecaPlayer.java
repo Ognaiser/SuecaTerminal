@@ -23,7 +23,7 @@ public class SuecaPlayer extends GameClient {
         super(client);
         out.println("Hello nigas");
     }
-
+//TODO: ORGANIZE HAND
 
     public void showHand() {
 
