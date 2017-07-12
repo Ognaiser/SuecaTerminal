@@ -22,8 +22,17 @@ public class ClientPOJO {
         return chips;
     }
 
-    public void setChips(int chips) {
-        this.chips = chips;
+    public void addChips(int chips){
+        this.chips+=chips;
+    }
+
+    public boolean removeChips(int chips){
+        if(chips> this.chips) {
+            return false;
+        }else{
+            this.chips -=chips;
+            return true;
+        }
     }
 
     public String getName() {

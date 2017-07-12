@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
-/**
- * Created by ognaiser on 11-07-2017.
- */
 public abstract class GameClientTest {
 
     public BufferedReader in;
@@ -26,7 +23,19 @@ public abstract class GameClientTest {
         }
     }
 
-    public void getBacktoChat(){
+    public int getChips() {
+        return client.getChips();
+    }
+
+    public void addChips(int chips) {
+        client.addChips(chips);
+    }
+
+    public boolean removeChips(int chips) {
+        return client.removeChips(chips);
+    }
+
+    public void getBacktoChat() {
         client.getBackToList();
     }
 }
