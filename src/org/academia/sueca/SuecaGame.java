@@ -28,7 +28,7 @@ public class SuecaGame implements Game, Runnable {
     public void start() {
         generateDeck();
         distributeHands();
-        askNames();
+        assignNames();
         playGame();
         showScore();
         playersBack();
@@ -81,7 +81,7 @@ public class SuecaGame implements Game, Runnable {
         return hand;
     }
 
-    private void askNames() {
+    private void assignNames() {
 
         for (SuecaClient player : players) {
 

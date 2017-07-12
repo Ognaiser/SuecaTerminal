@@ -34,6 +34,9 @@ public class SuecaClient extends GameClient {
         out.println();
     }
 
+    public void assingNick() {
+        this.name = super.getName();
+    }
 
     public Card play() {
 
