@@ -1,7 +1,5 @@
 package org.academia.sueca;
 
-import org.academia.server.GameClient;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,7 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
-public class SuecaClient implements GameClient {
+public class SuecaClient {
 
     //TODO:extend GameClientTest! (to see if its ok)
 

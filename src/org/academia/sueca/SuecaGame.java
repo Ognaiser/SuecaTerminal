@@ -6,9 +6,9 @@ import org.academia.server.Game;
 import java.util.LinkedList;
 
 
-public class SuecaGame implements Game {
+public class SuecaGame implements Game, Runnable {
 
-    //TODO: implments runnabel(to see if its ok)
+    //TODO: implements runnable(to see if its ok)
 
     private final int MAX_TURNS = 10;
     private final int MAX_PLAYERS = 4;
@@ -24,6 +24,11 @@ public class SuecaGame implements Game {
 
     }
 
+    @Override
+    public void run() {
+        start();
+        //TODO: do return to chat
+    }
 
     public void start() {
 
@@ -200,7 +205,7 @@ public class SuecaGame implements Game {
 
 
         }
-        System.out.println("Winner Card is \n " + winnerCard.getRepresentation());
+        System.out.println("Winner CardPresident is \n " + winnerCard.getRepresentation());
 
         return getIndex(turnCards, winnerCard);
     }
@@ -311,4 +316,6 @@ public class SuecaGame implements Game {
                 "\\ \\/___/ /    / / /____\\/ // / /_______\\/ / /_________\\/ / /_       __\\ \\_\\\n" +
                 " \\_____\\/     \\/_________/ \\/__________/\\/____________/\\_\\___\\     /____/_/\n");
     }
+
+
 }
