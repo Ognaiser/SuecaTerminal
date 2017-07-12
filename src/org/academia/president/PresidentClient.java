@@ -1,4 +1,7 @@
-package org.academia.sueca;
+package org.academia.president;
+
+import org.academia.sueca.Card;
+import org.academia.sueca.Suit;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,20 +10,20 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
-public class SuecaClient {
+public class PresidentClient {
 
     //TODO:extend GameClientTest! (to see if its ok)
 
     private List<Card> hand;
     private String name;
-    private int score;
+    private int position;
     private BufferedReader in;
     private PrintWriter out;
     private boolean cheated = false;
     private Socket socket;
     private boolean isCommand;
 
-    public SuecaClient(Socket socket) {
+    public PresidentClient(Socket socket) {
 
         this.socket = socket;
 
@@ -39,7 +42,7 @@ public class SuecaClient {
         for (int line = 0; line < 7; line++) {
             for (int i = 0; i < hand.size(); i++) {
                 out.print(hand.get(i).getHandRep().split(":")[line]);
-                out.print("  ");
+                out.print(" ");
             }
             out.println();
         }
@@ -50,27 +53,24 @@ public class SuecaClient {
         out.println();
     }
 
-
     public Card play() {
 
 
         showHand();
-        out.println("Please pick a card number and number of cards to play EXAMPLE(K 2) to play 2 kings:");
+        out.println("Please pick a card number:");
         int cardPlayed;
 
         try {
 
             String input = in.readLine();
-
             if (input.length() > 1) {
                 checkCommand(input);
             }
-
-            cardPlayed = Integer.parseInt(input);
+            cardPlayed = Integer.parseInt(in.readLine());
 
             while (cardPlayed < 1 || cardPlayed > hand.size()) {
 
-                out.println("That is not a valid card . \nPlease insert a number between 1 and " + (hand.size()));
+                out.println("That is not a valid card number. \nPlease insert a number between 1 and " + (hand.size()));
                 cardPlayed = Integer.parseInt(in.readLine());
 
             }

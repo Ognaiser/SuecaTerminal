@@ -1,8 +1,6 @@
 package org.academia.president;
 
 
-
-import org.academia.sueca.Card;
 import java.util.LinkedList;
 
 /**
@@ -44,6 +42,7 @@ public class PresidentGame implements Runnable {
             }
         }
 
+        // creating the 2 jokers
         deck.add(new CardPresident());
         deck.add(new CardPresident());
     }
@@ -61,13 +60,12 @@ public class PresidentGame implements Runnable {
     }
 
 
-
     private LinkedList<CardPresident> generateHand() {
 
         LinkedList<CardPresident> hand = new LinkedList<>();
         int randomCard;
 
-        for (int i = 0; i < ; i++) {
+        for (int i = 0; i <; i++) {
             randomCard = ((int) (Math.random() * deck.size()));
             hand.add(deck.remove(randomCard));
         }
@@ -78,6 +76,15 @@ public class PresidentGame implements Runnable {
 
 
 
+/*
+    CREATE TABLE reservations(
+            id INTEGER Primary Key,
+        boatId INTEGER ,
+        sailorId INTEGER ,
+        date DATE NOT NULL,
+        FOREIGN KEY (boatId) REFERENCES boats(id),
+        FOREIGN KEY (sailorId) REFERENCES sailors(id));
+*/
 
 
 }
