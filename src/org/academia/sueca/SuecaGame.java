@@ -19,9 +19,7 @@ public class SuecaGame implements Game {
 
 
     public SuecaGame(LinkedList<SuecaClient> players) {
-
         this.players = players;
-
     }
 
 
@@ -29,7 +27,6 @@ public class SuecaGame implements Game {
 
         generateDeck();
         distributeHands();
-
         askNames();
         playGame();
         showScore();

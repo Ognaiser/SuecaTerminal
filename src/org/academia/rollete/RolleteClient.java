@@ -1,11 +1,11 @@
 package org.academia.rollete;
 
 import org.academia.server.ClientPOJO;
-import org.academia.server.GameClientTest;
+import org.academia.server.GameClient;
 
 import java.io.IOException;
 
-public class RolleteClient extends GameClientTest {
+public class RolleteClient extends GameClient {
 
     private int play;
 

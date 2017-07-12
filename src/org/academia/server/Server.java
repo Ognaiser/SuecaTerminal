@@ -83,11 +83,13 @@ public class Server {
 
             try {
                 clients.add(new SuecaClient(ss.accept()));
+                System.out.println("CLient add");
             } catch (IOException e) {
                 System.err.println(e.getMessage());
                 System.exit(1);
             }
         }
+        System.out.println("ended");
 
         SuecaGame suecaGame = new SuecaGame(clients);
         suecaGame.start();
@@ -120,7 +122,6 @@ public class Server {
             try {
                 client = new ClientPOJO(this);
                 this.client.setSocket(socket);
-                this.client.setChips(500);
                 this.client.setAdmin(false);
                 this.out = new PrintWriter(socket.getOutputStream(), true);
                 this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
