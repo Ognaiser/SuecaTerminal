@@ -5,11 +5,7 @@ package org.academia.president;
 import org.academia.sueca.Card;
 import java.util.LinkedList;
 
-/**
- * Created by codecadet on 12/07/2017.
- */
 public class PresidentGame implements Runnable {
-
 
     private LinkedList<CardPresident> deck = new LinkedList<>();
     private LinkedList<PresidentClient> players;
@@ -74,10 +70,5 @@ public class PresidentGame implements Runnable {
 
         return hand;
     }
-
-
-
-
-
 
 }

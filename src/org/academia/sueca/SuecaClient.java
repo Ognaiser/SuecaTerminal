@@ -34,19 +34,8 @@ public class SuecaClient extends GameClient {
         out.println();
     }
 
-    public void askNick() {
-        out.println("Enter your nickname:");
-
-        try {
-
-            this.name = in.readLine();
-
-        } catch (IOException e) {
-
-            System.err.println(e.getMessage());
-            System.exit(1);
-
-        }
+    public void assingNick() {
+        this.name = super.getName();
     }
 
     public Card play() {
@@ -110,7 +99,7 @@ public class SuecaClient extends GameClient {
     }
 
     public void addScore(Card[] cards) {
-        //TODO: decide on where this logic should be
+
         for (int i = 0; i < cards.length; i++) {
             score += cards[i].getValue();
         }

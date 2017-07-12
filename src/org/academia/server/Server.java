@@ -1,8 +1,5 @@
 package org.academia.server;
 
-import org.academia.sueca.SuecaClient;
-import org.academia.sueca.SuecaGame;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,7 +7,6 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,8 +17,6 @@ public class Server {
     private ServerSocket ss;
     private List<ClientHandler> clientHandlers;
     private CommandManager commandManager;
-    //TODO: TO remove!
-    private LinkedList<SuecaClient> clients;
     private ExecutorService pool;
 
     public void init() {
@@ -31,9 +25,6 @@ public class Server {
             ss = new ServerSocket(PORT);
             clientHandlers = new ArrayList<>();
             commandManager = new CommandManager(clientHandlers);
-            System.out.println("Server started");
-            //TODO: to remove!
-            clients = new LinkedList<>();
         } catch (IOException e) {
             System.err.println("Error on the creation the server! " + e.getMessage());
             System.exit(1);
@@ -41,7 +32,7 @@ public class Server {
 
     }
 
-    public void start2() {
+    public void start() {
 
         pool = Executors.newFixedThreadPool(25);
 
@@ -52,7 +43,6 @@ public class Server {
             try {
 
                 ClientHandler clientHandler = new ClientHandler(ss.accept());
-                System.out.println("client connected!");
                 clientHandlers.add(clientHandler);
                 pool.submit(clientHandler);
 
@@ -69,30 +59,10 @@ public class Server {
         clientHandlers.remove(clientHandler);
     }
 
-    public void sendAll(String msg) {
+    public void sendAll(String msg, String name) {
         for (ClientHandler handler : clientHandlers) {
-            handler.send(handler.getClient().getName() + " said: "+msg);
+            handler.send(name + " said: "+ msg);
         }
-    }
-
-    //TODO: to remove
-    public void start() {
-
-
-        while (clients.size() < 4) {
-
-            try {
-                clients.add(new SuecaClient(ss.accept()));
-                System.out.println("CLient add");
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-                System.exit(1);
-            }
-        }
-        System.out.println("ended");
-
-        SuecaGame suecaGame = new SuecaGame(clients);
-        suecaGame.start();
     }
 
     public class ClientHandler implements Runnable {
@@ -101,21 +71,6 @@ public class Server {
         private boolean connected = true;
         private PrintWriter out;
         private BufferedReader in;
-
-        public ClientHandler(ClientPOJO client) {
-            try {
-
-                this.client = client;
-                this.out = new PrintWriter(client.getSocket().getOutputStream());
-                this.in = new BufferedReader(new InputStreamReader(client.getSocket().getInputStream()));
-
-                out.println("You are back to the chat!");
-
-            } catch (IOException e) {
-                System.err.println("Error: " +e.getMessage());
-                System.exit(1);
-            }
-        }
 
         public ClientHandler(Socket socket) {
 
@@ -177,7 +132,7 @@ public class Server {
                         continue;
                     }
 
-                    sendAll(msg);
+                    sendAll(msg, client.getName());
 
                 } catch (IOException e) {
                     disconnect();
