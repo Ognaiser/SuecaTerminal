@@ -1,9 +1,12 @@
 package org.academia.games.sueca;
 
 import org.academia.server.serverClient.ClientPOJO;
-import org.academia.server.serverClient.GameClient;
+import org.academia.games.GameClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SuecaPlayer extends GameClient {
@@ -90,7 +93,7 @@ public class SuecaPlayer extends GameClient {
     }
 
 
-    public boolean isCommand(){
+    public boolean isCommand() {
         return isCommand;
     }
 
@@ -130,6 +133,11 @@ public class SuecaPlayer extends GameClient {
         return hand;
     }
 
+    public void setHand(List<SuecaCard> hand) {
+        this.hand = hand;
+        sortHand();
+    }
+
     public void hasCheated() {
         cheated = true;
     }
@@ -138,11 +146,48 @@ public class SuecaPlayer extends GameClient {
         return cheated;
     }
 
-    public void setHand(List<SuecaCard> hand) {
-        this.hand = hand;
+    private void sortHand() {
+
+        if (this.hand instanceof LinkedList) {
+
+            LinkedList<SuecaCard> orderedHand = (LinkedList<SuecaCard>) this.hand;
+
+            for (int i = 0; i < SuecaSuit.values().length; i++) {
+                for (int j = 0; j < orderedHand.size(); j++) {
+                    if (orderedHand.get(j).getSuecaSuit() == SuecaSuit.values()[i]) {
+                        orderedHand.addFirst(orderedHand.remove(j));
+                    }
+                }
+            }
+
+            for (int i = 0; i < orderedHand.size(); i++) {
+                for (int j = i; j > 0; j--) {
+                    if (j!= 0 && orderedHand.get(j).getSuecaSuit() == orderedHand.get(j - 1).getSuecaSuit() && orderedHand.get(j).getCardNumber().compareTo(orderedHand.get(j - 1).getCardNumber()) > 0) {
+                        orderedHand.add(j - 1, orderedHand.remove(j));
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            this.hand = orderedHand;
+        } else {
+            System.out.println("Error while ordering hand!");
+        }
     }
 
     public String getAccusedPlayer() {
         return accusedPlayer;
     }
 }
+/**
+ * for (int i = 0; i < orderedHand.size(); i++) {
+ * for (int j = i; j > 0; j--) {
+ * if (j!=0 && orderedHand.get(j).getCardNumber().compareTo(orderedHand.get(j-1).getCardNumber()) > 0){
+ * orderedHand.add(j-1,orderedHand.remove(j));
+ * }else {
+ * break;
+ * }
+ * }
+ * }
+ */

@@ -1,7 +1,7 @@
 package org.academia.games.roulette;
 
 import org.academia.server.serverClient.ClientPOJO;
-import org.academia.server.serverClient.GameClient;
+import org.academia.games.GameClient;
 
 import java.io.IOException;
 

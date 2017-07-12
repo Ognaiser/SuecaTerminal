@@ -26,13 +26,15 @@ public class SuecaGame implements Game, Runnable {
     }
 
     public void start() {
+
         generateDeck();
         distributeHands();
+        System.out.println("done");
         assignNames();
+        System.out.println("1");
         playGame();
         showScore();
         returnToChat();
-
 
     }
 
@@ -97,6 +99,7 @@ public class SuecaGame implements Game, Runnable {
         int i = 0;
 
         greetPlayer();
+
 
         sendAll("Trump is: \r\n" + trump.getRepresentation() + "\n\r");
 

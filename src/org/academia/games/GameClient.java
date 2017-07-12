@@ -1,4 +1,6 @@
-package org.academia.server.serverClient;
+package org.academia.games;
+
+import org.academia.server.serverClient.ClientPOJO;
 
 import java.io.BufferedReader;
 import java.io.IOException;
