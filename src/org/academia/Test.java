@@ -1,6 +1,6 @@
 package org.academia;
 
-import org.academia.games.president.SuitPresident;
+import org.academia.games.president.PresidentSuit;
 
 /**
  * Created by codecadet on 12/07/2017.
@@ -8,6 +8,6 @@ import org.academia.games.president.SuitPresident;
 public class Test {
 
     public static void main(String[] args) {
-        System.out.println(SuitPresident.JOCKER.getSymbol());
+        System.out.println(PresidentSuit.JOCKER.getSymbol());
     }
 }

@@ -11,7 +11,7 @@ public class PresidentPlayer {
 
     //TODO:extend GameClientTest! (to see if its ok)
 
-    private List<CardPresident> hand;
+    private List<PresidentCard> hand;
     private String name;
     private int position;
     private BufferedReader in;
@@ -50,16 +50,17 @@ public class PresidentPlayer {
         out.println();
     }
 
-    public CardPresident play() {
+    public PresidentCard play() {
 
 
         showHand();
-        out.println("Please pick a card number:");
+        out.println("Please pick a card and number of cards:");
         int cardPlayed;
 
         try {
 
             String input = in.readLine();
+
             if (input.length() > 1) {
                 checkCommand(input);
             }
@@ -111,15 +112,34 @@ public class PresidentPlayer {
         return name;
     }
 
-    public List<CardPresident> getHand() {
+    public List<PresidentCard> getHand() {
         return hand;
     }
 
-    public void setHand(List<CardPresident> hand) {
+    public void setHand(List<PresidentCard> hand) {
         this.hand = hand;
     }
 
     public Socket getSocket() {
         return socket;
+    }
+
+    public void receiveCard(PresidentCard card){
+
+        hand.add(card);
+    }
+
+    public boolean hasThreeOfClubs() {
+
+        for (PresidentCard card:hand) {
+
+            if (card.getValue().equals(PresidentCards.THREE)
+                    && card.getSuit().equals(PresidentSuit.CLUBS)){
+                return true;
+            }
+
+        }
+
+        return false;
     }
 }

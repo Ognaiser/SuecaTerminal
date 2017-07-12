@@ -19,7 +19,7 @@ public enum PresidentCards {
 
 
     private String number;
-    private int value;
+
 
     PresidentCards(String number) {
         this.number = number;
@@ -29,7 +29,4 @@ public enum PresidentCards {
         return number;
     }
 
-    public int getValue() {
-        return value;
-    }
 }

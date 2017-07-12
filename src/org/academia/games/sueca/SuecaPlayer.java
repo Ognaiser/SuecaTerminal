@@ -38,7 +38,7 @@ public class SuecaPlayer extends GameClient {
         out.println();
     }
 
-    public void assaginNick() {
+    public void assignNick() {
         this.name = super.getName();
     }
 

@@ -5,8 +5,9 @@ import java.util.LinkedList;
 
 public class PresidentGame implements Runnable {
 
-    private LinkedList<CardPresident> deck = new LinkedList<>();
+    private LinkedList<PresidentCard> deck = new LinkedList<>();
     private LinkedList<PresidentPlayer> players;
+    private PresidentPlayer firstPlayer;
 
     @Override
     public void run() {
@@ -19,57 +20,71 @@ public class PresidentGame implements Runnable {
         generateDeck();
         distributeHands();
         getFirstPlayer();
-        //playGame();
+        playGame();
+    }
+
+    private void playGame() {
+
+        for (PresidentPlayer player :players) {
+
+            player.play();
+
+
+
+        }
+
+        firstPlayer.play(); //decide if want to play
+
+
     }
 
     private void getFirstPlayer() {
 
         for (int i = 1; i < players.size(); i++) {
 
-            players.get(i).showHand();
+            if (players.get(i).hasThreeOfClubs()) {
+                firstPlayer = players.get(i);
+                break;
+            }
         }
-
     }
-
 
     private void generateDeck() {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 13; j++) {
-                deck.add(new CardPresident(SuitPresident.values()[i], PresidentCards.values()[j]));
+                deck.add(new PresidentCard(PresidentSuit.values()[i], PresidentCards.values()[j]));
             }
         }
 
         // creating the 2 jokers
-        deck.add(new CardPresident());
-        deck.add(new CardPresident());
+        deck.add(new PresidentCard());
+        deck.add(new PresidentCard());
     }
 
     private void distributeHands() {
 
-        LinkedList<CardPresident> hand;
+        while (deckHasCards()) {
 
-        for (PresidentPlayer player : players) {
+            for (PresidentPlayer player : players) {
 
-            hand = generateHand();
-            player.setHand(hand);
+                giveRandomCard(player);
+            }
+
         }
 
     }
 
+    private boolean deckHasCards() {
+        return deck.size() != 0;
+    }
 
-    private LinkedList<CardPresident> generateHand() {
+    private void giveRandomCard(PresidentPlayer player) {
 
-        LinkedList<CardPresident> hand = new LinkedList<>();
         int randomCard;
-        //TODO: fix cycle
 
-        for (int i = 0; i <5; i++) {
-            randomCard = ((int) (Math.random() * deck.size()));
-            hand.add(deck.remove(randomCard));
-        }
-
-        return hand;
+        randomCard = ((int) (Math.random() * deck.size()));
+        player.receiveCard(deck.remove(randomCard));
     }
 
 

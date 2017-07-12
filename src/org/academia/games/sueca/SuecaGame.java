@@ -85,7 +85,7 @@ public class SuecaGame implements Game, Runnable {
     private void assignNames() {
 
         for (SuecaPlayer player : players) {
-            player.assaginNick();
+            player.assignNick();
         }
     }
 
@@ -221,7 +221,7 @@ public class SuecaGame implements Game, Runnable {
 
 
         }
-        System.out.println("Winner CardPresident is \n " + winnerSuecaCard.getRepresentation());
+        System.out.println("Winner PresidentCard is \n " + winnerSuecaCard.getRepresentation());
 
         return getIndex(turnSuecaCards, winnerSuecaCard);
     }
