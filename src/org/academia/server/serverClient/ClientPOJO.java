@@ -1,4 +1,6 @@
-package org.academia.server;
+package org.academia.server.serverClient;
+
+import org.academia.server.Server;
 
 import java.net.Socket;
 

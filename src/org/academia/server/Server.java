@@ -1,5 +1,8 @@
 package org.academia.server;
 
+import org.academia.server.serverClient.ClientPOJO;
+import org.academia.server.serverClient.CommandManager;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,6 +21,13 @@ public class Server {
     private List<ClientHandler> clientHandlers;
     private CommandManager commandManager;
     private ExecutorService pool;
+//TODO: FIX forced shutdown try to catch the force quit signal from terminal
+
+    public static void main(String[] args) throws IOException {
+        Server server = new Server();
+        server.init();
+        server.start();
+    }
 
     public void init() {
 

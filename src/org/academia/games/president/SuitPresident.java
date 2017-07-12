@@ -1,11 +1,11 @@
-package org.academia.president;
+package org.academia.games.president;
 
 public enum SuitPresident {
     SPADES("\u2660"),
     DIAMONDS("\u001B[31m"+"\u2666"+"\u001B[0m"),
     HEARTS("\u001B[31m" +"\u2764" +"\u001B[0m"),
     CLUBS("\u2663"),
-    JOCKER("\u1F0DF");
+    JOCKER("J");
 
     private String symbol;
 

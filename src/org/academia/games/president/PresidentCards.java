@@ -1,4 +1,4 @@
-package org.academia.president;
+package org.academia.games.president;
 
 public enum PresidentCards {
 

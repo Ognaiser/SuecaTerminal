@@ -1,4 +1,4 @@
-package org.academia.server;
+package org.academia.server.serverClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;

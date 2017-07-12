@@ -1,38 +1,26 @@
-package org.academia.president;
+package org.academia.games.sueca;
 
-import java.io.BufferedReader;
+import org.academia.server.serverClient.ClientPOJO;
+import org.academia.server.serverClient.GameClient;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.List;
 
-public class PresidentClient {
+public class SuecaClient extends GameClient {
 
-    //TODO:extend GameClientTest! (to see if its ok)
 
-    private List<CardPresident> hand;
+    private List<SuecaCard> hand;
     private String name;
-    private int position;
-    private BufferedReader in;
-    private PrintWriter out;
+    private int score;
     private boolean cheated = false;
-    private Socket socket;
     private boolean isCommand;
+    private String accusedPlayer;
 
-    public PresidentClient(Socket socket) {
-
-        this.socket = socket;
-
-        try {
-            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            this.out = new PrintWriter(socket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        out.println("Hello my niggas");
+    public SuecaClient(ClientPOJO client) {
+        super(client);
+        out.println("Hello nigas");
     }
+
 
     public void showHand() {
 
@@ -50,7 +38,11 @@ public class PresidentClient {
         out.println();
     }
 
-    public CardPresident play() {
+    public void assaginNick() {
+        this.name = super.getName();
+    }
+
+    public SuecaCard play() {
 
 
         showHand();
@@ -92,6 +84,7 @@ public class PresidentClient {
         if (words[0].equals("!waived")) {
             isCommand = true;
         }
+        accusedPlayer = words[1];
         //TODO MIGUEL verificar o nome no segundo elemento do array
 
     }
@@ -106,20 +99,50 @@ public class PresidentClient {
         out.println(msg);
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void addScore(SuecaCard[] suecaCards) {
+        //TODO: decide on where this logic should be
+        for (int i = 0; i < suecaCards.length; i++) {
+            score += suecaCards[i].getValue();
+        }
+
+    }
+
+    public boolean hasSuit(SuecaSuit suecaSuit) {
+
+        for (SuecaCard suecaCard : hand) {
+            if (suecaCard.getSuecaSuit().equals(suecaSuit)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public String getName() {
         return name;
     }
 
-    public List<CardPresident> getHand() {
+    public List<SuecaCard> getHand() {
         return hand;
     }
 
-    public void setHand(List<CardPresident> hand) {
+    public void hasCheated() {
+        cheated = true;
+    }
+
+    public boolean isACheater() {
+        return cheated;
+    }
+
+    public void setHand(List<SuecaCard> hand) {
         this.hand = hand;
     }
 
-    public Socket getSocket() {
-        return socket;
+    public String getAccusedPlayer() {
+        return accusedPlayer;
     }
 }

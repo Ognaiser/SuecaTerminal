@@ -1,16 +1,16 @@
-package org.academia.rollete;
+package org.academia.games.roulette;
 
-import org.academia.server.ClientPOJO;
-import org.academia.server.GameClient;
+import org.academia.server.serverClient.ClientPOJO;
+import org.academia.server.serverClient.GameClient;
 
 import java.io.IOException;
 
-public class RolleteClient extends GameClient {
+public class RouletteClient extends GameClient {
 
-    private RoletteColors play;
+    private RouletteColors play;
     private int bet;
 
-    public RolleteClient(ClientPOJO client) {
+    public RouletteClient(ClientPOJO client) {
         super(client);
     }
 
@@ -18,7 +18,7 @@ public class RolleteClient extends GameClient {
         out.println(msg);
     }
 
-    public RoletteColors getPlay() {
+    public RouletteColors getPlay() {
         return play;
     }
 
@@ -35,7 +35,7 @@ public class RolleteClient extends GameClient {
 
             out.println();
             out.println("Witch color do you want to bet?");
-            out.println(RoletteColors.RED + "\u25A8" + " " + RoletteColors.GREEN + "\u25A8 " + RoletteColors.BLACK + "\u25A8");
+            out.println(RouletteColors.RED + "\u25A8" + " " + RouletteColors.GREEN + "\u25A8 " + RouletteColors.BLACK + "\u25A8");
             out.println("1 2 3");
 
             try {
@@ -100,19 +100,23 @@ public class RolleteClient extends GameClient {
             return false;
         }
 
-        if (number != 1 || number != 2 || number != 3) {
+        if (number != 1 && number != 2 && number != 3) {
             return false;
         }
 
         switch (number) {
             case 1:
-                this.play = RoletteColors.RED;
+                this.play = RouletteColors.RED;
                 break;
             case 2:
-                this.play = RoletteColors.GREEN;
+                this.play = RouletteColors.GREEN;
                 break;
             case 3:
-                this.play = RoletteColors.BLACK;
+                this.play = RouletteColors.BLACK;
+                break;
+            default:
+                System.out.println("Deu merda");
+                System.exit(1);
                 break;
         }
 
@@ -131,15 +135,15 @@ public class RolleteClient extends GameClient {
             try {
                 option = in.readLine();
             } catch (IOException e) {
-                System.err.println("Error: "+ e.getMessage());
+                System.err.println("Error: " + e.getMessage());
                 System.exit(1);
             }
 
-            if (option.equals("y")){
+            if (option.equals("y")) {
                 return true;
             }
 
-            if (option.equals("n")){
+            if (option.equals("n")) {
                 return false;
             }
 

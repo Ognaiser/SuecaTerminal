@@ -1,6 +1,4 @@
-package org.academia.president;
-
-import org.academia.sueca.Suit;
+package org.academia.games.president;
 
 public class CardPresident {
 

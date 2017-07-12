@@ -1,4 +1,4 @@
-package org.academia.president;
+package org.academia.games.president;
 
 
 import java.util.LinkedList;
@@ -15,6 +15,7 @@ public class PresidentGame implements Runnable {
 
 
     public void start() {
+
         generateDeck();
         distributeHands();
         getFirstPlayer();
@@ -24,6 +25,7 @@ public class PresidentGame implements Runnable {
     private void getFirstPlayer() {
 
         for (int i = 1; i < players.size(); i++) {
+
             players.get(i).showHand();
         }
 

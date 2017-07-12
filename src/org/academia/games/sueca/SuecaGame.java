@@ -1,7 +1,7 @@
-package org.academia.sueca;
+package org.academia.games.sueca;
 
 
-import org.academia.server.Game;
+import org.academia.games.Game;
 
 import java.util.LinkedList;
 
@@ -11,9 +11,9 @@ public class SuecaGame implements Game, Runnable {
     private final int MAX_TURNS = 10;
     private final int MAX_PLAYERS = 4;
     private final int INITIAL_HANDSIZE = 10;
-    private LinkedList<Card> deck = new LinkedList<>();
+    private LinkedList<SuecaCard> deck = new LinkedList<>();
     private LinkedList<SuecaClient> players;
-    private Card trump;
+    private SuecaCard trump;
 
 
     public SuecaGame(LinkedList<SuecaClient> players) {
@@ -31,11 +31,12 @@ public class SuecaGame implements Game, Runnable {
         assignNames();
         playGame();
         showScore();
-        playersBack();
+        returnToChat();
+
 
     }
 
-    private void playersBack(){
+    private void returnToChat(){
         for (SuecaClient player : players) {
             player.getBacktoChat();
         }
@@ -45,14 +46,14 @@ public class SuecaGame implements Game, Runnable {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 10; j++) {
-                deck.add(new Card(Suit.values()[i], SuecaCards.values()[j]));
+                deck.add(new SuecaCard(SuecaSuit.values()[i], SuecaCards.values()[j]));
             }
         }
     }
 
     private void distributeHands() {
 
-        LinkedList<Card> hand;
+        LinkedList<SuecaCard> hand;
 
         for (SuecaClient player : players) {
 
@@ -68,9 +69,9 @@ public class SuecaGame implements Game, Runnable {
         trump = players.get(players.size() - 1).getHand().get(9);
     }
 
-    private LinkedList<Card> generateHand() {
+    private LinkedList<SuecaCard> generateHand() {
 
-        LinkedList<Card> hand = new LinkedList<>();
+        LinkedList<SuecaCard> hand = new LinkedList<>();
         int randomCard;
 
         for (int i = 0; i < INITIAL_HANDSIZE; i++) {
@@ -91,8 +92,8 @@ public class SuecaGame implements Game, Runnable {
     public void playGame() {
 
         int turn = 1;
-        Card[] turnCards = new Card[MAX_PLAYERS];
-        Card turnCard = null;
+        SuecaCard[] turnSuecaCards = new SuecaCard[MAX_PLAYERS];
+        SuecaCard turnSuecaCard = null;
         int i = 0;
 
         greetPlayer();
@@ -106,7 +107,7 @@ public class SuecaGame implements Game, Runnable {
 
             for (SuecaClient player : players) {
 
-                turnCard = player.play();
+                turnSuecaCard = player.play();
 
                 if (player.isCommand()) {
 
@@ -116,19 +117,19 @@ public class SuecaGame implements Game, Runnable {
                     }
                 }
 
-                if (!validCard(turnCard, turnCards[0], player)) {
+                if (!validCard(turnSuecaCard, turnSuecaCards[0], player)) {
                     player.hasCheated();
                     System.out.println("player " + player + " has cheated");
                 }
 
-                sendAll(player.getName() + " played: \n\r" + turnCard.getRepresentation());
+                sendAll(player.getName() + " played: \n\r" + turnSuecaCard.getRepresentation());
 
-                turnCards[i] = turnCard;
+                turnSuecaCards[i] = turnSuecaCard;
                 i++;
             }
 
-            int winner = getWinner(turnCards);
-            players.get(winner).addScore(turnCards);
+            int winner = getWinner(turnSuecaCards);
+            players.get(winner).addScore(turnSuecaCards);
             setFirstPlayer(winner);
 
             sendAll("______________________________" + turn + "__________________________________");
@@ -160,6 +161,7 @@ public class SuecaGame implements Game, Runnable {
 
     private void waivedEndGame() {
         //TODO: ends the game when player has waived and has been discovered
+        //TODO: test Waive methods
 
     }
 
@@ -209,27 +211,27 @@ public class SuecaGame implements Game, Runnable {
         }
     }
 
-    private int getWinner(Card[] turnCards) {
+    private int getWinner(SuecaCard[] turnSuecaCards) {
 
-        Card winnerCard = turnCards[0];
+        SuecaCard winnerSuecaCard = turnSuecaCards[0];
 
         for (int playerCard = 1; playerCard < MAX_PLAYERS; playerCard++) {
 
-            winnerCard = compareCards(winnerCard, turnCards[playerCard]);
+            winnerSuecaCard = compareCards(winnerSuecaCard, turnSuecaCards[playerCard]);
 
 
         }
-        System.out.println("Winner CardPresident is \n " + winnerCard.getRepresentation());
+        System.out.println("Winner CardPresident is \n " + winnerSuecaCard.getRepresentation());
 
-        return getIndex(turnCards, winnerCard);
+        return getIndex(turnSuecaCards, winnerSuecaCard);
     }
 
-    private int getIndex(Card[] turnCards, Card winnerCard) {
+    private int getIndex(SuecaCard[] turnSuecaCards, SuecaCard winnerSuecaCard) {
 
         int index = -1;
 
-        for (int i = 0; i < turnCards.length; i++) {
-            if (turnCards[i].equals(winnerCard)) {
+        for (int i = 0; i < turnSuecaCards.length; i++) {
+            if (turnSuecaCards[i].equals(winnerSuecaCard)) {
                 index = i;
             }
         }
@@ -237,7 +239,7 @@ public class SuecaGame implements Game, Runnable {
         return index;
     }
 
-    private Card compareCards(Card first, Card second) {
+    private SuecaCard compareCards(SuecaCard first, SuecaCard second) {
 
         if (sameSuit(first, second)) {
             return compareCardValue(first, second);
@@ -253,34 +255,34 @@ public class SuecaGame implements Game, Runnable {
     }
 
 
-    private boolean validCard(Card playedCard, Card firstCard, SuecaClient player) {
+    private boolean validCard(SuecaCard playedSuecaCard, SuecaCard firstSuecaCard, SuecaClient player) {
 
-        Suit turnSuit = firstCard.getSuit();
+        SuecaSuit turnSuecaSuit = firstSuecaCard.getSuecaSuit();
 
-        if (playedCard.getSuit().equals(turnSuit)) {
+        if (playedSuecaCard.getSuecaSuit().equals(turnSuecaSuit)) {
             return true;
         }
 
-        if (player.hasSuit(turnSuit)) {
+        if (player.hasSuit(turnSuecaSuit)) {
             return false;
         }
 
         return true;
     }
 
-    private Card compareCardValue(Card first, Card second) {
+    private SuecaCard compareCardValue(SuecaCard first, SuecaCard second) {
         return (first.getCardNumber().ordinal() < second.getCardNumber().ordinal()) ? first : second;
     }
 
-    private boolean sameSuit(Card first, Card second) {
+    private boolean sameSuit(SuecaCard first, SuecaCard second) {
 
-        return first.getSuit().equals(second.getSuit());
+        return first.getSuecaSuit().equals(second.getSuecaSuit());
     }
 
 
-    private boolean isTrump(Card first) {
+    private boolean isTrump(SuecaCard first) {
 
-        return first.getSuit().equals(trump.getSuit());
+        return first.getSuecaSuit().equals(trump.getSuecaSuit());
     }
 
 

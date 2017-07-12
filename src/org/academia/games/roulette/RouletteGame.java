@@ -1,11 +1,11 @@
-package org.academia.rollete;
+package org.academia.games.roulette;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RolleteGame implements Runnable {
+public class RouletteGame implements Runnable {
 
-    private List<RolleteClient> players = new ArrayList<>();
+    private List<RouletteClient> players = new ArrayList<>();
     private boolean isOver = false;
 
 
@@ -38,15 +38,15 @@ public class RolleteGame implements Runnable {
             showRound(number);
 
             if (number == 0) {
-                checkRound(RoletteColors.GREEN);
+                checkRound(RouletteColors.GREEN);
                 continue;
             }
 
             if (number % 2 == 0) {
-                checkRound(RoletteColors.BLACK);
+                checkRound(RouletteColors.BLACK);
                 continue;
             } else {
-                checkRound(RoletteColors.RED);
+                checkRound(RouletteColors.RED);
                 continue;
             }
 
@@ -57,23 +57,23 @@ public class RolleteGame implements Runnable {
 
     private void showRound(int number) {
 
-        for (RolleteClient client : players) {
+        for (RouletteClient client : players) {
             if (number == 0) {
-                client.sayToPlayer("The Rolette stopped at: " +RoletteColors.GREEN + number + RoletteColors.BLACK);
+                client.sayToPlayer("The Rolette stopped at: " + RouletteColors.GREEN + number + RouletteColors.BLACK);
                 continue;
-            }
+            }//TODO: manel corrige esta merda
             if (number % 2 == 0) {
                 client.sayToPlayer("The Rolette stopped at: " + number );
                 continue;
             } else {
-                client.sayToPlayer("The Rolette stopped at: " +RoletteColors.RED + number + RoletteColors.BLACK);
+                client.sayToPlayer("The Rolette stopped at: " + RouletteColors.RED + number + RouletteColors.BLACK);
                 continue;
             }
         }
     }
 
-    private void checkRound(RoletteColors color) {
-        for (RolleteClient player :
+    private void checkRound(RouletteColors color) {
+        for (RouletteClient player :
                 players) {
             if (player.getPlay() == color) {
                 switch (color){
@@ -95,16 +95,16 @@ public class RolleteGame implements Runnable {
     }
 
     private void askPlay() {
-        for (RolleteClient client : players) {
+        for (RouletteClient client : players) {
             client.askPlay();
         }
     }
 
     private void askOut() {
 
-        List<RolleteClient> toRemove = new ArrayList<>();
+        List<RouletteClient> toRemove = new ArrayList<>();
 
-        for (RolleteClient player : players) {
+        for (RouletteClient player : players) {
            if (player.askOut()){
                toRemove.add(player);
            }
@@ -113,21 +113,21 @@ public class RolleteGame implements Runnable {
         removePlayer(toRemove);
     }
 
-    public void removePlayer(List<RolleteClient> toRemove){
-        for (RolleteClient player :
+    public void removePlayer(List<RouletteClient> toRemove){
+        for (RouletteClient player :
                 toRemove) {
             players.remove(player);
             player.getBacktoChat();
         }
     }
 
-    public void addPlayer(RolleteClient client) {
+    public void addPlayer(RouletteClient client) {
         players.add(client);
         welcomeMsg(client);
         notifyAll();
     }
 
-    private void welcomeMsg(RolleteClient client) {
+    private void welcomeMsg(RouletteClient client) {
         client.sayToPlayer("");
         client.sayToPlayer("Welcome to Roulette!");
         client.sayToPlayer("");

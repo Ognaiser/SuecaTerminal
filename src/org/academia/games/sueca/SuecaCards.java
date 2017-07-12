@@ -1,4 +1,4 @@
-package org.academia.sueca;
+package org.academia.games.sueca;
 
 public enum SuecaCards {
     ACE("A", 11),

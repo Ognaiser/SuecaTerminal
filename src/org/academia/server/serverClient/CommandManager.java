@@ -1,4 +1,7 @@
-package org.academia.server;
+package org.academia.server.serverClient;
+
+import org.academia.games.GameHandler;
+import org.academia.server.Server;
 
 import java.util.List;
 
@@ -20,10 +23,12 @@ public class CommandManager {
             case "!play sueca":
                 clientHandler.disconnect();
                 clientHandler.delete();
-                gameHandler.addSueca(clientHandler);
+                gameHandler.addToSuecaQueue(clientHandler);
                 break;
             case "!play roulette":
-                gameHandler.addRollete(clientHandler);
+                clientHandler.delete();
+                clientHandler.disconnect();
+                gameHandler.startRoulette(clientHandler);
                 break;
             default:
                 defaultMsg(clientHandler);
@@ -32,10 +37,12 @@ public class CommandManager {
     }
 
     private void defaultMsg(Server.ClientHandler clientHandler) {
+
         clientHandler.send("Command not Found! type !help for help!");
     }
 
     private void list(Server.ClientHandler handler){
+
         handler.send("!help -> List all commands!");
         handler.send("!play sueca-> Play a game of sueca!");
     }

@@ -1,6 +1,6 @@
-package org.academia.sueca;
+package org.academia.games.sueca;
 
-public enum Suit {
+public enum SuecaSuit {
     SPADES("\u2660"),
     DIAMONDS("\u001B[31m"+"\u2666"+"\u001B[0m"),
     HEARTS("\u001B[31m" +"\u2764" +"\u001B[0m"),
@@ -8,7 +8,7 @@ public enum Suit {
 
     private String symbol;
 
-    Suit(String symbol) {
+    SuecaSuit(String symbol) {
         this.symbol = symbol;
     }
 
