@@ -21,6 +21,7 @@ public class SuecaClient implements GameClient {
     private boolean cheated = false;
     private Socket socket;
     private boolean isCommand;
+    private String accusedPlayer;
 
     public SuecaClient(Socket socket) {
 
@@ -109,6 +110,7 @@ public class SuecaClient implements GameClient {
         if (words[0].equals("!waived")) {
             isCommand = true;
         }
+        accusedPlayer = words[1];
         //TODO MIGUEL verificar o nome no segundo elemento do array
 
     }
@@ -168,5 +170,9 @@ public class SuecaClient implements GameClient {
 
     public Socket getSocket() {
         return socket;
+    }
+
+    public String getAccusedPlayer() {
+        return accusedPlayer;
     }
 }
