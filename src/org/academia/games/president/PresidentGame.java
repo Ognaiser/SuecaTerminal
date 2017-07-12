@@ -29,8 +29,6 @@ public class PresidentGame implements Runnable {
 
             player.play();
 
-
-
         }
 
         firstPlayer.play(); //decide if want to play
