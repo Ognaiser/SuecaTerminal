@@ -6,7 +6,7 @@ import java.util.LinkedList;
 public class PresidentGame implements Runnable {
 
     private LinkedList<CardPresident> deck = new LinkedList<>();
-    private LinkedList<PresidentClient> players;
+    private LinkedList<PresidentPlayer> players;
 
     @Override
     public void run() {
@@ -49,7 +49,7 @@ public class PresidentGame implements Runnable {
 
         LinkedList<CardPresident> hand;
 
-        for (PresidentClient player : players) {
+        for (PresidentPlayer player : players) {
 
             hand = generateHand();
             player.setHand(hand);

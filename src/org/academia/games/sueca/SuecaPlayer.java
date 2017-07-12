@@ -6,7 +6,7 @@ import org.academia.server.serverClient.GameClient;
 import java.io.IOException;
 import java.util.List;
 
-public class SuecaClient extends GameClient {
+public class SuecaPlayer extends GameClient {
 
 
     private List<SuecaCard> hand;
@@ -16,7 +16,7 @@ public class SuecaClient extends GameClient {
     private boolean isCommand;
     private String accusedPlayer;
 
-    public SuecaClient(ClientPOJO client) {
+    public SuecaPlayer(ClientPOJO client) {
         super(client);
         out.println("Hello nigas");
     }

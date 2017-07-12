@@ -12,11 +12,11 @@ public class SuecaGame implements Game, Runnable {
     private final int MAX_PLAYERS = 4;
     private final int INITIAL_HANDSIZE = 10;
     private LinkedList<SuecaCard> deck = new LinkedList<>();
-    private LinkedList<SuecaClient> players;
+    private LinkedList<SuecaPlayer> players;
     private SuecaCard trump;
 
 
-    public SuecaGame(LinkedList<SuecaClient> players) {
+    public SuecaGame(LinkedList<SuecaPlayer> players) {
         this.players = players;
     }
 
@@ -37,7 +37,7 @@ public class SuecaGame implements Game, Runnable {
     }
 
     private void returnToChat(){
-        for (SuecaClient player : players) {
+        for (SuecaPlayer player : players) {
             player.getBacktoChat();
         }
     }
@@ -55,7 +55,7 @@ public class SuecaGame implements Game, Runnable {
 
         LinkedList<SuecaCard> hand;
 
-        for (SuecaClient player : players) {
+        for (SuecaPlayer player : players) {
 
             hand = generateHand();
             player.setHand(hand);
@@ -84,7 +84,7 @@ public class SuecaGame implements Game, Runnable {
 
     private void assignNames() {
 
-        for (SuecaClient player : players) {
+        for (SuecaPlayer player : players) {
             player.assaginNick();
         }
     }
@@ -105,7 +105,7 @@ public class SuecaGame implements Game, Runnable {
         while (turn <= MAX_TURNS) {
             i = 0;
 
-            for (SuecaClient player : players) {
+            for (SuecaPlayer player : players) {
 
                 turnSuecaCard = player.play();
 
@@ -150,7 +150,7 @@ public class SuecaGame implements Game, Runnable {
 
     private boolean checkForCheater(String playerName) {
 
-        for (SuecaClient currentPlayer: players) {
+        for (SuecaPlayer currentPlayer: players) {
 
             if(currentPlayer.isACheater() && currentPlayer.getName().equals(playerName)){
                 return true;
@@ -170,10 +170,10 @@ public class SuecaGame implements Game, Runnable {
         //TODO: Bugfix reorganizing
 
         System.out.println("Winner is: " + players.get(roundWinner).getName());
-        SuecaClient toRemove;
+        SuecaPlayer toRemove;
 
         System.out.print("BEFORE: ");
-        for (SuecaClient each : players) {
+        for (SuecaPlayer each : players) {
             System.out.print(each.getName() + " ");
         }
 
@@ -183,7 +183,7 @@ public class SuecaGame implements Game, Runnable {
                 System.out.println();
 
                 System.out.print("NEW order of players: ");
-                for (SuecaClient each : players) {
+                for (SuecaPlayer each : players) {
                     System.out.print(each.getName() + " ");
                 }
                 return;
@@ -197,7 +197,7 @@ public class SuecaGame implements Game, Runnable {
         System.out.println();
 
         System.out.print("NEW order of players: ");
-        for (SuecaClient each : players) {
+        for (SuecaPlayer each : players) {
             System.out.print(each.getName() + " ");
         }
 
@@ -205,7 +205,7 @@ public class SuecaGame implements Game, Runnable {
 
     private void sendAll(String text) {
 
-        for (SuecaClient player : players) {
+        for (SuecaPlayer player : players) {
 
             player.sendMessage(text);
         }
@@ -255,7 +255,7 @@ public class SuecaGame implements Game, Runnable {
     }
 
 
-    private boolean validCard(SuecaCard playedSuecaCard, SuecaCard firstSuecaCard, SuecaClient player) {
+    private boolean validCard(SuecaCard playedSuecaCard, SuecaCard firstSuecaCard, SuecaPlayer player) {
 
         SuecaSuit turnSuecaSuit = firstSuecaCard.getSuecaSuit();
 

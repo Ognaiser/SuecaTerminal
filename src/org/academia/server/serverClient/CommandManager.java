@@ -1,6 +1,6 @@
 package org.academia.server.serverClient;
 
-import org.academia.games.GameHandler;
+import org.academia.games.ClientDispatcher;
 import org.academia.server.Server;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public class CommandManager {
 
     private List<Server.ClientHandler> clientHandlers ;
-    private GameHandler gameHandler = new GameHandler();
+    private ClientDispatcher clientDispatcher = new ClientDispatcher();
 
     public CommandManager(List<Server.ClientHandler> clientHandlers) {
         this.clientHandlers = clientHandlers;
@@ -23,12 +23,12 @@ public class CommandManager {
             case "!play sueca":
                 clientHandler.disconnect();
                 clientHandler.delete();
-                gameHandler.addToSuecaQueue(clientHandler);
+                clientDispatcher.addToSuecaQueue(clientHandler);
                 break;
             case "!play roulette":
                 clientHandler.delete();
                 clientHandler.disconnect();
-                gameHandler.startRoulette(clientHandler);
+                clientDispatcher.startRoulette(clientHandler);
                 break;
             default:
                 defaultMsg(clientHandler);

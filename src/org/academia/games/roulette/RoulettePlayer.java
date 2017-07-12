@@ -5,12 +5,12 @@ import org.academia.server.serverClient.GameClient;
 
 import java.io.IOException;
 
-public class RouletteClient extends GameClient {
+public class RoulettePlayer extends GameClient {
 
     private RouletteColors play;
     private int bet;
 
-    public RouletteClient(ClientPOJO client) {
+    public RoulettePlayer(ClientPOJO client) {
         super(client);
     }
 

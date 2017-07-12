@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
-public class PresidentClient {
+public class PresidentPlayer {
 
     //TODO:extend GameClientTest! (to see if its ok)
 
@@ -20,7 +20,7 @@ public class PresidentClient {
     private Socket socket;
     private boolean isCommand;
 
-    public PresidentClient(Socket socket) {
+    public PresidentPlayer(Socket socket) {
 
         this.socket = socket;
 

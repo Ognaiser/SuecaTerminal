@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RouletteGame implements Runnable {
 
-    private List<RouletteClient> players = new ArrayList<>();
+    private List<RoulettePlayer> players = new ArrayList<>();
     private boolean isOver = false;
 
 
@@ -57,7 +57,7 @@ public class RouletteGame implements Runnable {
 
     private void showRound(int number) {
 
-        for (RouletteClient client : players) {
+        for (RoulettePlayer client : players) {
             if (number == 0) {
                 client.sayToPlayer("The Rolette stopped at: " + RouletteColors.GREEN + number + RouletteColors.BLACK);
                 continue;
@@ -73,7 +73,7 @@ public class RouletteGame implements Runnable {
     }
 
     private void checkRound(RouletteColors color) {
-        for (RouletteClient player :
+        for (RoulettePlayer player :
                 players) {
             if (player.getPlay() == color) {
                 switch (color){
@@ -95,16 +95,16 @@ public class RouletteGame implements Runnable {
     }
 
     private void askPlay() {
-        for (RouletteClient client : players) {
+        for (RoulettePlayer client : players) {
             client.askPlay();
         }
     }
 
     private void askOut() {
 
-        List<RouletteClient> toRemove = new ArrayList<>();
+        List<RoulettePlayer> toRemove = new ArrayList<>();
 
-        for (RouletteClient player : players) {
+        for (RoulettePlayer player : players) {
            if (player.askOut()){
                toRemove.add(player);
            }
@@ -113,21 +113,21 @@ public class RouletteGame implements Runnable {
         removePlayer(toRemove);
     }
 
-    public void removePlayer(List<RouletteClient> toRemove){
-        for (RouletteClient player :
+    public void removePlayer(List<RoulettePlayer> toRemove){
+        for (RoulettePlayer player :
                 toRemove) {
             players.remove(player);
             player.getBacktoChat();
         }
     }
 
-    public void addPlayer(RouletteClient client) {
+    public void addPlayer(RoulettePlayer client) {
         players.add(client);
         welcomeMsg(client);
         notifyAll();
     }
 
-    private void welcomeMsg(RouletteClient client) {
+    private void welcomeMsg(RoulettePlayer client) {
         client.sayToPlayer("");
         client.sayToPlayer("Welcome to Roulette!");
         client.sayToPlayer("");
