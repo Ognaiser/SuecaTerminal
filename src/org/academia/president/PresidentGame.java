@@ -3,11 +3,7 @@ package org.academia.president;
 
 import java.util.LinkedList;
 
-/**
- * Created by codecadet on 12/07/2017.
- */
 public class PresidentGame implements Runnable {
-
 
     private LinkedList<CardPresident> deck = new LinkedList<>();
     private LinkedList<PresidentClient> players;
@@ -22,7 +18,7 @@ public class PresidentGame implements Runnable {
         generateDeck();
         distributeHands();
         getFirstPlayer();
-        playGame();
+        //playGame();
     }
 
     private void getFirstPlayer() {
@@ -64,27 +60,15 @@ public class PresidentGame implements Runnable {
 
         LinkedList<CardPresident> hand = new LinkedList<>();
         int randomCard;
+        //TODO: fix cycle
 
-        for (int i = 0; i <; i++) {
+        for (int i = 0; i <5; i++) {
             randomCard = ((int) (Math.random() * deck.size()));
             hand.add(deck.remove(randomCard));
         }
 
         return hand;
     }
-
-
-
-
-/*
-    CREATE TABLE reservations(
-            id INTEGER Primary Key,
-        boatId INTEGER ,
-        sailorId INTEGER ,
-        date DATE NOT NULL,
-        FOREIGN KEY (boatId) REFERENCES boats(id),
-        FOREIGN KEY (sailorId) REFERENCES sailors(id));
-*/
 
 
 }

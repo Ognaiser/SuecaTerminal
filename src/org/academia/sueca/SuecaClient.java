@@ -1,36 +1,20 @@
 package org.academia.sueca;
 
-import java.io.BufferedReader;
+import org.academia.server.ClientPOJO;
+import org.academia.server.GameClient;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.List;
 
-public class SuecaClient {
-
-    //TODO:extend GameClientTest! (to see if its ok)
+public class SuecaClient extends GameClient {
 
     private List<Card> hand;
     private String name;
     private int score;
-    private BufferedReader in;
-    private PrintWriter out;
     private boolean cheated = false;
-    private Socket socket;
     private boolean isCommand;
 
-    public SuecaClient(Socket socket) {
-
-        this.socket = socket;
-
-        try {
-            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            this.out = new PrintWriter(socket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public SuecaClient(ClientPOJO client) {
+        super(client);
         out.println("Hello my niggas");
     }
 
@@ -114,7 +98,7 @@ public class SuecaClient {
     }
 
     public void addScore(Card[] cards) {
-        //TODO: decide on where this logic should be
+
         for (int i = 0; i < cards.length; i++) {
             score += cards[i].getValue();
         }
@@ -152,7 +136,4 @@ public class SuecaClient {
         this.hand = hand;
     }
 
-    public Socket getSocket() {
-        return socket;
-    }
 }

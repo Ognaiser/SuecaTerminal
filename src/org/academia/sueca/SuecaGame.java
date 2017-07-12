@@ -8,8 +8,6 @@ import java.util.LinkedList;
 
 public class SuecaGame implements Game, Runnable {
 
-    //TODO: implements runnable(to see if its ok)
-
     private final int MAX_TURNS = 10;
     private final int MAX_PLAYERS = 4;
     private final int INITIAL_HANDSIZE = 10;
@@ -19,25 +17,28 @@ public class SuecaGame implements Game, Runnable {
 
 
     public SuecaGame(LinkedList<SuecaClient> players) {
-
         this.players = players;
-
     }
 
     @Override
     public void run() {
         start();
-        //TODO: do return to chat
     }
 
     public void start() {
-
         generateDeck();
         distributeHands();
-
         askNames();
         playGame();
         showScore();
+        playersBack();
+
+    }
+
+    private void playersBack(){
+        for (SuecaClient player : players) {
+            player.getBacktoChat();
+        }
     }
 
     private void generateDeck() {
@@ -84,7 +85,7 @@ public class SuecaGame implements Game, Runnable {
 
         for (SuecaClient player : players) {
 
-            player.askNick();
+            player.assingNick();
         }
     }
 
@@ -287,14 +288,6 @@ public class SuecaGame implements Game, Runnable {
     }
 
     private void greetPlayer() {
-        sendAll(" ___       __    _______    ___        ________   ________   _____ ______    _______      \n" +
-                "|\\  \\     |\\  \\ |\\  ___ \\  |\\  \\      |\\   ____\\ |\\   __  \\ |\\   _ \\  _   \\ |\\  ___ \\     \n" +
-                "\\ \\  \\    \\ \\  \\\\ \\   __/| \\ \\  \\     \\ \\  \\___| \\ \\  \\|\\  \\\\ \\  \\\\\\__\\ \\  \\\\ \\   __/|    \n" +
-                " \\ \\  \\  __\\ \\  \\\\ \\  \\_|/__\\ \\  \\     \\ \\  \\     \\ \\  \\\\\\  \\\\ \\  \\\\|__| \\  \\\\ \\  \\_|/__  \n" +
-                "  \\ \\  \\|\\__\\_\\  \\\\ \\  \\_|\\ \\\\ \\  \\____ \\ \\  \\____ \\ \\  \\\\\\  \\\\ \\  \\    \\ \\  \\\\ \\  \\_|\\ \\ \n" +
-                "   \\ \\____________\\\\ \\_______\\\\ \\_______\\\\ \\_______\\\\ \\_______\\\\ \\__\\    \\ \\__\\\\ \\_______\\\n" +
-                "    \\|____________| \\|_______| \\|_______| \\|_______| \\|_______| \\|__|     \\|__| \\|_______|\n");
-
         sendAll(" ___        _______   _________   ________           ________   ___        ________       ___    ___ \n" +
                 "|\\  \\      |\\  ___ \\ |\\___   ___\\|\\   ____\\         |\\   __  \\ |\\  \\      |\\   __  \\     |\\  \\  /  /|\n" +
                 "\\ \\  \\     \\ \\   __/|\\|___ \\  \\_|\\ \\  \\___|_        \\ \\  \\|\\  \\\\ \\  \\     \\ \\  \\|\\  \\    \\ \\  \\/  / /\n" +

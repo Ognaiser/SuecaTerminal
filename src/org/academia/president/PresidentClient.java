@@ -1,8 +1,5 @@
 package org.academia.president;
 
-import org.academia.sueca.Card;
-import org.academia.sueca.Suit;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +11,7 @@ public class PresidentClient {
 
     //TODO:extend GameClientTest! (to see if its ok)
 
-    private List<Card> hand;
+    private List<CardPresident> hand;
     private String name;
     private int position;
     private BufferedReader in;
@@ -53,7 +50,7 @@ public class PresidentClient {
         out.println();
     }
 
-    public Card play() {
+    public CardPresident play() {
 
 
         showHand();
@@ -109,46 +106,16 @@ public class PresidentClient {
         out.println(msg);
     }
 
-    public int getScore() {
-        return score;
-    }
-
-    public void addScore(Card[] cards) {
-        //TODO: decide on where this logic should be
-        for (int i = 0; i < cards.length; i++) {
-            score += cards[i].getValue();
-        }
-
-    }
-
-    public boolean hasSuit(Suit suit) {
-
-        for (Card card : hand) {
-            if (card.getSuit().equals(suit)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     public String getName() {
         return name;
     }
 
-    public List<Card> getHand() {
+    public List<CardPresident> getHand() {
         return hand;
     }
 
-    public void hasCheated() {
-        cheated = true;
-    }
-
-    public boolean isACheater() {
-        return cheated;
-    }
-
-    public void setHand(List<Card> hand) {
+    public void setHand(List<CardPresident> hand) {
         this.hand = hand;
     }
 
