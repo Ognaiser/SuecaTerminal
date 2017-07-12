@@ -3,16 +3,11 @@ package org.academia.sueca;
 import org.academia.server.ClientPOJO;
 import org.academia.server.GameClient;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.List;
 
 public class SuecaClient extends GameClient {
 
-    //TODO:extend GameClientTest! (to see if its ok)
 
     private List<Card> hand;
     private String name;
@@ -43,19 +38,8 @@ public class SuecaClient extends GameClient {
         out.println();
     }
 
-    public void askNick() {
-        out.println("Enter your nickname:");
-
-        try {
-
-            this.name = in.readLine();
-
-        } catch (IOException e) {
-
-            System.err.println(e.getMessage());
-            System.exit(1);
-
-        }
+    public void assaginNick() {
+        this.name = super.getName();
     }
 
     public Card play() {

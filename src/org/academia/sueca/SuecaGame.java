@@ -84,8 +84,7 @@ public class SuecaGame implements Game, Runnable {
     private void assignNames() {
 
         for (SuecaClient player : players) {
-
-            player.assingNick();
+            player.assaginNick();
         }
     }
 
