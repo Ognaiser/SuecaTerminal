@@ -40,6 +40,9 @@ public abstract class GameClient {
     }
 
     public void getBacktoChat() {
+        out.println("You are bak to the chat !");
         client.getBackToList();
     }
+
+
 }

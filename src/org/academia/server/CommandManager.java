@@ -22,6 +22,9 @@ public class CommandManager {
                 clientHandler.delete();
                 gameHandler.addSueca(clientHandler);
                 break;
+            case "!play roulette":
+                gameHandler.addRollete(clientHandler);
+                break;
             default:
                 defaultMsg(clientHandler);
                 break;
