@@ -45,13 +45,21 @@ public class PresidentGame implements Runnable {
             System.out.println("in main cycle");
             firstPlayer = players.getFirst();
 
-            LinkedList<PresidentCard> firstPlay = firstPlayer.play();
+            System.out.println("First player -> " + firstPlayer.getName());
+
+            LinkedList<PresidentCard> firstPlay = firstPlayer.firstPlay();
             PresidentCard cardValue = firstPlay.getFirst();
             int numberOfCards = firstPlay.size();
 
+            System.out.println("Number of cards played -> " + numberOfCards);
+
             for (int i = 1; i < players.size(); i++) {
 
-                players.get(i).play(cardValue, numberOfCards);
+                System.out.println("Player assisting -> " + players.get(i).getName());
+
+                players.get(i).assistPlay(cardValue, numberOfCards);
+
+                System.out.println("After calling assistPlay()");
 
                 if (players.get(i).getHand().size() == 0) {
 
@@ -106,19 +114,14 @@ public class PresidentGame implements Runnable {
 
     private boolean gameFinished(int playersInGame) {
 
-        if (playersInGame == 1) {
-            return true;
-        }
-        return false;
+        return playersInGame == 1;
     }
 
     private void getFirstPlayer() {
-        System.out.println("trying to get the first player");
         for (int i = 1; i < players.size(); i++) {
 
             if (players.get(i).hasThreeOfClubs()) {
                 firstPlayer = players.get(i);
-                System.out.println("i got the first player " + firstPlayer.getName());
                 break;
             }
         }
