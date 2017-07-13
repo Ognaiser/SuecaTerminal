@@ -129,7 +129,7 @@ public class PresidentPlayer extends GameClient {
 
             return false;
         }
-
+        System.out.println("play is valid");
         return true;
 
     }
@@ -152,7 +152,6 @@ public class PresidentPlayer extends GameClient {
         return false;
     }
 
-
     private LinkedList<PresidentCard> getPlay() {
 
         out.println("Please pick a card and number of cards:");
@@ -171,6 +170,8 @@ public class PresidentPlayer extends GameClient {
 
             symbol = input.split(" ")[0];
             numberOfCards = input.split(" ")[1];
+
+            System.out.println("validating play");
 
             if (!isInputValid(symbol, numberOfCards)) {
                 numberOfCards = "0";
@@ -211,6 +212,7 @@ public class PresidentPlayer extends GameClient {
 
             if (card.getValue().getValue().equals(symbol) &&
                     counter <= Integer.parseInt(numberOfCards)) {
+                System.out.println("trying to remove "+ symbol);
 
                 cardsPlayed.add(hand.remove(iterator));
                 counter++;
@@ -238,7 +240,7 @@ public class PresidentPlayer extends GameClient {
             return false;
         }
 
-
+        System.out.println("input is valid");
         return true;
 
     }

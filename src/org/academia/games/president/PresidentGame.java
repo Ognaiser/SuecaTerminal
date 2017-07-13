@@ -41,7 +41,8 @@ public class PresidentGame implements Runnable {
         showHands();
 
         while (!gameFinished(playersInGame)) {
-            System.out.println("in main cycle-------------------------");
+
+            System.out.println("in main cycle");
             firstPlayer = players.getFirst();
 
             LinkedList<PresidentCard> firstPlay = firstPlayer.play();
@@ -126,7 +127,7 @@ public class PresidentGame implements Runnable {
     private void generateDeck() {
 
         for (int i = 0; i < 4; i++) {
-            for (int j = 1; j < 14; j++) { //TODO: check if its creating jokers
+            for (int j = 1; j < 14; j++) {
                 deck.add(new PresidentCard(PresidentSuit.values()[i], PresidentCards.values()[j]));
             }
         }
@@ -137,20 +138,14 @@ public class PresidentGame implements Runnable {
     }
 
     private void distributeHands() {
-        int i = 0;
 
         while (deckHasCards()) {
 
             for (PresidentPlayer player : players) {
-                i++;
+
                 giveRandomCard(player);
-                System.out.println("gave a card " + i);
             }
-
-            System.out.println(deck.size());
         }
-
-        System.out.println("out of while");
     }
 
     private boolean deckHasCards() {
