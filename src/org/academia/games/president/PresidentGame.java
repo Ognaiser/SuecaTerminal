@@ -8,18 +8,20 @@ public class PresidentGame implements Runnable {
     private LinkedList<PresidentCard> deck = new LinkedList<>();
     private LinkedList<PresidentPlayer> players;
     private PresidentPlayer firstPlayer;
-
+    private int playersInGame;
 
     public PresidentGame(LinkedList<PresidentPlayer> players) {
         this.players = players;
+        playersInGame = players.size();
     }
+
     @Override
     public void run() {
 
         start();
     }
 
-    public void start() {
+    private void start() {
 
         generateDeck();
         distributeHands();
@@ -29,7 +31,9 @@ public class PresidentGame implements Runnable {
 
     private void playGame() {
 
-        while (!gameFinished()) {
+        int playersInGame = players.size();
+
+        while (!gameFinished(playersInGame)) {
 
             firstPlayer = players.getFirst();
 
@@ -39,14 +43,59 @@ public class PresidentGame implements Runnable {
 
             for (int i = 1; i < players.size(); i++) {
 
-                players.get(i).play(cardValue,numberOfCards);
+                players.get(i).play(cardValue, numberOfCards);
+
+                if (players.get(i).getHand().size() == 0) {
+
+                    showResult(players.get(i));
+
+                    playersInGame--;
+                }
+
             }
 
         }
 
     }
 
-    private boolean gameFinished() {
+    private void showResult(PresidentPlayer player) {
+
+        if (playersInGame == players.size()) {
+
+            player.sendMessage("Congrats you are president!!!!!!!!!!");
+            return;
+        }
+
+        if (playersInGame == players.size() - 1) {
+
+            player.sendMessage("Congrats you are Vice-president!!");
+            return;
+        }
+
+        if (playersInGame == 2) {
+
+            player.sendMessage("Sorry but you are the Vice-Asshole");
+            return;
+        }
+
+        if (playersInGame == 1) {
+
+            player.sendMessage("Really Sorry but you are . . . the Asshole");
+            return;
+        }
+
+        player.sendMessage("You in a neutral position on the political landscape");
+        playersInGame--;
+    }
+
+    private boolean gameFinished(int playersInGame) {
+
+        if (playersInGame == 1) {
+
+            return true;
+        }
+
+
         return false;
     }
 

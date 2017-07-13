@@ -350,4 +350,7 @@ public class PresidentPlayer extends GameClient {
     }
 
 
+    public List<PresidentCard> getHand() {
+        return hand;
+    }
 }
