@@ -21,9 +21,7 @@ public class SuecaPlayer extends GameClient {
 
     public SuecaPlayer(ClientPOJO client) {
         super(client);
-        out.println("Hello nigas");
     }
-//TODO: ORGANIZE HAND
 
     public void showHand() {
 
@@ -38,6 +36,7 @@ public class SuecaPlayer extends GameClient {
         for (int i = 1; i <= hand.size(); i++) {
             out.print("    " + i + "     ");
         }
+        out.println("Your Hand is ^");
         out.println();
     }
 
@@ -45,6 +44,8 @@ public class SuecaPlayer extends GameClient {
         this.name = super.getName();
     }
 
+
+    //TODO:REFACTOR PLAY !
     public SuecaCard play() {
 
 
