@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class RoulettePlayer extends GameClient {
 
-    private RouletteColors play;
+    private RouletteOptions play;
     private int bet;
 
     public RoulettePlayer(ClientPOJO client) {
@@ -18,7 +18,7 @@ public class RoulettePlayer extends GameClient {
         out.println(msg);
     }
 
-    public RouletteColors getPlay() {
+    public RouletteOptions getPlay() {
         return play;
     }
 
@@ -30,20 +30,24 @@ public class RoulettePlayer extends GameClient {
 
         boolean validPlay = false;
         boolean validAmount = false;
-
+        String bet = null;
         while (!validPlay) {
 
             out.println();
-            out.println("Witch color do you want to bet?");
-            out.println(RouletteColors.RED + "\u25A8" + " " + RouletteColors.GREEN + "\u25A8 " + RouletteColors.BLACK + "\u25A8");
-            out.println("1 2 3");
+            out.println("Please chose your bet from the following options:");
+            out.println(" Number 0  |  Number [1-36]  |  BLACK  |  RED  |  ODD  |  EVEN  |  UP [1-18] |  DOWN [19-36] | 1st Dozen [1-12] |  2nd Dozen [13-24] | 3rd Dozen [25-36]");
+            out.println("    0              1              2        3       4       5          6              7                 8                   9                  10    ");
 
             try {
-                validPlay = validatePlay(in.readLine());
+                bet = in.readLine();
             } catch (IOException e) {
                 System.err.println("Error: " + e.getMessage());
                 System.exit(1);
             }
+
+
+            validPlay = validatePlay(bet);
+
 
             if (!validPlay) {
                 out.println("Invalid Play! Please type again!");
@@ -106,16 +110,16 @@ public class RoulettePlayer extends GameClient {
 
         switch (number) {
             case 1:
-                this.play = RouletteColors.RED;
+                this.play = RouletteOptions.;
                 break;
             case 2:
-                this.play = RouletteColors.GREEN;
+                this.play = RouletteOptions.;
                 break;
             case 3:
-                this.play = RouletteColors.BLACK;
+                this.play = RouletteOptions.;
                 break;
             default:
-                System.out.println("Deu merda");
+                System.out.println("Something went wrong");
                 System.exit(1);
                 break;
         }
@@ -126,8 +130,7 @@ public class RoulettePlayer extends GameClient {
     public boolean askOut() {
 
         String option = null;
-
-
+        
         while (true) {
 
             out.println("Do you want to continue? (y/n)");

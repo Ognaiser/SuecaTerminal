@@ -16,7 +16,7 @@ public class RouletteGame implements Runnable {
 
     private void start() {
 
-        int number;
+        RouletteOptions number;
 
 
         while (true) {
@@ -33,7 +33,7 @@ public class RouletteGame implements Runnable {
 
             askPlay();
 
-            number = (int) (Math.random() * 36);
+            number = (RouletteOptions) (Math.random() * 36 + 1);
 
             showRound(number);
 
@@ -50,7 +50,6 @@ public class RouletteGame implements Runnable {
                 continue;
             }
 
-
         }
 
     }
@@ -59,36 +58,37 @@ public class RouletteGame implements Runnable {
 
         for (RoulettePlayer client : players) {
             if (number == 0) {
-                client.sayToPlayer("The Rolette stopped at: " + RouletteColors.GREEN + number + RouletteColors.BLACK);
+                client.sayToPlayer("The Roulette stopped at: " + number + RouletteColors.BLACK);
                 continue;
-            }//TODO: manel corrige esta merda
+            }
             if (number % 2 == 0) {
-                client.sayToPlayer("The Rolette stopped at: " + number );
+                client.sayToPlayer("The Roulette stopped at: " + number);
                 continue;
             } else {
-                client.sayToPlayer("The Rolette stopped at: " + RouletteColors.RED + number + RouletteColors.BLACK);
+                client.sayToPlayer("The Roulette stopped at: " + RouletteColors.RED + number + RouletteColors.BLACK);
                 continue;
             }
         }
     }
 
-    private void checkRound(RouletteColors color) {
+    private void checkRound(RouletteOptions number) {
         for (RoulettePlayer player :
                 players) {
-            if (player.getPlay() == color) {
-                switch (color){
-                    case RED:
-                        player.addChips(player.getBet() * 2);
+            if (player.getPlay() == number) {
+                switch (number) {
+                    case ZERO:
+                        player.addChips(player.getBet() * 36);
                         break;
-                    case BLACK:
-                        player.addChips(player.getBet()* 2 );
+                    case ONE:
+                        player.addChips(player.getBet() * 36);
                         break;
-                    case GREEN:
-                        player.addChips(player.getBet() * 7);
+                    case TWO:
+                        player.addChips(player.getBet() * 36);
                         break;
+                    //TODO: ver getters do rouletteOptions para o switch
                 }
                 player.sayToPlayer("You won! Your chips are: " + player.getChips());
-            }else {
+            } else {
                 player.sayToPlayer("You lose!");
             }
         }
@@ -105,15 +105,15 @@ public class RouletteGame implements Runnable {
         List<RoulettePlayer> toRemove = new ArrayList<>();
 
         for (RoulettePlayer player : players) {
-           if (player.askOut()){
-               toRemove.add(player);
-           }
+            if (player.askOut()) {
+                toRemove.add(player);
+            }
         }
 
         removePlayer(toRemove);
     }
 
-    public void removePlayer(List<RoulettePlayer> toRemove){
+    public void removePlayer(List<RoulettePlayer> toRemove) {
         for (RoulettePlayer player :
                 toRemove) {
             players.remove(player);
@@ -128,8 +128,6 @@ public class RouletteGame implements Runnable {
     }
 
     private void welcomeMsg(RoulettePlayer client) {
-        client.sayToPlayer("");
-        client.sayToPlayer("Welcome to Roulette!");
-        client.sayToPlayer("");
+        client.sayToPlayer("\nWelcome to the Roulette!\n");
     }
 }
