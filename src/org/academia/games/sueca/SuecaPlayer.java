@@ -17,6 +17,7 @@ public class SuecaPlayer extends GameClient {
     private int score;
     private boolean cheated = false;
     private boolean isCommand = false;
+    private boolean hasAccused = false;
     private String accusedPlayer;
 
     public SuecaPlayer(ClientPOJO client) {
@@ -44,25 +45,35 @@ public class SuecaPlayer extends GameClient {
         this.name = super.getName();
     }
 
-
-    //TODO:REFACTOR PLAY !
+    public void accused() {
+        this.hasAccused = true;
+    }
 
     public SuecaCard play() {
 
 
         showHand();
         out.println("Please pick a card number:");
-        int cardPlayed;
+        int cardPlayed = 0;
 
         try {
 
             String input = in.readLine();
 
-            if (input.length() > 2) {
+            if (!hasAccused && input.length() > 2) {
                 checkCommand(input);
+                return null;
             }
 
-            cardPlayed = Integer.parseInt(input);
+            boolean test = false;
+            while (!test) {
+                try {
+                    cardPlayed = Integer.parseInt(input);
+                    test = true;
+                } catch (NumberFormatException nfe) {
+                    out.println("That is not a valid card number. \nPlease insert a number between 1 and " + (hand.size()));
+                }
+            }
 
 
             while (cardPlayed < 1 || cardPlayed > hand.size()) {
@@ -93,7 +104,6 @@ public class SuecaPlayer extends GameClient {
             isCommand = true;
         }
         accusedPlayer = words[1];
-        //TODO MIGUEL verificar o nome no segundo elemento do array
 
     }
 
@@ -112,7 +122,6 @@ public class SuecaPlayer extends GameClient {
     }
 
     public void addScore(SuecaCard[] suecaCards) {
-        //TODO: decide on where this logic should be
         for (int i = 0; i < suecaCards.length; i++) {
             score += suecaCards[i].getValue();
         }
@@ -185,16 +194,3 @@ public class SuecaPlayer extends GameClient {
         return accusedPlayer;
     }
 }
-
-
-/**
- * for (int i = 0; i < orderedHand.size(); i++) {
- * for (int j = i; j > 0; j--) {
- * if (j!=0 && orderedHand.get(j).getCardNumber().compareTo(orderedHand.get(j-1).getCardNumber()) > 0){
- * orderedHand.add(j-1,orderedHand.remove(j));
- * }else {
- * break;
- * }
- * }
- * }
- */
