@@ -96,7 +96,7 @@ public class SuecaGame implements Game, Runnable {
         int turn = 1;
         SuecaCard[] turnSuecaCards = new SuecaCard[MAX_PLAYERS];
         SuecaCard turnSuecaCard = null;
-        int i = 0;
+        int i;
 
         greetPlayer();
 
@@ -287,7 +287,6 @@ public class SuecaGame implements Game, Runnable {
 
         int team1 = players.get(0).getScore() + players.get(2).getScore();
         int team2 = players.get(1).getScore() + players.get(3).getScore();
-
 
         String scoreText = "FINAL SCORE:\n" +
                 "TEAM 1 - " + players.get(0).getName() + " and " + players.get(2).getName() + ":\n" +

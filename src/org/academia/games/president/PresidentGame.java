@@ -25,15 +25,29 @@ public class PresidentGame implements Runnable {
 
     private void playGame() {
 
-        for (PresidentPlayer player :players) {
+        while (!gameFinished()) {
 
-            player.play();
+            firstPlayer = players.getFirst();
+
+            LinkedList<PresidentCard> firstPlay = firstPlayer.play();
+
+            PresidentCard cardValue = firstPlay.getFirst();
+            int numberOfCards = firstPlay.size();
+
+            for (int i = 1; i < players.size(); i++) {
+
+                players.get(i).play(cardValue,numberOfCards);
+            }
+
+
+
 
         }
 
-        firstPlayer.play(); //decide if want to play
+    }
 
-
+    private boolean gameFinished() {
+        return false;
     }
 
     private void getFirstPlayer() {
