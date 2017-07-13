@@ -18,23 +18,30 @@ public class PresidentGame implements Runnable {
     @Override
     public void run() {
 
+        System.out.println("starting President Game");
         start();
     }
 
     private void start() {
 
         generateDeck();
+        System.out.println("generated deck");
         distributeHands();
+        System.out.println("distributed deck");
         getFirstPlayer();
+        System.out.println("got the first player");
         playGame();
+        System.out.println("President ended");
+        returnToChat();
     }
 
     private void playGame() {
 
         int playersInGame = players.size();
+        showHands();
 
         while (!gameFinished(playersInGame)) {
-
+            System.out.println("in main cycle-------------------------");
             firstPlayer = players.getFirst();
 
             LinkedList<PresidentCard> firstPlay = firstPlayer.play();
@@ -54,6 +61,14 @@ public class PresidentGame implements Runnable {
 
             }
 
+        }
+
+    }
+
+    private void showHands() {
+
+        for (int i = 1; i < players.size(); i++) {
+            players.get(i).showHand();
         }
 
     }
@@ -91,20 +106,18 @@ public class PresidentGame implements Runnable {
     private boolean gameFinished(int playersInGame) {
 
         if (playersInGame == 1) {
-
             return true;
         }
-
-
         return false;
     }
 
     private void getFirstPlayer() {
-
+        System.out.println("trying to get the first player");
         for (int i = 1; i < players.size(); i++) {
 
             if (players.get(i).hasThreeOfClubs()) {
                 firstPlayer = players.get(i);
+                System.out.println("i got the first player " + firstPlayer.getName());
                 break;
             }
         }
@@ -113,7 +126,7 @@ public class PresidentGame implements Runnable {
     private void generateDeck() {
 
         for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 13; j++) {
+            for (int j = 1; j < 14; j++) { //TODO: check if its creating jokers
                 deck.add(new PresidentCard(PresidentSuit.values()[i], PresidentCards.values()[j]));
             }
         }
@@ -124,16 +137,20 @@ public class PresidentGame implements Runnable {
     }
 
     private void distributeHands() {
+        int i = 0;
 
         while (deckHasCards()) {
 
             for (PresidentPlayer player : players) {
-
+                i++;
                 giveRandomCard(player);
+                System.out.println("gave a card " + i);
             }
 
+            System.out.println(deck.size());
         }
 
+        System.out.println("out of while");
     }
 
     private boolean deckHasCards() {
@@ -142,11 +159,19 @@ public class PresidentGame implements Runnable {
 
     private void giveRandomCard(PresidentPlayer player) {
 
+        if (deck.size()==0){
+            return;
+        }
         int randomCard;
 
         randomCard = ((int) (Math.random() * deck.size()));
+
         player.receiveCard(deck.remove(randomCard));
     }
 
-
+    private void returnToChat() {
+        for (PresidentPlayer player : players) {
+            player.getBacktoChat();
+        }
+    }
 }

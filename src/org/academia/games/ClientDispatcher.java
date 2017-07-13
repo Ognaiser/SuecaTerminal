@@ -44,8 +44,8 @@ public class ClientDispatcher {
 
         presidentPlayerList.getLast().sendMessage("Waiting !!!!");
 
-        if (presidentPlayerList.size() == 4){
-
+        if (presidentPlayerList.size() == 3){
+            System.out.println("enough players");
             PresidentGame game = new PresidentGame(presidentPlayerList);
             pool.submit(game);
             suecaPlayerList = new LinkedList<>();

@@ -1,14 +1,9 @@
 package org.academia.games.president;
 
 import org.academia.games.GameClient;
-import org.academia.games.sueca.SuecaCard;
 import org.academia.server.serverClient.ClientPOJO;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,7 +20,9 @@ public class PresidentPlayer extends GameClient {
 
         super(client);
         hand = new LinkedList<>();
-        name = getName();
+        name = client.getName();
+
+        out.println("In President Game");
     }
 
 
@@ -212,7 +209,7 @@ public class PresidentPlayer extends GameClient {
 
         for (PresidentCard card : hand) {
 
-            if (card.getValue().getNumber().equals(symbol) &&
+            if (card.getValue().getValue().equals(symbol) &&
                     counter <= Integer.parseInt(numberOfCards)) {
 
                 cardsPlayed.add(hand.remove(iterator));
@@ -252,7 +249,7 @@ public class PresidentPlayer extends GameClient {
 
         for (PresidentCard card : hand) {
 
-            if (card.getValue().getNumber().equals(symbol)) {
+            if (card.getValue().getValue().equals(symbol)) {
 
                 counter++;
             }
@@ -278,7 +275,7 @@ public class PresidentPlayer extends GameClient {
 
         for (int i = 0; i < PresidentCards.values().length; i++) {
 
-            if (PresidentCards.values()[i].getNumber().equals(value)) {
+            if (PresidentCards.values()[i].getValue().equals(value)) {
                 return true;
             }
         }

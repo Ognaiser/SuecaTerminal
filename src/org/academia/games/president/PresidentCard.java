@@ -26,27 +26,27 @@ public class PresidentCard {
 
     public String getHandRep(){
         return  "┌───────┐"+":"+
-                "│"+ value.getNumber()+ suit.getSymbol()+"     │:"+
+                "│"+ value.getValue()+ suit.getSymbol()+"     │:"+
                 "│       │" +":"+
                 "│   "+ suit.getSymbol()+"   │" +":"+
                 "│       │" +":"+
-                "│     "+ suit.getSymbol()+ value.getNumber()+"│" +":"+
+                "│     "+ suit.getSymbol()+ value.getValue()+"│" +":"+
                 "└───────┘";
 
     }
 
     public String getRepresentation(){
         return  "┌───────┐" +"\r\n"+
-                "│"+ value.getNumber()+ suit.getSymbol()+"     │" +"\r\n"+
+                "│"+ value.getValue()+ suit.getSymbol()+"     │" +"\r\n"+
                 "│       │" +"\r\n"+
                 "│   "+ suit.getSymbol()+"   │" +"\r\n"+
                 "│       │" +"\r\n"+
-                "│     "+ suit.getSymbol()+ value.getNumber()+"│" +"\r\n"+
+                "│     "+ suit.getSymbol()+ value.getValue()+"│" +"\r\n"+
                 "└───────┘";
     }
 
     @Override
     public String toString() {
-        return suit.getSymbol() + value.getNumber();
+        return suit.getSymbol() + value.getValue();
     }
 }
