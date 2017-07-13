@@ -1,5 +1,9 @@
 package org.academia.games.president;
 
+import org.academia.games.GameClient;
+import org.academia.games.sueca.SuecaCard;
+import org.academia.server.serverClient.ClientPOJO;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,32 +12,22 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PresidentPlayer {
+public class PresidentPlayer extends GameClient {
 
     //TODO:extend GameClientTest! (to see if its ok)
 
     private List<PresidentCard> hand;
     private String name;
-    private int position;
-    private BufferedReader in;
-    private PrintWriter out;
-    private boolean cheated = false;
-    private Socket socket;
+    private boolean passed = false;
     private boolean validPlay;
 
-    public PresidentPlayer(Socket socket) {
+    public PresidentPlayer(ClientPOJO client) {
 
-        this.socket = socket;
-
-        try {
-            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            this.out = new PrintWriter(socket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        out.println("Hello my niggas");
+        super(client);
+        hand = new LinkedList<>();
+        name = getName();
     }
+
 
     public void showHand() {
 
@@ -65,6 +59,88 @@ public class PresidentPlayer {
 
     }
 
+    public LinkedList<PresidentCard> play(PresidentCard cardValue, int numberOfCards) {
+
+        LinkedList<PresidentCard> cardsPlayed = null;
+
+        while (!isValidPlay()) {
+
+            showHand();
+            cardsPlayed = getPlay(cardValue,numberOfCards);
+
+        }
+
+        return cardsPlayed;
+    }
+
+    private LinkedList<PresidentCard> getPlay(PresidentCard cardValue, int numberOfCards) {
+
+        out.println("Please pick a card and number of cards:");
+        String symbol = "";
+        String numberOfCardsPlayed = "0";
+
+        passed=false;
+
+        try {
+
+            String input = in.readLine(); // EXAMPLE A 3
+
+            if (hasPassed(input)) {
+                return null;
+            }
+
+            symbol = input.split(" ")[0];
+            numberOfCardsPlayed = input.split(" ")[1];
+
+            if (!isInputValid(symbol, numberOfCardsPlayed,cardValue,numberOfCardsPlayed)) {
+                numberOfCardsPlayed = "0";
+                validPlay = false;
+
+                return null;
+            } else {
+
+                validPlay = true;
+            }
+
+        } catch (IOException e) {
+
+            System.err.println(e.getMessage());
+            System.exit(1);
+
+        }
+
+        return updateHand(symbol, numberOfCardsPlayed);
+
+    }
+
+    private boolean isInputValid(String symbol, String numberOfCards, PresidentCard cardValue, String numberOfCards1) {
+
+
+        if (!symbolIsValid(symbol)) {
+            out.println("That's not a valid card, choose other");
+            return false;
+        }
+
+        if (!playerHasCards(symbol, numberOfCards)) {
+            out.println("you dont have that many cards");
+            return false;
+        }
+
+
+        if(!compareCards(symbol,numberOfCards,cardValue,numberOfCards)){
+
+
+            return false;
+        }
+
+        return true;
+
+    }
+
+    private boolean compareCards(String symbol, String numberOfCards, PresidentCard cardValue, String numberOfCards1) {
+        return false;
+    }
+
 
     private LinkedList<PresidentCard> getPlay() {
 
@@ -72,10 +148,15 @@ public class PresidentPlayer {
         String symbol = "";
         String numberOfCards = "0";
 
+        passed=false;
+
         try {
 
-            String input = in.readLine(); // A 3
+            String input = in.readLine(); // EXAMPLE A 3
 
+            if (hasPassed(input)) {
+                return null;
+            }
 
             symbol = input.split(" ")[0];
             numberOfCards = input.split(" ")[1];
@@ -86,6 +167,7 @@ public class PresidentPlayer {
 
                 return null;
             } else {
+
                 validPlay = true;
             }
 
@@ -98,6 +180,13 @@ public class PresidentPlayer {
 
         return updateHand(symbol, numberOfCards);
 
+    }
+
+    private boolean hasPassed(String input) {
+
+        passed = input.equals("pass");
+        System.out.println(name + " has passed "+passed);
+        return passed;
     }
 
     private LinkedList<PresidentCard> updateHand(String symbol, String numberOfCards) {
@@ -120,13 +209,13 @@ public class PresidentPlayer {
             iterator++;
         }
 
-        System.out.println("cards played "+cardsPlayed.toString());
+        System.out.println("cards played " + cardsPlayed.toString());
+
         return cardsPlayed;
 
     }
 
     private boolean isInputValid(String symbol, String numberOfCards) {
-
 
         if (!symbolIsValid(symbol)) {
             out.println("That's not a valid card, choose other");
@@ -134,9 +223,10 @@ public class PresidentPlayer {
         }
 
         if (!playerHasCards(symbol, numberOfCards)) {
-            out.println("");
+            out.println("you dont have that many cards");
             return false;
         }
+
 
         return true;
 
@@ -201,26 +291,34 @@ public class PresidentPlayer {
         out.println(msg);
     }
 
-
     public String getName() {
         return name;
-    }
-
-    public List<PresidentCard> getHand() {
-        return hand;
-    }
-
-    public void setHand(List<PresidentCard> hand) {
-        this.hand = hand;
-    }
-
-    public Socket getSocket() {
-        return socket;
     }
 
     public void receiveCard(PresidentCard card) {
 
         hand.add(card);
+        organizeHand();
+    }
+
+    private void organizeHand() {
+
+        LinkedList<PresidentCard> orderedHand = (LinkedList<PresidentCard>) this.hand;
+
+        for (int i = 0; i < orderedHand.size(); i++) {
+
+            for (int j = i; j > 0; j--) {
+
+                if (j != 0 && orderedHand.get(j).getValue().compareTo(orderedHand.get(j - 1).getValue()) < 0) {
+
+                    orderedHand.add(j - 1, orderedHand.remove(j));
+                } else {
+
+                    break;
+                }
+            }
+        }
+
     }
 
     public boolean hasThreeOfClubs() {
@@ -236,4 +334,6 @@ public class PresidentPlayer {
 
         return false;
     }
+
+
 }

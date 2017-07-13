@@ -94,6 +94,7 @@ public class SuecaGame implements Game, Runnable {
         boolean waived = false;
         int turn = 1;
         SuecaCard[] turnSuecaCards = new SuecaCard[MAX_PLAYERS];
+
         SuecaCard turnSuecaCard ;
         int i ;
 
@@ -289,9 +290,10 @@ public class SuecaGame implements Game, Runnable {
 
     private void showScore() {
 
+        //TODO: fix scorebord in case of waived
+
         int team1 = players.get(0).getScore() + players.get(2).getScore();
         int team2 = players.get(1).getScore() + players.get(3).getScore();
-
 
         String scoreText = "FINAL SCORE:\n" +
                 "TEAM 1 - " + players.get(0).getName() + " and " + players.get(2).getName() + ":\n" +
