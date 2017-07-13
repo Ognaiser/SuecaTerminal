@@ -109,15 +109,10 @@ public class RoulettePlayer extends GameClient {
         }
 
         switch (number) {
-            case 1:
-                this.play = RouletteOptions.;
+            case 0:
+                this.play = RouletteOptions.ZERO;
                 break;
-            case 2:
-                this.play = RouletteOptions.;
-                break;
-            case 3:
-                this.play = RouletteOptions.;
-                break;
+           //TODO: ver as 10 apostas possiveis no novo enum de apostas
             default:
                 System.out.println("Something went wrong");
                 System.exit(1);

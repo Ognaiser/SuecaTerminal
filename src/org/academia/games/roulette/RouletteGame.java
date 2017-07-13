@@ -33,47 +33,29 @@ public class RouletteGame implements Runnable {
 
             askPlay();
 
-            number = (RouletteOptions) (Math.random() * 36 + 1);
+            number = RouletteOptions.values()[(int)(Math.random() * 36 + 1)];
 
             showRound(number);
 
-            if (number == 0) {
-                checkRound(RouletteColors.GREEN);
-                continue;
-            }
-
-            if (number % 2 == 0) {
-                checkRound(RouletteColors.BLACK);
-                continue;
-            } else {
-                checkRound(RouletteColors.RED);
-                continue;
-            }
+            checkRound(number);
 
         }
 
     }
 
-    private void showRound(int number) {
+    private void showRound(RouletteOptions number) {
 
         for (RoulettePlayer client : players) {
-            if (number == 0) {
-                client.sayToPlayer("The Roulette stopped at: " + number + RouletteColors.BLACK);
-                continue;
-            }
-            if (number % 2 == 0) {
-                client.sayToPlayer("The Roulette stopped at: " + number);
-                continue;
-            } else {
-                client.sayToPlayer("The Roulette stopped at: " + RouletteColors.RED + number + RouletteColors.BLACK);
-                continue;
-            }
+                client.sayToPlayer("The Roulette stopped at: " + number.toString());
         }
     }
 
     private void checkRound(RouletteOptions number) {
         for (RoulettePlayer player :
                 players) {
+
+            //TODO: alterar estas condições para checkRound()
+
             if (player.getPlay() == number) {
                 switch (number) {
                     case ZERO:
@@ -85,7 +67,6 @@ public class RouletteGame implements Runnable {
                     case TWO:
                         player.addChips(player.getBet() * 36);
                         break;
-                    //TODO: ver getters do rouletteOptions para o switch
                 }
                 player.sayToPlayer("You won! Your chips are: " + player.getChips());
             } else {

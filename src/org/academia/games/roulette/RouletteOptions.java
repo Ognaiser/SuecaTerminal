@@ -6,11 +6,11 @@ package org.academia.games.roulette;
 public enum RouletteOptions {
 
     /**
-     *@param value refers to the number value
-     *@param color refers to the color RED or BLACK, the zero is the only GREEN
-     *@param oddOrEven if the value is odd #1, if the value is even #2, the zero is #0
-     *@param upOrDown refers to the first #1 or second #2 half of values, the zero is #0
-     *@param dozen refers to the first #1, second #2 or third #3 dozen
+     * @param value refers to the number value
+     * @param color refers to the color RED or BLACK, the zero is the only GREEN
+     * @param oddOrEven if the value is odd #1, if the value is even #2, the zero is #0
+     * @param upOrDown refers to the first #1 or second #2 half of values, the zero is #0
+     * @param dozen refers to the first #1, second #2 or third #3 dozen
      */
     //TODO: fazer novo enum para as 10 apostas diferentes
 
@@ -86,5 +86,18 @@ public enum RouletteOptions {
 
     public int getDozen() {
         return dozen;
+    }
+
+    @Override
+    public String toString() {
+        if (value == 0) {
+            return "NUMBER = " + value;
+        }
+
+        return "NUMBER = " + value +
+                " | COLOR = " + color +
+                " | " + ((oddOrEven == 1) ? "ODD" : "EVEN") +
+                " | " + upOrDown +
+                " | DOZEN = " + dozen;
     }
 }
