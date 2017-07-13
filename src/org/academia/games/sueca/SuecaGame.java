@@ -29,9 +29,7 @@ public class SuecaGame implements Game, Runnable {
 
         generateDeck();
         distributeHands();
-        System.out.println("done");
         assignNames();
-        System.out.println("1");
         playGame();
         showScore();
         returnToChat();
@@ -93,10 +91,12 @@ public class SuecaGame implements Game, Runnable {
 
     public void playGame() {
 
+        boolean waived = false;
         int turn = 1;
         SuecaCard[] turnSuecaCards = new SuecaCard[MAX_PLAYERS];
-        SuecaCard turnSuecaCard = null;
-        int i;
+
+        SuecaCard turnSuecaCard ;
+        int i ;
 
         greetPlayer();
 
@@ -106,6 +106,7 @@ public class SuecaGame implements Game, Runnable {
         showHands();
 
         while (turn <= MAX_TURNS) {
+
             i = 0;
 
             for (SuecaPlayer player : players) {
@@ -115,15 +116,20 @@ public class SuecaGame implements Game, Runnable {
                 if (player.isCommand()) {
 
                     if(checkForCheater(player.getAccusedPlayer())){
-                        waivedEndGame();
+                        waived = true;
                         break;
+                    }else{
+                        player.out.println("the player has not waived you cant accuse anymore!");
+                        turnSuecaCard = player.play();
                     }
                 }
 
-                if (!validCard(turnSuecaCard, turnSuecaCards[0], player)) {
+
+                if (i != 0 && !validCard(turnSuecaCard, turnSuecaCards[0], player)) {
                     player.hasCheated();
                     System.out.println("player " + player + " has cheated");
                 }
+
 
                 sendAll(player.getName() + " played: \n\r" + turnSuecaCard.getRepresentation());
 
@@ -131,13 +137,18 @@ public class SuecaGame implements Game, Runnable {
                 i++;
             }
 
-            int winner = getWinner(turnSuecaCards);
-            players.get(winner).addScore(turnSuecaCards);
-            setFirstPlayer(winner);
+            if (!waived) {
+                int winner = getWinner(turnSuecaCards);
+                players.get(winner).addScore(turnSuecaCards);
+                setFirstPlayer(winner);
 
-            sendAll("______________________________" + turn + "__________________________________");
+                sendAll("______________________________" + turn + "__________________________________");
 
-            turn++;
+                turn++;
+
+            }else {
+                turn = MAX_TURNS + 1;
+            }
         }
 
     }
@@ -160,12 +171,6 @@ public class SuecaGame implements Game, Runnable {
             }
         }
         return false;
-    }
-
-    private void waivedEndGame() {
-
-        //TODO: ends the game when player has waived and has been discovered
-        //TODO: test Waive methods
     }
 
     private void setFirstPlayer(int roundWinner) {
@@ -284,6 +289,8 @@ public class SuecaGame implements Game, Runnable {
 
 
     private void showScore() {
+
+        //TODO: fix scorebord in case of waived
 
         int team1 = players.get(0).getScore() + players.get(2).getScore();
         int team2 = players.get(1).getScore() + players.get(3).getScore();

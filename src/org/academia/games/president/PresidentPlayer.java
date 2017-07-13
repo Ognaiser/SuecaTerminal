@@ -77,7 +77,7 @@ public class PresidentPlayer extends GameClient {
 
         out.println("Please pick a card and number of cards:");
         String symbol = "";
-        String numberOfCards = "0";
+        String numberOfCardsPlayed = "0";
 
         passed=false;
 
@@ -90,10 +90,10 @@ public class PresidentPlayer extends GameClient {
             }
 
             symbol = input.split(" ")[0];
-            numberOfCards = input.split(" ")[1];
+            numberOfCardsPlayed = input.split(" ")[1];
 
-            if (!isInputValid(symbol, numberOfCards,cardValue,numberOfCards)) {
-                numberOfCards = "0";
+            if (!isInputValid(symbol, numberOfCardsPlayed,cardValue,numberOfCardsPlayed)) {
+                numberOfCardsPlayed = "0";
                 validPlay = false;
 
                 return null;
@@ -109,7 +109,7 @@ public class PresidentPlayer extends GameClient {
 
         }
 
-        return updateHand(symbol, numberOfCards);
+        return updateHand(symbol, numberOfCardsPlayed);
 
     }
 
@@ -135,6 +135,10 @@ public class PresidentPlayer extends GameClient {
 
         return true;
 
+    }
+
+    private boolean compareCards(String symbol, String numberOfCards, PresidentCard cardValue, String numberOfCards1) {
+        return false;
     }
 
 
