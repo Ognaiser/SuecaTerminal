@@ -55,10 +55,11 @@ public class SuecaPlayer extends GameClient {
         try {
 
             String input = in.readLine();
-            if (input.length() > 1) {
+            if (input.length() > 2) {
                 checkCommand(input);
             }
-            cardPlayed = Integer.parseInt(in.readLine());
+
+            cardPlayed = Integer.parseInt(input);
 
             while (cardPlayed < 1 || cardPlayed > hand.size()) {
 
@@ -162,7 +163,7 @@ public class SuecaPlayer extends GameClient {
 
             for (int i = 0; i < orderedHand.size(); i++) {
                 for (int j = i; j > 0; j--) {
-                    if (j!= 0 && orderedHand.get(j).getSuecaSuit() == orderedHand.get(j - 1).getSuecaSuit() && orderedHand.get(j).getCardNumber().compareTo(orderedHand.get(j - 1).getCardNumber()) > 0) {
+                    if (j!= 0 && orderedHand.get(j).getSuecaSuit() == orderedHand.get(j - 1).getSuecaSuit() && orderedHand.get(j).getCardNumber().compareTo(orderedHand.get(j - 1).getCardNumber()) < 0) {
                         orderedHand.add(j - 1, orderedHand.remove(j));
                     } else {
                         break;
@@ -180,6 +181,8 @@ public class SuecaPlayer extends GameClient {
         return accusedPlayer;
     }
 }
+
+
 /**
  * for (int i = 0; i < orderedHand.size(); i++) {
  * for (int j = i; j > 0; j--) {
