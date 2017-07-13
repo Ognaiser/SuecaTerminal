@@ -30,6 +30,11 @@ public class CommandManager {
                 clientHandler.disconnect();
                 clientDispatcher.startRoulette(clientHandler);
                 break;
+            case "!play president":
+                clientHandler.delete();
+                clientHandler.disconnect();
+                clientDispatcher.addToPresidentQueue(clientHandler);
+                break;
             default:
                 defaultMsg(clientHandler);
                 break;
@@ -45,6 +50,7 @@ public class CommandManager {
 
         handler.send("!help -> List all commands!");
         handler.send("!play sueca-> Play a game of sueca!");
+        handler.send("!play president-> Play a game of president!");
     }
 
 

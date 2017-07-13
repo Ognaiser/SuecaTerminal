@@ -138,6 +138,20 @@ public class PresidentPlayer extends GameClient {
     }
 
     private boolean compareCards(String symbol, String numberOfCards, PresidentCard cardValue, String numberOfCards1) {
+
+
+        if(PresidentCards.valueOf(symbol).ordinal() > cardValue.getValue().ordinal()){
+
+            out.println(" choose a higher card than "+symbol+" and played "+cardValue.getValue());
+            return false;
+        }
+
+        if(!numberOfCards.equals(numberOfCards1)){
+            out.println("You need to play "+numberOfCards+" and played "+numberOfCards1);
+            return false;
+        }
+
+
         return false;
     }
 

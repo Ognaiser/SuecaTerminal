@@ -9,11 +9,15 @@ public class PresidentGame implements Runnable {
     private LinkedList<PresidentPlayer> players;
     private PresidentPlayer firstPlayer;
 
+
+    public PresidentGame(LinkedList<PresidentPlayer> players) {
+        this.players = players;
+    }
     @Override
     public void run() {
+
         start();
     }
-
 
     public void start() {
 
@@ -30,7 +34,6 @@ public class PresidentGame implements Runnable {
             firstPlayer = players.getFirst();
 
             LinkedList<PresidentCard> firstPlay = firstPlayer.play();
-
             PresidentCard cardValue = firstPlay.getFirst();
             int numberOfCards = firstPlay.size();
 
@@ -38,9 +41,6 @@ public class PresidentGame implements Runnable {
 
                 players.get(i).play(cardValue,numberOfCards);
             }
-
-
-
 
         }
 

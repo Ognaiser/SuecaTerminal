@@ -1,5 +1,7 @@
 package org.academia.games;
 
+import org.academia.games.president.PresidentGame;
+import org.academia.games.president.PresidentPlayer;
 import org.academia.games.roulette.RoulettePlayer;
 import org.academia.games.roulette.RouletteGame;
 import org.academia.games.sueca.SuecaPlayer;
@@ -15,6 +17,7 @@ public class ClientDispatcher {
     private RouletteGame game = new RouletteGame();
     private ExecutorService pool = Executors.newFixedThreadPool(25);
     private LinkedList<SuecaPlayer> suecaPlayerList = new LinkedList<>();
+    private LinkedList<PresidentPlayer> presidentPlayerList= new LinkedList<>();
 
     public void addToSuecaQueue(Server.ClientHandler clientHandler) {
 
@@ -33,5 +36,19 @@ public class ClientDispatcher {
     public void startRoulette(Server.ClientHandler client){
 
         game.addPlayer(new RoulettePlayer(client.getClient()));
+    }
+
+    public void addToPresidentQueue(Server.ClientHandler clientHandler) {
+
+        presidentPlayerList.add(new PresidentPlayer(clientHandler.getClient()));
+
+        presidentPlayerList.getLast().sendMessage("Waiting !!!!");
+
+        if (presidentPlayerList.size() == 4){
+
+            PresidentGame game = new PresidentGame(presidentPlayerList);
+            pool.submit(game);
+            suecaPlayerList = new LinkedList<>();
+        }
     }
 }
