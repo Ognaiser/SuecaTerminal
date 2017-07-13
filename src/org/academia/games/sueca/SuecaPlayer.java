@@ -16,7 +16,7 @@ public class SuecaPlayer extends GameClient {
     private String name;
     private int score;
     private boolean cheated = false;
-    private boolean isCommand;
+    private boolean isCommand = false;
     private String accusedPlayer;
 
     public SuecaPlayer(ClientPOJO client) {
@@ -36,8 +36,8 @@ public class SuecaPlayer extends GameClient {
         for (int i = 1; i <= hand.size(); i++) {
             out.print("    " + i + "     ");
         }
-        out.println("Your Hand is ^");
         out.println();
+        out.println("Your Hand is ^");
     }
 
     public void assignNick() {
@@ -46,6 +46,7 @@ public class SuecaPlayer extends GameClient {
 
 
     //TODO:REFACTOR PLAY !
+
     public SuecaCard play() {
 
 
@@ -56,11 +57,13 @@ public class SuecaPlayer extends GameClient {
         try {
 
             String input = in.readLine();
+
             if (input.length() > 2) {
                 checkCommand(input);
             }
 
             cardPlayed = Integer.parseInt(input);
+
 
             while (cardPlayed < 1 || cardPlayed > hand.size()) {
 

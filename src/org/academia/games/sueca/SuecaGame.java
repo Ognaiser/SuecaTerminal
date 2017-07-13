@@ -29,9 +29,7 @@ public class SuecaGame implements Game, Runnable {
 
         generateDeck();
         distributeHands();
-        System.out.println("done");
         assignNames();
-        System.out.println("1");
         playGame();
         showScore();
         returnToChat();
@@ -95,8 +93,8 @@ public class SuecaGame implements Game, Runnable {
 
         int turn = 1;
         SuecaCard[] turnSuecaCards = new SuecaCard[MAX_PLAYERS];
-        SuecaCard turnSuecaCard = null;
-        int i = 0;
+        SuecaCard turnSuecaCard ;
+        int i ;
 
         greetPlayer();
 
@@ -106,11 +104,13 @@ public class SuecaGame implements Game, Runnable {
         showHands();
 
         while (turn <= MAX_TURNS) {
+
             i = 0;
 
             for (SuecaPlayer player : players) {
 
                 turnSuecaCard = player.play();
+
 
                 if (player.isCommand()) {
 
@@ -118,12 +118,16 @@ public class SuecaGame implements Game, Runnable {
                         waivedEndGame();
                         break;
                     }
+
+
                 }
 
-                if (!validCard(turnSuecaCard, turnSuecaCards[0], player)) {
+
+                if (i != 0 && !validCard(turnSuecaCard, turnSuecaCards[0], player)) {
                     player.hasCheated();
                     System.out.println("player " + player + " has cheated");
                 }
+
 
                 sendAll(player.getName() + " played: \n\r" + turnSuecaCard.getRepresentation());
 
