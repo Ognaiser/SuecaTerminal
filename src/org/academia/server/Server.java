@@ -21,7 +21,8 @@ public class Server {
     private List<ClientHandler> clientHandlers;
     private CommandManager commandManager;
     private ExecutorService pool;
-//TODO: FIX forced shutdown try to catch the force quit signal from terminal
+
+    //TODO: FIX forced shutdown try to catch the force quit signal from terminal
 
     public static void main(String[] args) throws IOException {
         Server server = new Server();
@@ -81,6 +82,18 @@ public class Server {
         private boolean connected = true;
         private PrintWriter out;
         private BufferedReader in;
+
+        public ClientHandler(ClientPOJO client){
+
+            this.client = client;
+
+            try {
+                this.out = new PrintWriter(client.getSocket().getOutputStream(), true);
+                this.in = new BufferedReader(new InputStreamReader(client.getSocket().getInputStream()));
+            } catch (IOException e) {
+                System.err.println("Error: " + e.getMessage());
+            }
+        }
 
         public ClientHandler(Socket socket) {
 
@@ -172,7 +185,9 @@ public class Server {
         }
 
         public void getBackToList(){
-            clientHandlers.add(this);
+            ClientHandler clien = new ClientHandler(client);
+            clientHandlers.add(clien);
+            pool.submit(clien);
         }
     }
 }

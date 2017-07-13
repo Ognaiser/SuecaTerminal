@@ -289,6 +289,8 @@ public class SuecaGame implements Game, Runnable {
 
     private void showScore() {
 
+        //TODO: fix scorebord in case of waived
+
         int team1 = players.get(0).getScore() + players.get(2).getScore();
         int team2 = players.get(1).getScore() + players.get(3).getScore();
 
