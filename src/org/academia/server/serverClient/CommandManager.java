@@ -49,8 +49,8 @@ public class CommandManager {
     private void list(Server.ClientHandler handler){
 
         handler.send("!help -> List all commands!");
-        handler.send("!play sueca-> Play a game of sueca!");
-        handler.send("!play president-> Play a game of president!");
+        handler.send("!play sueca -> Play a game of sueca!");
+        handler.send("!play president -> Play a game of president!");
     }
 
 
