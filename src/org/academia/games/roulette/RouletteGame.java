@@ -51,12 +51,11 @@ public class RouletteGame implements Runnable {
     }
 
     private void checkRound(RouletteOptions number) {
-        for (RoulettePlayer player :
-                players) {
+        for (RoulettePlayer player : players) {
 
             //TODO: alterar estas condições para checkRound()
 
-            if (player.getPlay() == number) {
+           // if (player.getPlay() == number) {
                 switch (number) {
                     case ZERO:
                         player.addChips(player.getBet() * 36);
@@ -67,11 +66,13 @@ public class RouletteGame implements Runnable {
                     case TWO:
                         player.addChips(player.getBet() * 36);
                         break;
+
+
                 }
                 player.sayToPlayer("You won! Your chips are: " + player.getChips());
-            } else {
+            //} else {
                 player.sayToPlayer("You lose!");
-            }
+            //}
         }
     }
 

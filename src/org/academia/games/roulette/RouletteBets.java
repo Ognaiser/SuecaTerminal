@@ -17,19 +17,21 @@ public enum RouletteBets {
         2nd Dozen [13-24] |
         3rd Dozen [25-36]");    */
 
-    ZERO,
-    NUMBER,
-    BLACK,
-    RED,
-    ODD,
-    EVEN,
-    UP,
-    DOWN,
-    DOZEN1,
-    DOZEN2,
-    DOZEN3;
+    ZERO("ZERO"),
+    NUMBER(""),
+    BLACK("BLACK"),
+    RED("RED"),
+    ODD("ODD"),
+    EVEN("EVEN"),
+    UP("UP"),
+    DOWN("DOWN"),
+    DOZEN1(""+1),
+    DOZEN2(""+2),
+    DOZEN3(""+3);
 
+    String name;
 
-   // RouletteBets(RouletteOptions[] options) {
-    //}
+    RouletteBets(String name) {
+        this.name = name;
+    }
 }
