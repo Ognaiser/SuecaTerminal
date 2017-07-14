@@ -29,9 +29,13 @@ public enum RouletteBets {
     DOZEN2(""+2),
     DOZEN3(""+3);
 
-    String name;
+    private String name;
 
     RouletteBets(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }

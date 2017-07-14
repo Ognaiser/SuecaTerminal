@@ -33,7 +33,7 @@ public class RouletteGame implements Runnable {
 
             askPlay();
 
-            number = RouletteOptions.values()[(int)(Math.random() * 36 + 1)];
+            number = RouletteOptions.values()[(int) (Math.random() * 36 + 1)];
 
             showRound(number);
 
@@ -46,35 +46,64 @@ public class RouletteGame implements Runnable {
     private void showRound(RouletteOptions number) {
 
         for (RoulettePlayer client : players) {
-                client.sayToPlayer("The Roulette stopped at: " + number.toString());
+            client.sayToPlayer("The Roulette stopped at: " + number.toString());
         }
     }
 
     private void checkRound(RouletteOptions number) {
         for (RoulettePlayer player : players) {
 
-            //TODO: alterar estas condições para checkRound()
-
-           // if (player.getPlay() == number) {
-                switch (number) {
-                    case ZERO:
-                        player.addChips(player.getBet() * 36);
-                        break;
-                    case ONE:
-                        player.addChips(player.getBet() * 36);
-                        break;
-                    case TWO:
-                        player.addChips(player.getBet() * 36);
-                        break;
-
-
+            if (player.getPlayNumber() != null){
+                if (player.getPlayNumber().equals(number)) {
+                    player.addChips(player.getBetValue() * 36);
+                    player.sayToPlayer("You won! Your chips are: " + player.getChips());
+                    continue;
                 }
-                player.sayToPlayer("You won! Your chips are: " + player.getChips());
-            //} else {
                 player.sayToPlayer("You lose!");
-            //}
+                continue;
+            }
+
+            if (player.getPlay().equals(RouletteBets.BLACK) || player.getPlay().equals(RouletteBets.RED)) {
+                if (player.getPlay().getName().equals(number.getColor())) {
+                    player.addChips(player.getBetValue() * 2);
+                    player.sayToPlayer("You won! Your chips are: " + player.getChips());
+                    continue;
+                }
+                player.sayToPlayer("You lose!");
+                continue;
+            }
+
+            if (player.getPlay().equals(RouletteBets.ODD) || player.getPlay().equals(RouletteBets.EVEN)) {
+                if (player.getPlay().getName().equals(number.getOddOrEven())) {
+                    player.addChips(player.getBetValue() * 2);
+                    player.sayToPlayer("You won! Your chips are: " + player.getChips());
+                    continue;
+                }
+                player.sayToPlayer("You lose!");
+                continue;
+            }
+
+            if (player.getPlay().equals(RouletteBets.UP) || player.getPlay().equals(RouletteBets.DOWN)) {
+                if (player.getPlay().getName().equals(number.getUpOrDown())) {
+                    player.addChips(player.getBetValue() * 2);
+                    player.sayToPlayer("You won! Your chips are: " + player.getChips());
+                    continue;
+                }
+                player.sayToPlayer("You lose!");
+                continue;
+            }
+
+            if (player.getPlay().equals(RouletteBets.DOZEN1) || player.getPlay().equals(RouletteBets.DOZEN2) || player.getPlay().equals(RouletteBets.DOZEN3)) {
+                if (player.getPlay().getName().equals(number.getDozen())) {
+                    player.addChips(player.getBetValue() * 3);
+                    player.sayToPlayer("You won! Your chips are: " + player.getChips());
+                    continue;
+                }
+                player.sayToPlayer("You lose!");
+            }
         }
     }
+
 
     private void askPlay() {
         for (RoulettePlayer client : players) {
