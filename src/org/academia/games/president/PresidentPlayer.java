@@ -145,7 +145,7 @@ public class PresidentPlayer extends GameClient {
         System.out.println("Inside compareCards.");
         System.out.println("\nsymbol is -> " + symbol + "\nnumberOfCardsPlayed is -> " + numberOfCardsPlayed + "\ncardToAssist is:\n" + cardToAssist.getRepresentation() + "\nnumberOfCardsToAssist -> " + numberOfCardsToAssist);
 
-        if (PresidentCards.valueOf(symbol).ordinal() >git  cardToAssist.getValue().ordinal()) {
+        if (PresidentCards.valueOf(symbol).ordinal() >  cardToAssist.getValue().ordinal()) {//TODO: BUG is here
 
             System.out.println("Inside first If");
             out.println(" choose a higher card than " + symbol + " and played " + cardToAssist.getValue());
