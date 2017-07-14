@@ -8,7 +8,8 @@ import java.io.IOException;
 public class RoulettePlayer extends GameClient {
 
     private RouletteBets play;
-    private int bet;
+    private int betValue;
+    private RouletteOptions playNumber;
 
     public RoulettePlayer(ClientPOJO client) {
         super(client);
@@ -18,12 +19,16 @@ public class RoulettePlayer extends GameClient {
         out.println(msg);
     }
 
+    public RouletteOptions getPlayNumber() {
+        return playNumber;
+    }
+
     public RouletteBets getPlay() {
         return play;
     }
 
-    public int getBet() {
-        return bet;
+    public int getBetValue() {
+        return betValue;
     }
 
     public void askPlay() {
@@ -34,7 +39,7 @@ public class RoulettePlayer extends GameClient {
         while (!validPlay) {
 
             out.println();
-            out.println("Please chose your bet from the following options:");
+            out.println("Please chose your betValue from the following options:");
             out.println(" Number 0  |  Number [1-36]  |  BLACK  |  RED  |  ODD  |  EVEN  |  UP [1-18] |  DOWN [19-36] | 1st Dozen [1-12] |  2nd Dozen [13-24] | 3rd Dozen [25-36]");
             out.println("    0              1              2        3       4       5          6              7                 8                   9                  10    ");
 
@@ -45,6 +50,7 @@ public class RoulettePlayer extends GameClient {
                 System.exit(1);
             }
 
+            playNumber = null;
             validPlay = validatePlay(bet);
 
             if (!validPlay) {
@@ -57,7 +63,7 @@ public class RoulettePlayer extends GameClient {
 
             out.println();
             out.println("Your chips: " + getChips());
-            out.println("How many chips you want to bet? ");
+            out.println("How many chips you want to betValue? ");
 
             try {
                 validAmount = validateAmount(in.readLine());
@@ -88,7 +94,7 @@ public class RoulettePlayer extends GameClient {
         }
 
         removeChips(number);
-        out.println(" You bet is : " + getChips() + " chips!");
+        out.println(" You betValue is : " + getChips() + " chips!");
         return true;
     }
 
@@ -112,17 +118,18 @@ public class RoulettePlayer extends GameClient {
                 this.play = RouletteBets.ZERO;
                 break;
             case 1:
-                int numberBet;
+
                 out.println("Please enter the specific number you want to bet [between 1 and 36]");
                 try {
-                    numberBet = Integer.parseInt(in.readLine());
-                    handleNumberBet(numberBet);
+                    int numberBet = Integer.parseInt(in.readLine());
+                    this.playNumber = RouletteOptions.values()[numberBet];
+
                 } catch (IOException e) {
                     System.err.println("Error: " + e.getMessage());
                     System.exit(1);
                 }
                 this.play = RouletteBets.NUMBER;
-                //TODO handle number bet
+
                 break;
             case 2:
                 this.play = RouletteBets.BLACK;
@@ -160,9 +167,6 @@ public class RoulettePlayer extends GameClient {
         return true;
     }
 
-    private void handleNumberBet(int numberBet) {
-        //TODO handle number bet
-    }
 
     public boolean askOut() {
 
