@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class RoulettePlayer extends GameClient {
 
-    private RouletteColors play;
+    private RouletteBets play;
     private int bet;
 
     public RoulettePlayer(ClientPOJO client) {
@@ -18,7 +18,7 @@ public class RoulettePlayer extends GameClient {
         out.println(msg);
     }
 
-    public RouletteColors getPlay() {
+    public RouletteBets getPlay() {
         return play;
     }
 
@@ -30,20 +30,22 @@ public class RoulettePlayer extends GameClient {
 
         boolean validPlay = false;
         boolean validAmount = false;
-
+        String bet = null;
         while (!validPlay) {
 
             out.println();
-            out.println("Witch color do you want to bet?");
-            out.println(RouletteColors.RED + "\u25A8" + " " + RouletteColors.GREEN + "\u25A8 " + RouletteColors.BLACK + "\u25A8");
-            out.println("1 2 3");
+            out.println("Please chose your bet from the following options:");
+            out.println(" Number 0  |  Number [1-36]  |  BLACK  |  RED  |  ODD  |  EVEN  |  UP [1-18] |  DOWN [19-36] | 1st Dozen [1-12] |  2nd Dozen [13-24] | 3rd Dozen [25-36]");
+            out.println("    0              1              2        3       4       5          6              7                 8                   9                  10    ");
 
             try {
-                validPlay = validatePlay(in.readLine());
+                bet = in.readLine();
             } catch (IOException e) {
                 System.err.println("Error: " + e.getMessage());
                 System.exit(1);
             }
+
+            validPlay = validatePlay(bet);
 
             if (!validPlay) {
                 out.println("Invalid Play! Please type again!");
@@ -100,22 +102,57 @@ public class RoulettePlayer extends GameClient {
             return false;
         }
 
-        if (number != 1 && number != 2 && number != 3) {
+        if (number < 0) {
             return false;
         }
 
+
         switch (number) {
+            case 0:
+                this.play = RouletteBets.ZERO;
+                break;
             case 1:
-                this.play = RouletteColors.RED;
+                int numberBet;
+                out.println("Please enter the specific number you want to bet [between 1 and 36]");
+                try {
+                    numberBet = Integer.parseInt(in.readLine());
+                    handleNumberBet(numberBet);
+                } catch (IOException e) {
+                    System.err.println("Error: " + e.getMessage());
+                    System.exit(1);
+                }
+                this.play = RouletteBets.NUMBER;
+                //TODO handle number bet
                 break;
             case 2:
-                this.play = RouletteColors.GREEN;
+                this.play = RouletteBets.BLACK;
                 break;
             case 3:
-                this.play = RouletteColors.BLACK;
+                this.play = RouletteBets.RED;
+                break;
+            case 4:
+                this.play = RouletteBets.ODD;
+                break;
+            case 5:
+                this.play = RouletteBets.EVEN;
+                break;
+            case 6:
+                this.play = RouletteBets.UP;
+                break;
+            case 7:
+                this.play = RouletteBets.DOWN;
+                break;
+            case 8:
+                this.play = RouletteBets.DOZEN1;
+                break;
+            case 9:
+                this.play = RouletteBets.DOZEN2;
+                break;
+            case 10:
+                this.play = RouletteBets.DOZEN3;
                 break;
             default:
-                System.out.println("Deu merda");
+                System.out.println("Something went wrong");
                 System.exit(1);
                 break;
         }
@@ -123,10 +160,13 @@ public class RoulettePlayer extends GameClient {
         return true;
     }
 
+    private void handleNumberBet(int numberBet) {
+        //TODO handle number bet
+    }
+
     public boolean askOut() {
 
         String option = null;
-
 
         while (true) {
 
