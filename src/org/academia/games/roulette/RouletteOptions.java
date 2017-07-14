@@ -1,7 +1,7 @@
 package org.academia.games.roulette;
 
 /**
- * Created by codecadet on 13/07/2017.
+ * All the possible values for the roulette game
  */
 public enum RouletteOptions {
 

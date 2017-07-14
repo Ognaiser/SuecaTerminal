@@ -1,7 +1,7 @@
 package org.academia.games.roulette;
 
 /**
- * Created by miguelferreira on 13/07/17.
+ * All the possible bets for the players in this roulette game in specific
  */
 public enum RouletteBets {
 

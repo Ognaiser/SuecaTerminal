@@ -18,10 +18,7 @@ public class RouletteGame implements Runnable {
 
         RouletteOptions number;
 
-
         while (true) {
-
-            askOut();
 
             if (players.size() == 0) {
                 try {
@@ -39,13 +36,15 @@ public class RouletteGame implements Runnable {
 
             checkRound(number);
 
+            askOut();
+
         }
     }
 
     private void showRound(RouletteOptions number) {
 
         for (RoulettePlayer client : players) {
-            client.sayToPlayer("THE ROULETTE STOPPED AT NUMBER:\n" + number.toString());
+            client.sayToPlayer("THE ROULETTE STOPPED AT:\n" + number.toString());
         }
     }
 

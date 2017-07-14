@@ -38,8 +38,7 @@ public class RoulettePlayer extends GameClient {
         String bet = null;
         while (!validPlay) {
 
-            out.println();
-            out.println("Please chose your bet from the following options:");
+            out.println("\nPlease chose your bet from the following options:");
             out.println(" Number 0  |  Number [1-36]  |  BLACK  |  RED  |  ODD  |  EVEN  |  UP [1-18] |  DOWN [19-36] | 1st Dozen [1-12] |  2nd Dozen [13-24] | 3rd Dozen [25-36]");
             out.println("    0              1              2        3       4       5          6              7                 8                   9                  10    ");
 
@@ -61,8 +60,7 @@ public class RoulettePlayer extends GameClient {
 
         while (!validAmount) {
 
-            out.println();
-            out.println("Your chips: " + getChips());
+            out.println("\nYour chips: " + getChips());
             out.println("How many chips you want to bet? ");
 
             try {
@@ -84,6 +82,12 @@ public class RoulettePlayer extends GameClient {
         try {
             betValue = Integer.parseInt(amount);
         } catch (NumberFormatException nfe) {
+            return false;
+        }
+        if (getChips() == 0) {
+            out.println("\nSorry but you have no more chips!");
+            askOut();
+            getBacktoChat();
             return false;
         }
 
