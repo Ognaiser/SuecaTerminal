@@ -15,6 +15,7 @@ public class PresidentCard {
         this.value = PresidentCards.JOCKER;
     }
 
+
     public PresidentSuit getSuit() {
         return suit;
     }

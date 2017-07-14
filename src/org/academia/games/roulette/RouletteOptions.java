@@ -12,7 +12,6 @@ public enum RouletteOptions {
      * @param upOrDown refers to the first (DOWN) or second (UP) half of values, the zero is #0
      * @param dozen refers to the first #1, second #2 or third #3 dozen
      */
-    //TODO: fazer novo enum para as 10 apostas diferentes
 
     ZERO(0, "GREEN", "ZERO", "ZERO", 0),
     ONE(1, "RED", "ODD", "DOWN", 1),
