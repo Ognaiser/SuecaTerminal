@@ -145,6 +145,7 @@ public class PresidentPlayer extends GameClient {
         System.out.println("Inside compareCards.");
         System.out.println("\nsymbol is -> " + symbol + "\nnumberOfCardsPlayed is -> " + numberOfCardsPlayed + "\ncardToAssist is:\n" + cardToAssist.getRepresentation() + "\nnumberOfCardsToAssist -> " + numberOfCardsToAssist);
 
+        System.out.println(" is higher to "+  cardToAssist.getValue().ordinal());
 
         if (PresidentCards.valueOf(symbol).ordinal() >  cardToAssist.getValue().ordinal()) {//TODO: BUG is here
 
@@ -225,17 +226,15 @@ public class PresidentPlayer extends GameClient {
 
         for (PresidentCard card : hand) {
 
-
+            System.out.println("trying to remove " + cardSymbol+"times "+Integer.parseInt(numberOfCardsPlayed));
 
             if (card.getValue().getValue().equals(cardSymbol) &&
                     counter <= Integer.parseInt(numberOfCardsPlayed)) {
 
-                System.out.println("trying to remove " + cardSymbol);
-
                 PresidentCard toRemove = hand.remove(iterator);
                 cardsPlayed.add(toRemove);
                 counter++;
-
+                System.out.println("removed card "+ cardSymbol);
             }
 
             if (counter == Integer.parseInt(numberOfCardsPlayed)){
@@ -243,6 +242,7 @@ public class PresidentPlayer extends GameClient {
             }
 
             iterator++;
+
             System.out.println("counter -> " + counter + "\niterator -> " + iterator);
         }
 

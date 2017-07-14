@@ -39,26 +39,29 @@ public class PresidentGame implements Runnable {
 
         int playersInGame = players.size();
         showHands();
+        LinkedList<PresidentCard> playedCards;
 
         while (!gameFinished(playersInGame)) {
 
             System.out.println("in main cycle");
             firstPlayer = players.getFirst();
 
-            System.out.println("First player -> " + firstPlayer.getName());
+            playedCards = firstPlayer.firstPlay();
+            showPlay(playedCards);
+            PresidentCard cardValue = playedCards.getFirst();
 
-            LinkedList<PresidentCard> firstPlay = firstPlayer.firstPlay();
-            PresidentCard cardValue = firstPlay.getFirst();
-            int numberOfCards = firstPlay.size();
+            int numberOfCards = playedCards.size();
 
             System.out.println("Number of cards played -> " + numberOfCards);
+
+            sendAll(firstPlayer.getName() + " played: \n\r" + cardValue.getRepresentation());
 
             for (int i = 1; i < players.size(); i++) {
 
                 System.out.println("Player assisting -> " + players.get(i).getName());
 
-                players.get(i).assistPlay(cardValue, numberOfCards);
-
+                playedCards = players.get(i).assistPlay(cardValue, numberOfCards);
+                showPlay(playedCards);
                 System.out.println("After calling assistPlay()");
 
                 if (players.get(i).getHand().size() == 0) {
@@ -72,6 +75,14 @@ public class PresidentGame implements Runnable {
 
         }
 
+    }
+
+    private void sendAll(String text) {
+
+        for (PresidentPlayer player : players) {
+
+            player.sendMessage(text);
+        }
     }
 
     private void showHands() {
@@ -157,7 +168,7 @@ public class PresidentGame implements Runnable {
 
     private void giveRandomCard(PresidentPlayer player) {
 
-        if (deck.size()==0){
+        if (deck.size() == 0) {
             return;
         }
         int randomCard;
@@ -172,4 +183,21 @@ public class PresidentGame implements Runnable {
             player.getBacktoChat();
         }
     }
+
+
+    public void showPlay(LinkedList<PresidentCard> playedCards) {
+
+        String played = "";
+
+        for (int line = 0; line < 7; line++) {
+            for (int i = 0; i < playedCards.size(); i++) {
+                played += playedCards.get(i).getHandRep().split(":")[line];
+                played += " ";
+            }
+
+           sendAll("one play"+played);
+        }
+
+    }
+
 }

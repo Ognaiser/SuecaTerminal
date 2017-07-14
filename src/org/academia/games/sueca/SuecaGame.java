@@ -100,7 +100,6 @@ public class SuecaGame implements Game, Runnable {
 
         greetPlayer();
 
-
         sendAll("Trump is: \r\n" + trump.getRepresentation() + "\n\r");
 
         showHands();

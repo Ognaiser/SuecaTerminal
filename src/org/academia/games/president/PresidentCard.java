@@ -12,7 +12,7 @@ public class PresidentCard {
 
     public PresidentCard() {
         this.suit = PresidentSuit.JOCKER;
-        this.value = PresidentCards.JOCKER;
+        this.value = PresidentCards.JOKER;
     }
 
 

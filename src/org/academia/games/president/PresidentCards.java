@@ -2,7 +2,7 @@ package org.academia.games.president;
 
 public enum PresidentCards {
 
-    JOCKER("Joker"),//TODO fix this
+    JOKER("Joker"),//TODO fix this
     TWO("2"),
     ACE("A"),
     KING("K"),
@@ -28,5 +28,6 @@ public enum PresidentCards {
     public String getValue() {
         return value;
     }
+
 
 }
