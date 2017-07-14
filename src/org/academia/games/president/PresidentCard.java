@@ -15,6 +15,7 @@ public class PresidentCard {
         this.value = PresidentCards.JOCKER;
     }
 
+
     public PresidentSuit getSuit() {
         return suit;
     }
@@ -24,24 +25,50 @@ public class PresidentCard {
     }
 
 
-    public String getHandRep(){
+    public String getHandRep() {
+
+
+        if (value.getValue().equals("Joker")) {
+
+            return  "┌───────┐"+":"+
+                    "│"+ value.getValue()+ suit.getSymbol()+" │:"+
+                    "│       │" +":"+
+                    "│   "+ suit.getSymbol()+"   │" +":"+
+                    "│       │" +":"+
+                    "│ "+ suit.getSymbol()+ value.getValue()+"│" +":"+
+                    "└───────┘";
+
+        }
+
+        if (value.getValue().equals("10")) {
+
         return  "┌───────┐"+":"+
-                "│"+ value.getValue()+ suit.getSymbol()+"     │:"+
+                "│"+ value.getValue()+ suit.getSymbol()+"    │:"+
                 "│       │" +":"+
                 "│   "+ suit.getSymbol()+"   │" +":"+
                 "│       │" +":"+
-                "│     "+ suit.getSymbol()+ value.getValue()+"│" +":"+
+                "│    "+ suit.getSymbol()+ value.getValue()+"│" +":"+
+                "└───────┘";
+
+        }
+
+        return "┌───────┐" + ":" +
+                "│" + value.getValue() + suit.getSymbol() + "     │:" +
+                "│       │" + ":" +
+                "│   " + suit.getSymbol() + "   │" + ":" +
+                "│       │" + ":" +
+                "│     " + suit.getSymbol() + value.getValue() + "│" + ":" +
                 "└───────┘";
 
     }
 
-    public String getRepresentation(){
-        return  "┌───────┐" +"\r\n"+
-                "│"+ value.getValue()+ suit.getSymbol()+"     │" +"\r\n"+
-                "│       │" +"\r\n"+
-                "│   "+ suit.getSymbol()+"   │" +"\r\n"+
-                "│       │" +"\r\n"+
-                "│     "+ suit.getSymbol()+ value.getValue()+"│" +"\r\n"+
+    public String getRepresentation() {
+        return "┌───────┐" + "\r\n" +
+                "│" + value.getValue() + suit.getSymbol() + "     │" + "\r\n" +
+                "│       │" + "\r\n" +
+                "│   " + suit.getSymbol() + "   │" + "\r\n" +
+                "│       │" + "\r\n" +
+                "│     " + suit.getSymbol() + value.getValue() + "│" + "\r\n" +
                 "└───────┘";
     }
 
