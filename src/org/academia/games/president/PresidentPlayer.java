@@ -11,7 +11,7 @@ public class PresidentPlayer extends GameClient {
 
     //TODO:extend GameClientTest! (to see if its ok)
 
-    private List<PresidentCard> hand;
+    private List<PCard> hand;
     private String name;
     private boolean passed = false;
     private boolean validPlay;
@@ -42,8 +42,8 @@ public class PresidentPlayer extends GameClient {
         out.println();
     }
 
-    public LinkedList<PresidentCard> firstPlay() {
-        LinkedList<PresidentCard> cardsPlayed = null;
+    public LinkedList<PCard> firstPlay() {
+        LinkedList<PCard> cardsPlayed = null;
 
         while (!isValidPlay()) {
 
@@ -56,9 +56,9 @@ public class PresidentPlayer extends GameClient {
 
     }
 
-    public LinkedList<PresidentCard> assistPlay(PresidentCard cardToAssist, int numberOfCards) {
+    public LinkedList<PCard> assistPlay(PCard cardToAssist, int numberOfCards) {
 
-        LinkedList<PresidentCard> cardsPlayed = null;
+        LinkedList<PCard> cardsPlayed = null;
 
         while (!isValidPlay()) {
             System.out.println("Inside while loop on assistPlay()");
@@ -70,7 +70,7 @@ public class PresidentPlayer extends GameClient {
         return cardsPlayed;
     }
 
-    private LinkedList<PresidentCard> getAssistingPlayerCards(PresidentCard cardToAssist, int numberOfCardsToAssist) {
+    private LinkedList<PCard> getAssistingPlayerCards(PCard cardToAssist, int numberOfCardsToAssist) {
 
         out.println("Please pick a card and number of cards:");
         String cardSymbol = "";
@@ -117,7 +117,7 @@ public class PresidentPlayer extends GameClient {
 
     }
 
-    private boolean isInputValid(String symbol, String numberOfCardsPlayed, PresidentCard cardToAssist, int numberOfCardsToAssist) {
+    private boolean isInputValid(String symbol, String numberOfCardsPlayed, PCard cardToAssist, int numberOfCardsToAssist) {
 
         if (!symbolIsValid(symbol)) {
             out.println("That's not a valid card, choose other");
@@ -140,17 +140,17 @@ public class PresidentPlayer extends GameClient {
 
     }
 
-    private boolean compareCards(String symbol, String numberOfCardsPlayed, PresidentCard cardToAssist, int numberOfCardsToAssist) {
+    private boolean compareCards(String symbol, String numberOfCardsPlayed, PCard cardToAssist, int numberOfCardsToAssist) {
 
         System.out.println("Inside compareCards.");
         System.out.println("\nsymbol is -> " + symbol + "\nnumberOfCardsPlayed is -> " + numberOfCardsPlayed + "\ncardToAssist is:\n" + cardToAssist.getRepresentation() + "\nnumberOfCardsToAssist -> " + numberOfCardsToAssist);
 
         System.out.println(" is higher to "+  cardToAssist.getValue().ordinal());
 
-        if (PresidentCards.valueOf(symbol).ordinal() >  cardToAssist.getValue().ordinal()) {//TODO: BUG is here
+        if (PCardValues.getCardValue(symbol).ordinal() >  cardToAssist.getValue().ordinal()) {//TODO: BUG is here
 
             System.out.println("Inside first If");
-            out.println(" choose a higher card than " + symbol + " and played " + cardToAssist.getValue());
+            out.println("you must choose a higher card than " + symbol + " and played " + cardToAssist.getValue());
             return false;
         }
 
@@ -168,7 +168,7 @@ public class PresidentPlayer extends GameClient {
         return true;
     }
 
-    private LinkedList<PresidentCard> getFirstPlayerCards() {
+    private LinkedList<PCard> getFirstPlayerCards() {
 
         out.println("Please pick a card and number of cards:");
         String symbol = "";
@@ -217,21 +217,21 @@ public class PresidentPlayer extends GameClient {
         return passed;
     }
 
-    private LinkedList<PresidentCard> updateHand(String cardSymbol, String numberOfCardsPlayed) {
+    private LinkedList<PCard> updateHand(String cardSymbol, String numberOfCardsPlayed) {
 
-        LinkedList<PresidentCard> cardsPlayed = new LinkedList<>();
+        LinkedList<PCard> cardsPlayed = new LinkedList<>();
 
         int counter = 0;
         int iterator = 0;
 
-        for (PresidentCard card : hand) {
+        for (PCard card : hand) {
 
             System.out.println("trying to remove " + cardSymbol+"times "+Integer.parseInt(numberOfCardsPlayed));
 
             if (card.getValue().getValue().equals(cardSymbol) &&
                     counter <= Integer.parseInt(numberOfCardsPlayed)) {
 
-                PresidentCard toRemove = hand.remove(iterator);
+                PCard toRemove = hand.remove(iterator);
                 cardsPlayed.add(toRemove);
                 counter++;
                 System.out.println("removed card "+ cardSymbol);
@@ -275,7 +275,7 @@ public class PresidentPlayer extends GameClient {
 
         int counter = 0;
 
-        for (PresidentCard card : hand) {
+        for (PCard card : hand) {
 
             if (card.getValue().getValue().equals(symbol)) {
 
@@ -302,9 +302,9 @@ public class PresidentPlayer extends GameClient {
 
     private boolean symbolIsValid(String value) {
 
-        for (int i = 0; i < PresidentCards.values().length; i++) {
+        for (int i = 0; i < PCardValues.values().length; i++) {
 
-            if (PresidentCards.values()[i].getValue().equals(value)) {
+            if (PCardValues.values()[i].getValue().equals(value)) {
                 return true;
             }
         }
@@ -335,7 +335,7 @@ public class PresidentPlayer extends GameClient {
         return name;
     }
 
-    public void receiveCard(PresidentCard card) {
+    public void receiveCard(PCard card) {
 
         hand.add(card);
         organizeHand();
@@ -343,7 +343,7 @@ public class PresidentPlayer extends GameClient {
 
     private void organizeHand() {
 
-        LinkedList<PresidentCard> orderedHand = (LinkedList<PresidentCard>) this.hand;
+        LinkedList<PCard> orderedHand = (LinkedList<PCard>) this.hand;
 
         for (int i = 0; i < orderedHand.size(); i++) {
 
@@ -363,10 +363,10 @@ public class PresidentPlayer extends GameClient {
 
     public boolean hasThreeOfClubs() {
 
-        for (PresidentCard card : hand) {
+        for (PCard card : hand) {
 
-            if (card.getValue().equals(PresidentCards.THREE)
-                    && card.getSuit().equals(PresidentSuit.CLUBS)) {
+            if (card.getValue().equals(PCardValues.THREE)
+                    && card.getSuit().equals(PCardSuits.CLUBS)) {
                 return true;
             }
 
@@ -376,7 +376,7 @@ public class PresidentPlayer extends GameClient {
     }
 
 
-    public List<PresidentCard> getHand() {
+    public List<PCard> getHand() {
         return hand;
     }
 }

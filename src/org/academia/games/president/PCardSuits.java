@@ -1,6 +1,6 @@
 package org.academia.games.president;
 
-public enum PresidentSuit {
+public enum PCardSuits {
     SPADES("\u2660"),
     DIAMONDS("\u001B[31m"+"\u2666"+"\u001B[0m"),
     HEARTS("\u001B[31m" +"\u2764" +"\u001B[0m"),
@@ -9,7 +9,7 @@ public enum PresidentSuit {
 
     private String symbol;
 
-    PresidentSuit(String symbol) {
+    PCardSuits(String symbol) {
         this.symbol = symbol;
     }
 

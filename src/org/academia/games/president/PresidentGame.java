@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class PresidentGame implements Runnable {
 
-    private LinkedList<PresidentCard> deck = new LinkedList<>();
+    private LinkedList<PCard> deck = new LinkedList<>();
     private LinkedList<PresidentPlayer> players;
     private PresidentPlayer firstPlayer;
     private int playersInGame;
@@ -39,7 +39,7 @@ public class PresidentGame implements Runnable {
 
         int playersInGame = players.size();
         showHands();
-        LinkedList<PresidentCard> playedCards;
+        LinkedList<PCard> playedCards;
 
         while (!gameFinished(playersInGame)) {
 
@@ -48,7 +48,7 @@ public class PresidentGame implements Runnable {
 
             playedCards = firstPlayer.firstPlay();
             showPlay(playedCards);
-            PresidentCard cardValue = playedCards.getFirst();
+            PCard cardValue = playedCards.getFirst();
 
             int numberOfCards = playedCards.size();
 
@@ -142,13 +142,13 @@ public class PresidentGame implements Runnable {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 1; j < 14; j++) {
-                deck.add(new PresidentCard(PresidentSuit.values()[i], PresidentCards.values()[j]));
+                deck.add(new PCard(PCardSuits.values()[i], PCardValues.values()[j]));
             }
         }
 
         // creating the 2 jokers
-        deck.add(new PresidentCard());
-        deck.add(new PresidentCard());
+        deck.add(new PCard());
+        deck.add(new PCard());
     }
 
     private void distributeHands() {
@@ -185,7 +185,7 @@ public class PresidentGame implements Runnable {
     }
 
 
-    public void showPlay(LinkedList<PresidentCard> playedCards) {
+    public void showPlay(LinkedList<PCard> playedCards) {
 
         String played = "";
 

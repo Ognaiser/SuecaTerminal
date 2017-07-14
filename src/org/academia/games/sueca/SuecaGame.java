@@ -222,7 +222,7 @@ public class SuecaGame implements Game, Runnable {
 
 
         }
-        System.out.println("Winner PresidentCard is \n " + winnerSuecaCard.getRepresentation());
+        System.out.println("Winner PCard is \n " + winnerSuecaCard.getRepresentation());
 
         return getIndex(turnSuecaCards, winnerSuecaCard);
     }

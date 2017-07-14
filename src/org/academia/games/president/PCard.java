@@ -1,54 +1,62 @@
 package org.academia.games.president;
 
-public class PresidentCard {
+public class PCard {
 
-    private PresidentSuit suit;
-    private PresidentCards value;
+    private PCardSuits suit;
+    private PCardValues value;
 
-    public PresidentCard(PresidentSuit suit, PresidentCards value) {
+    public PCard(PCardSuits suit, PCardValues value) {
         this.suit = suit;
         this.value = value;
     }
 
-    public PresidentCard() {
-        this.suit = PresidentSuit.JOCKER;
-        this.value = PresidentCards.JOKER;
+    public PCard() {
+        this.suit = PCardSuits.JOCKER;
+        this.value = PCardValues.JOKER;
     }
 
 
-    public PresidentSuit getSuit() {
+    public PCardSuits getSuit() {
         return suit;
     }
 
-    public PresidentCards getValue() {
+    public PCardValues getValue() {
         return value;
     }
 
+
+    public String getSuitSymbol() {
+        return suit.getSymbol();
+    }
+
+    public String getValueSymbol() {
+        return value.getValue();
+    }
 
     public String getHandRep() {
 
 
         if (value.getValue().equals("Joker")) {
 
-            return  "┌───────┐"+":"+
-                    "│"+ value.getValue()+ suit.getSymbol()+" │:"+
-                    "│       │" +":"+
-                    "│   "+ suit.getSymbol()+"   │" +":"+
-                    "│       │" +":"+
-                    "│ "+ suit.getSymbol()+ value.getValue()+"│" +":"+
+            return "┌───────┐" + ":" +
+                    "│" + value.getValue() + suit.getSymbol() + " │:" +
+                    "│       │" + ":" +
+                    "│   " + suit.getSymbol() + "   │" + ":" +
+                    "│       │" + ":" +
+                    "│ " + suit.getSymbol() + value.getValue() + "│" + ":" +
                     "└───────┘";
 
         }
 
         if (value.getValue().equals("10")) {
 
-        return  "┌───────┐"+":"+
-                "│"+ value.getValue()+ suit.getSymbol()+"    │:"+
-                "│       │" +":"+
-                "│   "+ suit.getSymbol()+"   │" +":"+
-                "│       │" +":"+
-                "│    "+ suit.getSymbol()+ value.getValue()+"│" +":"+
-                "└───────┘";
+            return "┌───────┐" + ":" +
+                    "│" + value.getValue() + suit.getSymbol() + "    │:" +
+                    "│       │" + ":" +
+                    "│   " + suit.getSymbol() + "   │" + ":" +
+                    "│       │" + ":" +
+                    "│    " + suit.getSymbol() + value.getValue() + "│" + ":" +
+                    "└───────┘";
 
         }
 
