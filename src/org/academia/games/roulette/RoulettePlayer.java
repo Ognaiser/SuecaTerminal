@@ -39,7 +39,7 @@ public class RoulettePlayer extends GameClient {
         while (!validPlay) {
 
             out.println();
-            out.println("Please chose your betValue from the following options:");
+            out.println("Please chose your bet from the following options:");
             out.println(" Number 0  |  Number [1-36]  |  BLACK  |  RED  |  ODD  |  EVEN  |  UP [1-18] |  DOWN [19-36] | 1st Dozen [1-12] |  2nd Dozen [13-24] | 3rd Dozen [25-36]");
             out.println("    0              1              2        3       4       5          6              7                 8                   9                  10    ");
 
@@ -63,7 +63,7 @@ public class RoulettePlayer extends GameClient {
 
             out.println();
             out.println("Your chips: " + getChips());
-            out.println("How many chips you want to betValue? ");
+            out.println("How many chips you want to bet? ");
 
             try {
                 validAmount = validateAmount(in.readLine());
@@ -81,20 +81,18 @@ public class RoulettePlayer extends GameClient {
 
     private boolean validateAmount(String amount) {
 
-        int number;
-
         try {
-            number = Integer.parseInt(amount);
+            betValue = Integer.parseInt(amount);
         } catch (NumberFormatException nfe) {
             return false;
         }
 
-        if (getChips() < number) {
+        if (getChips() < betValue) {
             return false;
         }
 
-        removeChips(number);
-        out.println(" You betValue is : " + getChips() + " chips!");
+        removeChips(betValue);
+        out.println(" Your bet is : " + betValue + " chips!");
         return true;
     }
 
@@ -174,10 +172,11 @@ public class RoulettePlayer extends GameClient {
 
         while (true) {
 
-            out.println("Do you want to continue? (y/n)");
+            out.println("Do you want to exit? (y/n)");
 
             try {
                 option = in.readLine();
+
             } catch (IOException e) {
                 System.err.println("Error: " + e.getMessage());
                 System.exit(1);
