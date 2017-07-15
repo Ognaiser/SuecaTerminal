@@ -1,6 +1,10 @@
 package org.academia.games.president;
 
 
+//TODO: Implement the logic: Joker beats all
+//TODO: Reorganize players (higher card wins the turn)
+//TODO: Player with 3 of Clubs starts to play the game
+
 import java.util.LinkedList;
 
 public class PresidentGame implements Runnable {
@@ -74,7 +78,8 @@ public class PresidentGame implements Runnable {
         //numberOfPlayersInGame = playersInGame.size();
         printStartingHands();
         LinkedList<PCard> stackOfPlayedCards = null;
-        PCard lastCardPlayed;
+        LinkedList<PCard> lastPlayedCards = null;
+        PCard cardPlayedBefore;
         int numberOfCards = 0;
 
         while (!gameFinished(numberOfPlayersInGame)) {
@@ -95,14 +100,20 @@ public class PresidentGame implements Runnable {
 
                 }
                 else {
+                    System.out.println("Assisting play now");
 
-                    lastCardPlayed = stackOfPlayedCards.peek();
-                    stackOfPlayedCards = player.assistPlay(lastCardPlayed,numberOfCards);
+                    cardPlayedBefore = stackOfPlayedCards.peek();
+                    lastPlayedCards = player.assistPlay(cardPlayedBefore,numberOfCards);
+
+                    if(lastPlayedCards == null){
+                        continue;
+                    }
+
+                    stackOfPlayedCards.addAll(lastPlayedCards);
 
                 }
 
-                sendAll(player.getName() + " played: \n\r" + stackOfPlayedCards.peek().getRepresentation());
-                //showPlay(stackOfPlayedCards);
+                showPlay(player,stackOfPlayedCards, numberOfCards);
 
                 if (player.getHand().size() == 0){
 
@@ -112,23 +123,6 @@ public class PresidentGame implements Runnable {
 
                 }
             }
-
-            /*for (int i = 1; i < this.playersInGame.size(); i++) {
-
-                System.out.println("Player assisting -> " + this.playersInGame.get(i).getName());
-
-                stackOfPlayedCards = this.playersInGame.get(i).assistPlay(lastCardPlayed, numberOfCards);
-                showPlay(stackOfPlayedCards);
-                System.out.println("After calling assistPlay()");
-
-                if (this.playersInGame.get(i).getHand().size() == 0) {
-
-                    showResult(this.playersInGame.get(i));
-
-                    playersInGame--;
-                }
-
-            } */
 
         }
 
@@ -182,7 +176,7 @@ public class PresidentGame implements Runnable {
             return;
         }
 
-        player.sendMessage("You in a neutral position on the political landscape");
+        player.sendMessage("You are in a neutral position on the political landscape");
         numberOfPlayersInGame--;
     }
 
@@ -207,18 +201,25 @@ public class PresidentGame implements Runnable {
         player.receiveCard(deck.remove(randomCard));
     }
 
-    private void showPlay(LinkedList<PCard> playedCards) {
+    private void showPlay(PresidentPlayer player, LinkedList<PCard> stackOfPlayedCards, int numberOfCardsPlayed) {
 
-        String played = "";
+        String cardsToShow = "";
+        int index = 1;
+        System.out.println("Showing played cards now.");
 
-        for (int line = 0; line < 7; line++) {
-            for (int i = 0; i < playedCards.size(); i++) {
-                played += playedCards.get(i).getHandRep().split(":")[line];
-                played += " ";
-            }
+        while (index <= numberOfCardsPlayed){
+            int cardIndex = stackOfPlayedCards.size() - index;
+            System.out.println("Size is -> " + stackOfPlayedCards.size());
+            System.out.println("card Index is -> " + cardIndex);
+            System.out.println("going to concatenate strings");
+            System.out.println("Card is: " + stackOfPlayedCards.get(cardIndex).getRepresentation());
 
-            sendAll("one play" + played);
+            cardsToShow = cardsToShow.concat(stackOfPlayedCards.get(cardIndex).getRepresentation() + "\n");
+            index++;
+
         }
+        System.out.println("Played cards: \r\n" +cardsToShow);
+        sendAll(player.getName() + " played: \n\r" + cardsToShow);
 
     }
 

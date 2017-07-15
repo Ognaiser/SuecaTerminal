@@ -36,52 +36,52 @@ public class PCard {
     public String getHandRep() {
 
 
-        if (value.getValue().equals("Joker")) {
+        if (getValueSymbol().equals("Joker")) {
 
             return "┌───────┐" + ":" +
-                    "│" + value.getValue() + suit.getSymbol() + " │:" +
+                    "│" + getValueSymbol() + "  │:" +
                     "│       │" + ":" +
-                    "│   " + suit.getSymbol() + "   │" + ":" +
+                    "│   " + getSuitSymbol() + "   │" + ":" +
                     "│       │" + ":" +
-                    "│ " + suit.getSymbol() + value.getValue() + "│" + ":" +
+                    "│ " + getValueSymbol() + " │" + ":" +
                     "└───────┘";
 
         }
 
-        if (value.getValue().equals("10")) {
+        if (getValueSymbol().equals("10")) {
 
             return "┌───────┐" + ":" +
-                    "│" + value.getValue() + suit.getSymbol() + "    │:" +
+                    "│" + getValueSymbol() + getSuitSymbol() + "    │:" +
                     "│       │" + ":" +
-                    "│   " + suit.getSymbol() + "   │" + ":" +
+                    "│   " + getSuitSymbol() + "   │" + ":" +
                     "│       │" + ":" +
-                    "│    " + suit.getSymbol() + value.getValue() + "│" + ":" +
+                    "│    " + getSuitSymbol() + getValueSymbol() + "│" + ":" +
                     "└───────┘";
 
         }
 
         return "┌───────┐" + ":" +
-                "│" + value.getValue() + suit.getSymbol() + "     │:" +
+                "│" + getValueSymbol() + getSuitSymbol() + "     │:" +
                 "│       │" + ":" +
-                "│   " + suit.getSymbol() + "   │" + ":" +
+                "│   " + getSuitSymbol() + "   │" + ":" +
                 "│       │" + ":" +
-                "│     " + suit.getSymbol() + value.getValue() + "│" + ":" +
+                "│     " + getSuitSymbol() + getValueSymbol() + "│" + ":" +
                 "└───────┘";
 
     }
 
     public String getRepresentation() {
         return "┌───────┐" + "\r\n" +
-                "│" + value.getValue() + suit.getSymbol() + "     │" + "\r\n" +
+                "│" + getValueSymbol() + getSuitSymbol() + "     │" + "\r\n" +
                 "│       │" + "\r\n" +
-                "│   " + suit.getSymbol() + "   │" + "\r\n" +
+                "│   " + getSuitSymbol() + "   │" + "\r\n" +
                 "│       │" + "\r\n" +
-                "│     " + suit.getSymbol() + value.getValue() + "│" + "\r\n" +
+                "│     " + getSuitSymbol() + getValueSymbol() + "│" + "\r\n" +
                 "└───────┘";
     }
 
     @Override
     public String toString() {
-        return suit.getSymbol() + value.getValue();
+        return getSuitSymbol() + getValueSymbol();
     }
 }

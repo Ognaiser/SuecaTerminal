@@ -77,8 +77,8 @@ public class PresidentPlayer extends GameClient {
     private LinkedList<PCard> getAssistingPlayerCards(PCard cardToAssist, int numberOfCardsToAssist) {
 
         out.println("Please pick a card and number of cards:");
-        String cardSymbol = "";
-        String numberOfCardsPlayed = "0";
+        String firstString = "";
+        String secondString = "0";
 
         passed = false;
 
@@ -91,16 +91,14 @@ public class PresidentPlayer extends GameClient {
                 return null;
             }
 
-            cardSymbol = input.split(" ")[0];
-            numberOfCardsPlayed = input.split(" ")[1];
+            firstString = input.split(" ")[0];
+            secondString = input.split(" ")[1];
 
 
-
-            if (!isInputValid(cardSymbol, numberOfCardsPlayed, cardToAssist, numberOfCardsToAssist)) {
-                numberOfCardsPlayed = "0";
+            if (!isInputValid(firstString, secondString, cardToAssist, numberOfCardsToAssist)) {
                 validPlay = false;
-
                 return null;
+
             } else {
 
                 validPlay = true;
@@ -117,24 +115,23 @@ public class PresidentPlayer extends GameClient {
 
         System.out.println("Going to update hand");
 
-        return updateHand(cardSymbol, numberOfCardsPlayed);
+        return updateHand(firstString, secondString);
 
     }
 
-    private boolean isInputValid(String symbol, String numberOfCardsPlayed, PCard cardToAssist, int numberOfCardsToAssist) {
+    private boolean isInputValid(String firstString, String secondString, PCard cardToAssist, int numberOfCardsToAssist) {
 
-        if (!symbolIsValid(symbol)) {
-            out.println("That's not a valid card, choose other");
+        if (!symbolIsValid(firstString)) {
+            out.println("That's not a valid card, choose another");
             return false;
         }
 
-        if (!playerHasCards(symbol, numberOfCardsPlayed)) {
-            out.println("you dont have that many cards");
+        if (!playerHasCards(firstString, secondString)) {
+            out.println("You don't have that many cards!");
             return false;
         }
 
-
-        if (!compareCards(symbol, numberOfCardsPlayed, cardToAssist, numberOfCardsToAssist)) {
+        if (!compareCards(firstString, secondString, cardToAssist, numberOfCardsToAssist)) {
             return false;
 
         }
@@ -149,19 +146,19 @@ public class PresidentPlayer extends GameClient {
         System.out.println("Inside compareCards.");
         System.out.println("\nsymbol is -> " + symbol + "\nnumberOfCardsPlayed is -> " + numberOfCardsPlayed + "\ncardToAssist is:\n" + cardToAssist.getRepresentation() + "\nnumberOfCardsToAssist -> " + numberOfCardsToAssist);
 
-        System.out.println(" is higher to "+  cardToAssist.getValue().ordinal());
+        System.out.println(" is higher to " + cardToAssist.getValue().ordinal());
 
-        if (PCardValues.getCardBySymbol(symbol).ordinal() >  cardToAssist.getValue().ordinal()) {//TODO: BUG is here
+        if (PCardValues.getCardBySymbol(symbol).ordinal() > cardToAssist.getValue().ordinal()) {
 
             System.out.println("Inside first If");
-            out.println("you must choose a higher card than " + symbol + " and played " + cardToAssist.getValue());
+            out.println("You played " + symbol + " which is not high enough\nYou must choose a card higher than " + cardToAssist.getValueSymbol());
             return false;
         }
 
 
-        if (Integer.parseInt(numberOfCardsPlayed) != numberOfCardsToAssist ) {
+        if (Integer.parseInt(numberOfCardsPlayed) != numberOfCardsToAssist) {
             System.out.println("Inside second If");
-            out.println("You need to play " + numberOfCardsToAssist + "cards and played only " + numberOfCardsPlayed);
+            out.println("You need to play " + numberOfCardsToAssist + " equal cards and higher than " + cardToAssist.getValueSymbol());
             return false;
         }
 
@@ -216,38 +213,37 @@ public class PresidentPlayer extends GameClient {
 
         passed = input.equals("pass");
         System.out.println(name + " has passed? " + passed);
+        validPlay = true;
         return passed;
     }
 
+    //TODO: Bug is here. Doesn't remove more than one card!
     private LinkedList<PCard> updateHand(String cardSymbol, String numberOfCardsPlayed) {
 
         LinkedList<PCard> cardsPlayed = new LinkedList<>();
-
         int numberOfRemovedCards = 0;
         int numberOfCardsToRemove = Integer.parseInt(numberOfCardsPlayed);
         int cardIndex;
 
         System.out.println("Trying to remove " + numberOfCardsToRemove + " card(s) " + cardSymbol);
 
-        for (PCard card : hand) {
+        while (numberOfRemovedCards < numberOfCardsToRemove) {
 
-            /*if (numberOfRemovedCards == numberOfCardsToRemove){
-                return cardsPlayed;
-            }*/
+            for (PCard card : hand) {
 
-            if (card.getValueSymbol().equals(cardSymbol) &&
-                    numberOfRemovedCards < numberOfCardsToRemove) {
+                System.out.println("Looking to ->" + card.toString() + "| In position " + hand.indexOf(card));
 
-                cardIndex = hand.indexOf(card);
-                PCard toRemove = hand.remove(cardIndex);
-                cardsPlayed.add(toRemove);
+                if (card.getValueSymbol().equals(cardSymbol) ) {
 
-                numberOfRemovedCards++;
-                System.out.println("removed card(s) "+ cardsPlayed.toString());
-                System.out.println("Last card of hand is -> " + hand.get(hand.size()).toString()); //TODO: Bug is here. Doesn't remove more than one card!
+                    cardIndex = hand.indexOf(card);
+                    PCard toRemove = hand.remove(cardIndex);
+                    cardsPlayed.add(toRemove);
 
+                    numberOfRemovedCards++;
+                    System.out.println("removed card(s) " + cardsPlayed.toString());
+                    break;
+                }
             }
-
         }
 
         System.out.println("cards played " + cardsPlayed.toString());
