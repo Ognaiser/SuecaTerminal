@@ -29,7 +29,7 @@ public enum PCardValues {
         return value;
     }
 
-    public static PCardValues getCardValue(String symbol){
+    public static PCardValues getCardBySymbol(String symbol){
         switch (symbol) {
             case "Joker":
                 return PCardValues.JOKER;

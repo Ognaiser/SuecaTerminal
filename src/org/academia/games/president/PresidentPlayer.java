@@ -26,7 +26,7 @@ public class PresidentPlayer extends GameClient {
     }
 
 
-    public void showHand() {
+    public void printHand() {
 
         for (int line = 0; line < 7; line++) {
             for (int i = 0; i < hand.size(); i++) {
@@ -36,18 +36,21 @@ public class PresidentPlayer extends GameClient {
             out.println();
         }
 
-        for (int i = 1; i <= hand.size(); i++) {
+       /* for (int i = 1; i <= hand.size(); i++) {
             out.print("    " + i + "     ");
         }
-        out.println();
+        out.println();*/
     }
 
     public LinkedList<PCard> firstPlay() {
         LinkedList<PCard> cardsPlayed = null;
+        validPlay = false;
+
+        System.out.println("Asking first player to pick card(s)");
 
         while (!isValidPlay()) {
 
-            showHand();
+            printHand();
             cardsPlayed = getFirstPlayerCards();
 
         }
@@ -59,10 +62,11 @@ public class PresidentPlayer extends GameClient {
     public LinkedList<PCard> assistPlay(PCard cardToAssist, int numberOfCards) {
 
         LinkedList<PCard> cardsPlayed = null;
+        validPlay = false;
 
         while (!isValidPlay()) {
             System.out.println("Inside while loop on assistPlay()");
-            showHand();
+            printHand();
             cardsPlayed = getAssistingPlayerCards(cardToAssist, numberOfCards);
 
         }
@@ -147,14 +151,13 @@ public class PresidentPlayer extends GameClient {
 
         System.out.println(" is higher to "+  cardToAssist.getValue().ordinal());
 
-        if (PCardValues.getCardValue(symbol).ordinal() >  cardToAssist.getValue().ordinal()) {//TODO: BUG is here
+        if (PCardValues.getCardBySymbol(symbol).ordinal() >  cardToAssist.getValue().ordinal()) {//TODO: BUG is here
 
             System.out.println("Inside first If");
             out.println("you must choose a higher card than " + symbol + " and played " + cardToAssist.getValue());
             return false;
         }
 
-        System.out.println("\n 1 - After first If");
 
         if (Integer.parseInt(numberOfCardsPlayed) != numberOfCardsToAssist ) {
             System.out.println("Inside second If");
@@ -162,7 +165,6 @@ public class PresidentPlayer extends GameClient {
             return false;
         }
 
-        System.out.println("\n 2 - After second If");
 
         System.out.println("returned true");
         return true;
@@ -213,7 +215,7 @@ public class PresidentPlayer extends GameClient {
     private boolean hasPassed(String input) {
 
         passed = input.equals("pass");
-        System.out.println(name + " has passed " + passed);
+        System.out.println(name + " has passed? " + passed);
         return passed;
     }
 
@@ -221,29 +223,31 @@ public class PresidentPlayer extends GameClient {
 
         LinkedList<PCard> cardsPlayed = new LinkedList<>();
 
-        int counter = 0;
-        int iterator = 0;
+        int numberOfRemovedCards = 0;
+        int numberOfCardsToRemove = Integer.parseInt(numberOfCardsPlayed);
+        int cardIndex;
+
+        System.out.println("Trying to remove " + numberOfCardsToRemove + " card(s) " + cardSymbol);
 
         for (PCard card : hand) {
 
-            System.out.println("trying to remove " + cardSymbol+"times "+Integer.parseInt(numberOfCardsPlayed));
-
-            if (card.getValue().getValue().equals(cardSymbol) &&
-                    counter <= Integer.parseInt(numberOfCardsPlayed)) {
-
-                PCard toRemove = hand.remove(iterator);
-                cardsPlayed.add(toRemove);
-                counter++;
-                System.out.println("removed card "+ cardSymbol);
-            }
-
-            if (counter == Integer.parseInt(numberOfCardsPlayed)){
+            /*if (numberOfRemovedCards == numberOfCardsToRemove){
                 return cardsPlayed;
+            }*/
+
+            if (card.getValueSymbol().equals(cardSymbol) &&
+                    numberOfRemovedCards < numberOfCardsToRemove) {
+
+                cardIndex = hand.indexOf(card);
+                PCard toRemove = hand.remove(cardIndex);
+                cardsPlayed.add(toRemove);
+
+                numberOfRemovedCards++;
+                System.out.println("removed card(s) "+ cardsPlayed.toString());
+                System.out.println("Last card of hand is -> " + hand.get(hand.size()).toString()); //TODO: Bug is here. Doesn't remove more than one card!
+
             }
 
-            iterator++;
-
-            System.out.println("counter -> " + counter + "\niterator -> " + iterator);
         }
 
         System.out.println("cards played " + cardsPlayed.toString());
@@ -270,8 +274,6 @@ public class PresidentPlayer extends GameClient {
     }
 
     private boolean playerHasCards(String symbol, String numberOfCards) {
-
-        System.out.println("Inside Player.playerHasCards");
 
         int counter = 0;
 
@@ -322,7 +324,7 @@ public class PresidentPlayer extends GameClient {
     }
 
 
-    public boolean isValidPlay() {
+    private boolean isValidPlay() {
         return validPlay;
     }
 
