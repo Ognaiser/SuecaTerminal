@@ -5,6 +5,8 @@ import java.util.List;
 
 public class RouletteGame implements Runnable {
 
+    //TODO: add wait message
+
     private List<RoulettePlayer> players = new ArrayList<>();
     private boolean isOver = false;
 
@@ -20,23 +22,34 @@ public class RouletteGame implements Runnable {
 
         while (true) {
 
-            if (players.size() == 0) {
+            synchronized (this) {
+                if (players.size() == 0) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        System.err.println("Error: " + e.getMessage());
+                        System.exit(1);
+                    }
+                }
+
+                askPlay();
+
+                number = RouletteOptions.values()[(int) (Math.random() * 36 + 1)];
+
+                showRound(number);
+
+                checkRound(number);
+
+                askOut();
+
                 try {
-                    wait();
+                    wait(10);
                 } catch (InterruptedException e) {
                     System.err.println("Error: " + e.getMessage());
+                    System.exit(1);
                 }
             }
 
-            askPlay();
-
-            number = RouletteOptions.values()[(int) (Math.random() * 36 + 1)];
-
-            showRound(number);
-
-            checkRound(number);
-
-            askOut();
 
         }
     }
@@ -131,12 +144,10 @@ public class RouletteGame implements Runnable {
         }
     }
 
-    public void addPlayer(RoulettePlayer client) {
-
+    public synchronized void addPlayer(RoulettePlayer client) {
         players.add(client);
         welcomeMsg(client);
-        // notifyAll();
-        run();
+        notifyAll();
     }
 
     private void welcomeMsg(RoulettePlayer client) {

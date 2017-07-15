@@ -50,6 +50,7 @@ public class CommandManager {
 
         handler.send("!help -> List all commands!");
         handler.send("!play sueca -> Play a game of sueca!");
+        handler.send("!play roulette -> Play a roulette");
         handler.send("!play president -> Play a game of president!");
     }
 

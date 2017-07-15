@@ -16,6 +16,9 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
+    //TODO: when someone is writing a name any one else can write!
+
+
     public static final int PORT = 8080;
     private ServerSocket ss;
     private List<ClientHandler> clientHandlers;
@@ -185,9 +188,9 @@ public class Server {
         }
 
         public void getBackToList(){
-            ClientHandler clien = new ClientHandler(client);
-            clientHandlers.add(clien);
-            pool.submit(clien);
+            ClientHandler newClient = new ClientHandler(client);
+            clientHandlers.add(newClient);
+            pool.submit(newClient);
         }
     }
 }
