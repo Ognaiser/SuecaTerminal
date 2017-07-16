@@ -7,8 +7,6 @@ import java.util.List;
 
 public class CommandManager {
 
-    //TODO: alow players to leave queue
-
     private List<Server.ClientHandler> clientHandlers ;
     private ClientDispatcher clientDispatcher = new ClientDispatcher();
 
@@ -26,6 +24,8 @@ public class CommandManager {
                 getChips(clientHandler);
                 break;
             case "!play sueca":
+                clientHandler.delete();
+                clientHandler.disconnect();
                 clientDispatcher.addToSuecaQueue(clientHandler);
                 break;
             case "!exit sueca":
@@ -40,6 +40,8 @@ public class CommandManager {
                 clientDispatcher.startRoulette(clientHandler);
                 break;
             case "!play president":
+                clientHandler.delete();
+                clientHandler.disconnect();
                 clientDispatcher.addToPresidentQueue(clientHandler);
                 break;
             case "!enter stripclub":
@@ -48,8 +50,8 @@ public class CommandManager {
                 clientDispatcher.enterClub(clientHandler);
                 break;
             case "!exit":
-                clientHandler.delete();
-                clientHandler.disconnect();
+                //clientHandler.delete();
+                //clientHandler.disconnect();
                 break;
             default:
                 defaultMsg(clientHandler);

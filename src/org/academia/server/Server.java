@@ -21,8 +21,6 @@ public class Server {
     private ExecutorService pool;
     private Map<String, String[]> hosts = new HashMap<>();
 
-    //TODO: prettify things
-
     public static void main(String[] args) throws IOException {
         Server server = new Server();
         server.init();
