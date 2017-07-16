@@ -53,6 +53,7 @@ public class PresidentPlayer extends GameClient {
 
             printHand();
             cardsPlayed = getFirstPlayerCards();
+            System.out.println("First player played");
 
         }
 
@@ -88,8 +89,7 @@ public class PresidentPlayer extends GameClient {
             String input = in.readLine(); // EXAMPLE 3 2
 
 
-            if (hasPassed(input)) {
-                sendMessage(this.name + " has passed.");
+            if (commandIsPass(input)) {
                 return null;
             }
 
@@ -145,27 +145,31 @@ public class PresidentPlayer extends GameClient {
 
     private boolean compareCards(String symbol, String numberOfCardsPlayed, PCard cardToAssist, int numberOfCardsToAssist) {
 
-        System.out.println("Inside compareCards.");
-        System.out.println("\nsymbol is -> " + symbol + "\nnumberOfCardsPlayed is -> " + numberOfCardsPlayed + "\ncardToAssist is:\n" + cardToAssist.getRepresentation() + "\nnumberOfCardsToAssist -> " + numberOfCardsToAssist);
-
-        System.out.println(" is higher to " + cardToAssist.getValue().ordinal());
 
         if (PCardValues.getCardBySymbol(symbol).ordinal() > cardToAssist.getValue().ordinal()) {
 
-            System.out.println("Inside first If");
             out.println("You played " + symbol + " which is not high enough\nYou must choose a card higher than " + cardToAssist.getValueSymbol());
             return false;
         }
 
+        if (symbol.equals(PCardValues.JOKER.getSymbol()) && Integer.parseInt(numberOfCardsPlayed) > 1){
+
+            out.println("You can play only one Joker, because the Joker beats everything!");
+            return false;
+        }
+
+        if (symbol.equals(PCardValues.JOKER.getSymbol()) && Integer.parseInt(numberOfCardsPlayed) == 1){
+            return true;
+        }
+
 
         if (Integer.parseInt(numberOfCardsPlayed) != numberOfCardsToAssist) {
-            System.out.println("Inside second If");
+
             out.println("You need to play " + numberOfCardsToAssist + " equal cards and higher than " + cardToAssist.getValueSymbol());
             return false;
         }
 
 
-        System.out.println("returned true");
         return true;
     }
 
@@ -181,7 +185,7 @@ public class PresidentPlayer extends GameClient {
 
             String input = in.readLine(); // EXAMPLE A 3
 
-            if (hasPassed(input)) {
+            if (commandIsPass(input)) {
                 return null;
             }
 
@@ -211,7 +215,7 @@ public class PresidentPlayer extends GameClient {
 
     }
 
-    private boolean hasPassed(String input) {
+    private boolean commandIsPass(String input) {
 
         passed = input.equals("pass");
         System.out.println(name + " has passed? " + passed);
@@ -226,13 +230,13 @@ public class PresidentPlayer extends GameClient {
         int numberOfCardsToRemove = Integer.parseInt(numberOfCardsPlayed);
         int cardIndex;
 
-        System.out.println("Trying to remove " + numberOfCardsToRemove + " card(s) " + cardSymbol);
+        //System.out.println("Trying to remove " + numberOfCardsToRemove + " card(s) " + cardSymbol);
 
         while (numberOfRemovedCards < numberOfCardsToRemove) {
 
             for (PCard card : hand) {
 
-                System.out.println("Looking to ->" + card.toString() + "| In position " + hand.indexOf(card));
+                //System.out.println("Looking to ->" + card.toString() + "| In position " + hand.indexOf(card));
 
                 if (card.getValueSymbol().equals(cardSymbol) ) {
 
@@ -276,7 +280,7 @@ public class PresidentPlayer extends GameClient {
 
         for (PCard card : hand) {
 
-            if (card.getValue().getValue().equals(symbol)) {
+            if (card.getValue().getSymbol().equals(symbol)) {
 
 
                 counter++;
@@ -303,7 +307,7 @@ public class PresidentPlayer extends GameClient {
 
         for (int i = 0; i < PCardValues.values().length; i++) {
 
-            if (PCardValues.values()[i].getValue().equals(value)) {
+            if (PCardValues.values()[i].getSymbol().equals(value)) {
                 return true;
             }
         }
@@ -361,5 +365,13 @@ public class PresidentPlayer extends GameClient {
 
     public List<PCard> getHand() {
         return hand;
+    }
+
+    public boolean hasPassed() {
+        return passed;
+    }
+
+    public void setPassed(boolean passed) {
+        this.passed = passed;
     }
 }
