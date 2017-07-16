@@ -45,6 +45,10 @@ public class CommandManager {
                 clientHandler.disconnect();
                 clientDispatcher.enterClub(clientHandler);
                 break;
+            case "!exit":
+                clientHandler.delete();
+                clientHandler.disconnect();
+                break;
             default:
                 defaultMsg(clientHandler);
                 break;
