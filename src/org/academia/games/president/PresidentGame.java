@@ -117,7 +117,7 @@ public class PresidentGame implements Runnable {
 
             boolean turnStart = true;
 
-            while (!allButOnePassed() || stackOfPlayedCards.peekLast().getValue().equals(PCardValues.JOKER)) {
+            while (!allButOnePassed() || stackOfPlayedCards.peek().getValue().equals(PCardValues.JOKER)) {
 
                 for (PresidentPlayer player : this.playersInGame) {
 
@@ -140,7 +140,7 @@ public class PresidentGame implements Runnable {
 
                         System.out.println("*********** Assisting play now");
 
-                        cardPlayedBefore = stackOfPlayedCards.peekLast();
+                        cardPlayedBefore = stackOfPlayedCards.peek();
                         lastPlayedCards = player.assistPlay(cardPlayedBefore, numberOfCards);
 
                         if (player.hasPassed()) {
@@ -178,7 +178,7 @@ public class PresidentGame implements Runnable {
             }
             System.out.println("Winner is -> " + winnerIndex);
             setFirstPlayer(winnerIndex);
-            resetPlayers();
+
         }
     }
 
