@@ -1,15 +1,16 @@
 package org.academia.games.president;
+
 import java.util.LinkedList;
 
 //TODO: Implement the logic: Joker beats all
 //TODO: Reorganize players (higher card wins the turn)
-//TODO: Player with 3 of Clubs starts to play the game
+//TODO:
+
 
 public class PresidentGame implements Runnable {
 
     private LinkedList<PCard> deck = new LinkedList<>();
     private LinkedList<PresidentPlayer> playersInGame;
-    private PresidentPlayer firstPlayer;
     private int numberOfPlayersInGame;
 
     public PresidentGame(LinkedList<PresidentPlayer> playersInGame) {
@@ -65,7 +66,6 @@ public class PresidentGame implements Runnable {
         for (int i = 0; i < playersInGame.size(); i++) {
 
             if (playersInGame.get(i).hasThreeOfClubs()) {
-                firstPlayer = playersInGame.get(i);
                 return i;
             }
         }
@@ -84,11 +84,12 @@ public class PresidentGame implements Runnable {
         for (int i = 0; i < playersInGame.size(); i++) {
 
             if (i == roundWinner) {
+                System.out.println("first player: " + playersInGame.get(i).getName());
                 return;
             }
 
             toRemove = playersInGame.removeFirst();
-            //System.out.println("\nto Remove -> " + toRemove.getName());
+            System.out.println("\nto Remove -> " + toRemove.getName());
             playersInGame.addLast(toRemove);
 
         }
@@ -98,20 +99,20 @@ public class PresidentGame implements Runnable {
     private void playGame() {
 
         //numberOfPlayersInGame = playersInGame.size();
+
         printStartingHands();
         LinkedList<PCard> stackOfPlayedCards = new LinkedList<>();
         LinkedList<PCard> lastPlayedCards;
-        PCard cardPlayedBefore;
+        PCard cardPlayedBefore; //TODO WTF IS THIS JOAAO???????????????????????????????????
         int numberOfCards = 0;
         int winnerIndex = -1;
 
         while (!gameFinished(numberOfPlayersInGame)) {
 
-            System.out.println("\n--New turn starting--");
-
-            firstPlayer = playersInGame.getFirst();
+            System.out.println("\n--------------------- New turn ------------------------");
 
             setFirstPlayer(getFirstPlayer());
+
             boolean turnStart = true;
 
             while (!allButOnePassed() || stackOfPlayedCards.peek().getValue().equals(PCardValues.JOKER)) {
@@ -122,48 +123,63 @@ public class PresidentGame implements Runnable {
                         continue;
                     }
 
-                    System.out.println("Who is playing? -> " + player.getName());
+                    System.out.println("\nWho is playing? -> " + player.getName());
 
-                    if (player.equals(firstPlayer) && turnStart) {
+                    if (turnStart) {
 
                         //stackOfPlayedCards = firstPlayer.firstPlay();
-                        lastPlayedCards = firstPlayer.firstPlay();
+                        lastPlayedCards = player.firstPlay();
+                        System.out.println("************ON FIRST PLAY");
                         numberOfCards = lastPlayedCards.size();
-                        System.out.println("Number of cards played -> " + numberOfCards);
+
+                        //System.out.println("Number of cards played -> " + numberOfCards);
+
                         turnStart = false;
+
                     } else {
-                        System.out.println("Assisting play now");
+
+                        System.out.println("*********** Assisting play now");
 
                         cardPlayedBefore = stackOfPlayedCards.peek();
                         lastPlayedCards = player.assistPlay(cardPlayedBefore, numberOfCards);
 
                         if (player.hasPassed()) {
                             sendAll(player.getName() + " has passed.");
+
+                            if (allButOnePassed()) {
+                                System.out.println("On breaking for");
+                                break;
+                            }
+
                             continue;
                         }
 
                     }
 
-                    winnerIndex = playersInGame.indexOf(player);
                     stackOfPlayedCards.addAll(lastPlayedCards);
 
                     showPlay(player, stackOfPlayedCards, numberOfCards);
 
-                    if (player.getHand().size() == 0) {
+                    winnerIndex = playersInGame.indexOf(player);
+                    System.out.println("round winner: ->->->->->" + winnerIndex);
 
+                    if (player.getHand().size() == 0) {
+                        System.out.println("Player has no more cards");
                         showResult(player);
                         playersInGame.remove(player);
                         break;
 
                     }
+
                 }
+
+                System.out.println("out of for loop");
 
             }
 
             setFirstPlayer(winnerIndex);
 
         }
-
     }
 
     private void returnToChat() {
@@ -187,7 +203,6 @@ public class PresidentGame implements Runnable {
         }
 
     }
-
 
     private void showResult(PresidentPlayer player) {
 
@@ -262,20 +277,27 @@ public class PresidentGame implements Runnable {
     }
 
     private boolean allButOnePassed() {
+
         int numberOfPlayersThatPassed = 0;
 
         for (PresidentPlayer player : playersInGame) {
-            System.out.println("checking if all but one passed " + player);
 
             if (player.hasPassed()) {
                 numberOfPlayersThatPassed++;
             }
 
+            //System.out.println("numberOfPlayersThatPassed : " + numberOfPlayersThatPassed + " && " + (playersInGame.size() - 1));
+
             if (numberOfPlayersThatPassed == playersInGame.size() - 1) {
                 resetPlayers();
+                System.out.println("all but one player have passed the turn");
                 return true;
             }
+
         }
+
+        System.out.println("still on this turn");
+
         return false;
     }
 

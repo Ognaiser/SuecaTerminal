@@ -23,7 +23,6 @@ public class PresidentPlayer extends GameClient {
         out.println("In President Game");
     }
 
-
     public void printHand() {
 
         for (int line = 0; line < 7; line++) {
@@ -67,7 +66,6 @@ public class PresidentPlayer extends GameClient {
         validPlay = false;
 
         while (!isValidPlay()) {
-            System.out.println("Inside while loop on assistPlay()");
             printHand();
             cardsPlayed = getAssistingPlayerCards(cardToAssist, numberOfCards);
 
@@ -245,7 +243,7 @@ public class PresidentPlayer extends GameClient {
                     cardsPlayed.add(toRemove);
 
                     numberOfRemovedCards++;
-                    System.out.println("removed card(s) " + cardsPlayed.toString());
+                    //System.out.println("removed card(s) " + cardsPlayed.toString());
                     break;
                 }
             }
