@@ -84,12 +84,12 @@ public class PresidentGame implements Runnable {
         for (int i = 0; i < playersInGame.size(); i++) {
 
             if (i == roundWinner) {
-                System.out.println("first player: " + playersInGame.get(i).getName());
+                //System.out.println("first player: " + playersInGame.get(i).getName());
                 return;
             }
 
             toRemove = playersInGame.removeFirst();
-            System.out.println("\nto Remove -> " + toRemove.getName());
+            //System.out.println("\nto Remove -> " + toRemove.getName());
             playersInGame.addLast(toRemove);
 
         }
@@ -102,7 +102,7 @@ public class PresidentGame implements Runnable {
 
         printStartingHands();
         LinkedList<PCard> stackOfPlayedCards;
-        LinkedList<PCard> lastPlayedCards;
+        LinkedList<PCard> lastPlayedCards = null;
         PCard cardPlayedBefore;
         int numberOfCards = 0;
         int winnerIndex = -1;
@@ -113,17 +113,18 @@ public class PresidentGame implements Runnable {
 
             System.out.println("\n--------------------- New turn ------------------------");
 
-
             stackOfPlayedCards = new LinkedList<>();
-
+            resetPlayers();
             boolean turnStart = true;
+            System.out.println("here");
 
-            while (!allButOnePassed() || stackOfPlayedCards.peekLast().getValue().equals(PCardValues.JOKER)) {
+            System.out.println("done");
+            while (!allButOnePassed()) {
 
                 for (PresidentPlayer player : this.playersInGame) {
 
                     if (player.hasPassed()) {
-                        System.err.println(player.getName()+" has passed");
+                        System.err.println(player.getName() + " has passed");
                         continue;
                     }
 
@@ -134,7 +135,6 @@ public class PresidentGame implements Runnable {
 
                         lastPlayedCards = player.firstPlay();
                         numberOfCards = lastPlayedCards.size();
-
 
                         turnStart = false;
 
@@ -148,6 +148,7 @@ public class PresidentGame implements Runnable {
                             sendAll(player.getName() + " has passed.");
 
                             if (allButOnePassed()) {
+
                                 System.out.println("ALL but one have passed");
                                 break;
                             }
@@ -158,23 +159,52 @@ public class PresidentGame implements Runnable {
                     stackOfPlayedCards.addAll(lastPlayedCards);
                     showPlay(player, stackOfPlayedCards, numberOfCards);
 
+                    if (cardPlayedIsJoker(lastPlayedCards.get(0))) {
+
+                        winnerIndex = playersInGame.indexOf(player);
+                        setFirstPlayer(winnerIndex);
+
+                        if (player.getHand().size() == 0) {
+
+                            System.out.println("Player has no more cards");
+                            showResult(player);
+                            playersInGame.remove(player);
+                        }
+
+                        break;
+                    }
+
                     winnerIndex = playersInGame.indexOf(player);
                     System.out.println("round winner: ->->->->->" + winnerIndex);
 
                     if (player.getHand().size() == 0) {
+
                         System.out.println("Player has no more cards");
                         showResult(player);
                         playersInGame.remove(player);
                         break;
                     }
                 }
+
+                if (cardPlayedIsJoker(stackOfPlayedCards.peekLast())) {
+                    break;
+                }
+
                 System.out.println("out of for loop");
             }
+            if (cardPlayedIsJoker(stackOfPlayedCards.peekLast())) {
 
-            System.out.println("Winner is -> " + winnerIndex);
-            setFirstPlayer(winnerIndex);
-            resetPlayers();
+                System.out.println("Winner is -> " + winnerIndex);
+                setFirstPlayer(winnerIndex);
+                resetPlayers();
+            }
         }
+    }
+
+    private boolean cardPlayedIsJoker(PCard pCard) {
+
+        return pCard.getValueSymbol().equals("Joker");
+
     }
 
     private void returnToChat() {
@@ -284,7 +314,6 @@ public class PresidentGame implements Runnable {
             //System.out.println("numberOfPlayersThatPassed : " + numberOfPlayersThatPassed + " && " + (playersInGame.size() - 1));
 
             if (numberOfPlayersThatPassed == playersInGame.size() - 1) {
-                resetPlayers();
                 System.out.println("all but one player have passed the turn");
                 return true;
             }
