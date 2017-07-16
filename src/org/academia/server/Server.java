@@ -1,5 +1,6 @@
 package org.academia.server;
 
+import org.academia.games.GameClient;
 import org.academia.server.serverClient.ClientPOJO;
 import org.academia.server.serverClient.CommandManager;
 
@@ -158,6 +159,7 @@ public class Server {
         private PrintWriter out;
         private BufferedReader in;
         private Socket socket;
+        private GameClient gameClient;
 
         public ClientHandler(ClientPOJO client) {
 
@@ -319,6 +321,22 @@ public class Server {
             ClientHandler newClient = new ClientHandler(client);
             clientHandlers.add(newClient);
             pool.submit(newClient);
+        }
+
+        public boolean isOnQueue() {
+            return client.isOnQueue();
+        }
+
+        public void setOnQueue(boolean onQueue) {
+            client.setOnQueue(onQueue);
+        }
+
+        public GameClient getGameClient() {
+            return gameClient;
+        }
+
+        public void setGameClient(GameClient gameClient) {
+            this.gameClient = gameClient;
         }
     }
 

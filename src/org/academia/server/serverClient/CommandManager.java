@@ -26,9 +26,13 @@ public class CommandManager {
                 getChips(clientHandler);
                 break;
             case "!play sueca":
-                clientHandler.disconnect();
-                clientHandler.delete();
                 clientDispatcher.addToSuecaQueue(clientHandler);
+                break;
+            case "!exit sueca":
+                clientDispatcher.removeFromSueca(clientHandler);
+                break;
+            case "!exit president":
+                clientDispatcher.removeFromPresident(clientHandler);
                 break;
             case "!play roulette":
                 clientHandler.delete();
@@ -36,8 +40,6 @@ public class CommandManager {
                 clientDispatcher.startRoulette(clientHandler);
                 break;
             case "!play president":
-                clientHandler.delete();
-                clientHandler.disconnect();
                 clientDispatcher.addToPresidentQueue(clientHandler);
                 break;
             case "!enter stripclub":

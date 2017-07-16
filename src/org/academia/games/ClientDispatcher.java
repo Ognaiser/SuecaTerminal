@@ -19,7 +19,7 @@ public class ClientDispatcher {
     private StripClub strip = new StripClub();
     private ExecutorService pool = Executors.newFixedThreadPool(25);
     private LinkedList<SuecaPlayer> suecaPlayerList = new LinkedList<>();
-    private LinkedList<PresidentPlayer> presidentPlayerList= new LinkedList<>();
+    private LinkedList<PresidentPlayer> presidentPlayerList = new LinkedList<>();
 
     public ClientDispatcher() {
         Thread rouletteGame = new Thread(this.rouletteGame);
@@ -30,12 +30,24 @@ public class ClientDispatcher {
 
     public void addToSuecaQueue(Server.ClientHandler clientHandler) {
 
-        suecaPlayerList.add(new SuecaPlayer(clientHandler.getClient()));
+        if (clientHandler.isOnQueue()) {
+            clientHandler.send("You are already on Queue!");
+            return;
+        }
 
-        suecaPlayerList.getLast().sendMessage("You left the lobby and entered SUECA GAME!");
-        suecaPlayerList.getLast().sendMessage("Waiting for more players......");
+        clientHandler.setOnQueue(true);
+        clientHandler.setGameClient(new SuecaPlayer(clientHandler.getClient()));
 
-        if (suecaPlayerList.size() == 4){
+        suecaPlayerList.add((SuecaPlayer) clientHandler.getGameClient());
+
+        clientHandler.send("Waiting for more players for Sueca......");
+
+        if (suecaPlayerList.size() == 4) {
+
+            for (GameClient client : suecaPlayerList) {
+                client.removeFromLobby();
+                client.removeFromQueue();
+            }
 
             SuecaGame game = new SuecaGame(suecaPlayerList);
             pool.submit(game);
@@ -43,24 +55,72 @@ public class ClientDispatcher {
         }
     }
 
-    public void startRoulette(Server.ClientHandler client){
+    public void removeFromSueca(Server.ClientHandler handler) {
+
+        if (!handler.isOnQueue()) {
+            handler.send("Not on queue!");
+            return;
+        }
+
+        if (handler.getGameClient() instanceof SuecaPlayer) {
+            suecaPlayerList.remove(handler.getGameClient());
+            handler.send("You left Queue!");
+            handler.setOnQueue(false);
+        } else {
+            handler.send("You are not on Queue For Sueca!");
+        }
+    }
+
+    public void startRoulette(Server.ClientHandler client) {
         rouletteGame.addPlayer(new RoulettePlayer(client.getClient()));
     }
 
-    public void enterClub(Server.ClientHandler clientHandler){
+    public void enterClub(Server.ClientHandler clientHandler) {
         strip.addPlayer(clientHandler);
     }
 
     public void addToPresidentQueue(Server.ClientHandler clientHandler) {
 
-        presidentPlayerList.add(new PresidentPlayer(clientHandler.getClient()));
+        if (clientHandler.isOnQueue()) {
+            clientHandler.send("You are already on Queue!");
+            return;
+        }
+
+
+        clientHandler.setOnQueue(true);
+        clientHandler.setGameClient(new PresidentPlayer(clientHandler.getClient()));
+
+        presidentPlayerList.add((PresidentPlayer) clientHandler.getGameClient());
 
         presidentPlayerList.getLast().sendMessage("Waiting for more players ......");
 
-        if (presidentPlayerList.size() == 3){
+        if (presidentPlayerList.size() == 3) {
+
+            for (PresidentPlayer client : presidentPlayerList) {
+                client.removeFromLobby();
+                client.removeFromQueue();
+            }
+
             PresidentGame game = new PresidentGame(presidentPlayerList);
             pool.submit(game);
             suecaPlayerList = new LinkedList<>();
         }
+    }
+
+    public void removeFromPresident(Server.ClientHandler handler) {
+
+        if (!handler.isOnQueue()) {
+            handler.send("Not on queue!");
+            return;
+        }
+
+        if (handler.getGameClient() instanceof PresidentPlayer) {
+            suecaPlayerList.remove(handler.getGameClient());
+            handler.send("You left Queue!");
+            handler.setOnQueue(false);
+        } else {
+            handler.send("You are not on Queue For President!");
+        }
+
     }
 }
