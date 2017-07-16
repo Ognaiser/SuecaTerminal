@@ -1,12 +1,9 @@
 package org.academia.games.president;
-
+import java.util.LinkedList;
 
 //TODO: Implement the logic: Joker beats all
 //TODO: Reorganize players (higher card wins the turn)
 //TODO: Player with 3 of Clubs starts to play the game
-//TODO:
-
-import java.util.LinkedList;
 
 public class PresidentGame implements Runnable {
 
@@ -64,66 +61,106 @@ public class PresidentGame implements Runnable {
         }
     }
 
-    private void getFirstPlayer() {
-        for (int i = 1; i < playersInGame.size(); i++) {
+    private int getFirstPlayer() {
+        for (int i = 0; i < playersInGame.size(); i++) {
 
             if (playersInGame.get(i).hasThreeOfClubs()) {
                 firstPlayer = playersInGame.get(i);
-                break;
+                return i;
             }
         }
+        return -1;
+    }
+
+    private void setFirstPlayer(int roundWinner) {
+
+        if (roundWinner == -1) {
+            System.out.println("Houston we have a problem on setting first player");
+        }
+
+        System.out.println("Winner is: " + playersInGame.get(roundWinner).getName());
+        PresidentPlayer toRemove;
+
+        for (int i = 0; i < playersInGame.size(); i++) {
+
+            if (i == roundWinner) {
+                return;
+            }
+
+            toRemove = playersInGame.removeFirst();
+            //System.out.println("\nto Remove -> " + toRemove.getName());
+            playersInGame.addLast(toRemove);
+
+        }
+
     }
 
     private void playGame() {
 
         //numberOfPlayersInGame = playersInGame.size();
         printStartingHands();
-        LinkedList<PCard> stackOfPlayedCards = null;
-        LinkedList<PCard> lastPlayedCards = null;
+        LinkedList<PCard> stackOfPlayedCards = new LinkedList<>();
+        LinkedList<PCard> lastPlayedCards;
         PCard cardPlayedBefore;
         int numberOfCards = 0;
+        int winnerIndex = -1;
 
         while (!gameFinished(numberOfPlayersInGame)) {
 
-            System.out.println("\n--New while loop starting--");
+            System.out.println("\n--New turn starting--");
 
             firstPlayer = playersInGame.getFirst();
 
-            for (PresidentPlayer player : this.playersInGame) {
+            setFirstPlayer(getFirstPlayer());
+            boolean turnStart = true;
 
-                System.out.println("Who is playing? -> " + player.getName());
+            while (!allButOnePassed() || stackOfPlayedCards.peek().getValue().equals(PCardValues.JOKER)) {
 
-                if (player.equals(firstPlayer)) {
+                for (PresidentPlayer player : this.playersInGame) {
 
-                    stackOfPlayedCards = firstPlayer.firstPlay();
-                    numberOfCards = stackOfPlayedCards.size();
-                    System.out.println("Number of cards played -> " + numberOfCards);
-
-                }
-                else {
-                    System.out.println("Assisting play now");
-
-                    cardPlayedBefore = stackOfPlayedCards.peek();
-                    lastPlayedCards = player.assistPlay(cardPlayedBefore,numberOfCards);
-
-                    if(lastPlayedCards == null){
+                    if (player.hasPassed()) {
                         continue;
                     }
 
+                    System.out.println("Who is playing? -> " + player.getName());
+
+                    if (player.equals(firstPlayer) && turnStart) {
+
+                        //stackOfPlayedCards = firstPlayer.firstPlay();
+                        lastPlayedCards = firstPlayer.firstPlay();
+                        numberOfCards = lastPlayedCards.size();
+                        System.out.println("Number of cards played -> " + numberOfCards);
+                        turnStart = false;
+                    } else {
+                        System.out.println("Assisting play now");
+
+                        cardPlayedBefore = stackOfPlayedCards.peek();
+                        lastPlayedCards = player.assistPlay(cardPlayedBefore, numberOfCards);
+
+                        if (player.hasPassed()) {
+                            sendAll(player.getName() + " has passed.");
+                            continue;
+                        }
+
+                    }
+
+                    winnerIndex = playersInGame.indexOf(player);
                     stackOfPlayedCards.addAll(lastPlayedCards);
 
+                    showPlay(player, stackOfPlayedCards, numberOfCards);
+
+                    if (player.getHand().size() == 0) {
+
+                        showResult(player);
+                        playersInGame.remove(player);
+                        break;
+
+                    }
                 }
 
-                showPlay(player,stackOfPlayedCards, numberOfCards);
-
-                if (player.getHand().size() == 0){
-
-                    showResult(player);
-                    playersInGame.remove(player);
-                    break;
-
-                }
             }
+
+            setFirstPlayer(winnerIndex);
 
         }
 
@@ -150,6 +187,7 @@ public class PresidentGame implements Runnable {
         }
 
     }
+
 
     private void showResult(PresidentPlayer player) {
 
@@ -205,23 +243,48 @@ public class PresidentGame implements Runnable {
     private void showPlay(PresidentPlayer player, LinkedList<PCard> stackOfPlayedCards, int numberOfCardsPlayed) {
 
         String cardsToShow = "";
-        int index = 1;
         System.out.println("Showing played cards now.");
 
-        while (index <= numberOfCardsPlayed){
-            int cardIndex = stackOfPlayedCards.size() - index;
-            System.out.println("Size is -> " + stackOfPlayedCards.size());
-            System.out.println("card Index is -> " + cardIndex);
-            System.out.println("going to concatenate strings");
-            System.out.println("Card is: " + stackOfPlayedCards.get(cardIndex).getRepresentation());
+        for (int line = 0; line < 7; line++) {
+            for (int i = stackOfPlayedCards.size() - numberOfCardsPlayed; i < stackOfPlayedCards.size(); i++) {
 
-            cardsToShow = cardsToShow.concat(stackOfPlayedCards.get(cardIndex).getRepresentation() + "\n");
-            index++;
-
+                cardsToShow = cardsToShow.concat(stackOfPlayedCards.get(i).getHandRep().split(":")[line]);
+                cardsToShow = cardsToShow.concat(" ");
+            }
+            cardsToShow = cardsToShow.concat("\r\n");
         }
-        System.out.println("Played cards: \r\n" +cardsToShow);
+
+        cardsToShow = cardsToShow.concat("\r\n");
+
+        System.out.println(player.getName() + "played cards: \r\n" + cardsToShow);
         sendAll(player.getName() + " played: \n\r" + cardsToShow);
 
     }
 
+    private boolean allButOnePassed() {
+        int numberOfPlayersThatPassed = 0;
+
+        for (PresidentPlayer player : playersInGame) {
+            System.out.println("checking if all but one passed " + player);
+
+            if (player.hasPassed()) {
+                numberOfPlayersThatPassed++;
+            }
+
+            if (numberOfPlayersThatPassed == playersInGame.size() - 1) {
+                resetPlayers();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void resetPlayers() {
+
+        for (PresidentPlayer player : playersInGame) {
+
+            player.setPassed(false);
+        }
+
+    }
 }
