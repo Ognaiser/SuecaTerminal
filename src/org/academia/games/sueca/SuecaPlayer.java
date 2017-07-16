@@ -38,7 +38,7 @@ public class SuecaPlayer extends GameClient {
             out.print("    " + i + "     ");
         }
         out.println();
-        out.println("Your Hand is ^");
+        out.println("Your Hand is: ");
     }
 
     public void assignNick() {

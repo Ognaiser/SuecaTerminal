@@ -91,7 +91,7 @@ public class RoulettePlayer extends GameClient {
         }
 
         removeChips(betValue);
-        out.println(" Your bet is : " + betValue + " chips!");
+        out.println("Your bet is : " + betValue + " chips!\n" + "JOGO FEITO, NADA MAIS...");
         return true;
     }
 

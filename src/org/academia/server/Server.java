@@ -129,8 +129,7 @@ public class Server {
     public void sendAll(String msg, String name) {
         for (ClientHandler handler : clientHandlers) {
             if (!handler.getClient().getName().equals(name)) {
-                handler.out.println();
-                handler.out.println(name + " said: " + msg);
+                handler.out.println("\n" + name + " said -->  " + msg + "\n");
                 handler.out.print("Say:");
                 handler.out.flush();
             }
@@ -211,6 +210,7 @@ public class Server {
 
         public void askNick() {
 
+
             boolean validChoice = false;
             String name = "";
 
@@ -252,6 +252,7 @@ public class Server {
         public void run() {
 
             if (client.getName() == null) {
+
                 if (!checkKnow(socket.getInetAddress().getHostAddress())) {
                     askNick();
                     addToKnow(socket.getInetAddress().getHostAddress(), client.getName(), 500);

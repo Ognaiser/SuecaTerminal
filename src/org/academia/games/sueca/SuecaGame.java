@@ -103,7 +103,7 @@ public class SuecaGame implements Game, Runnable {
 
         greetPlayer();
 
-        sendAll("Trump is: \r\n" + trump.getRepresentation() + "\n\r");
+        sendAll("The TRUMP is: \r\n" + trump.getRepresentation() + "\n\r");
 
         showHands();
 
@@ -122,7 +122,7 @@ public class SuecaGame implements Game, Runnable {
                         waived = true;
                         break;
                     }else{
-                        player.out.println("the player has not waived you cant accuse anymore!");
+                        player.out.println("The player has not waived! Now you cant accuse anymore!");
                         turnSuecaCard = player.play();
                     }
                 }
@@ -130,9 +130,7 @@ public class SuecaGame implements Game, Runnable {
 
                 if (turnPlayer != 0 && !validCard(turnSuecaCard, turnSuecaCards[0], player)) {
                     player.hasCheated();
-                    System.out.println("player " + player + " has cheated");
                 }
-
 
                 sendAll(player.getName() + " played: \n\r" + turnSuecaCard.getRepresentation());
 
@@ -142,10 +140,13 @@ public class SuecaGame implements Game, Runnable {
 
             if (!waived) {
                 int winner = getWinner(turnSuecaCards);
-                players.get(winner).addScore(turnSuecaCards);
+                SuecaPlayer winningPlayer = players.get(winner);
+
+                winningPlayer.addScore(turnSuecaCards);
                 setFirstPlayer(winner);
 
-                sendAll("______________________________" + turn + "__________________________________");
+                sendAll("THE WINNER OF TURN " + turn + " IS -->  " + winningPlayer.getName() + "\r\n" +
+                        "______________________________" + turn + "__________________________________");
 
                 turn++;
 
@@ -211,7 +212,6 @@ public class SuecaGame implements Game, Runnable {
 
             winnerSuecaCard = compareCards(winnerSuecaCard, turnSuecaCards[playerCard]);
 
-
         }
         System.out.println("Winner PCard is \n " + winnerSuecaCard.getRepresentation());
 
@@ -227,7 +227,7 @@ public class SuecaGame implements Game, Runnable {
                 index = i;
             }
         }
-        System.out.println("Index of winner card is: " + index);
+
         return index;
     }
 
@@ -279,16 +279,19 @@ public class SuecaGame implements Game, Runnable {
     private void showScore() {
 
         String scoreText = "";
+        String firstTeam = players.get(0).getName() + " and " + players.get(2).getName();
+        String secondTeam = players.get(1).getName() + " and " + players.get(3).getName();
 
         if (cheaterPlayer == null) {
 
             int team1 = players.get(0).getScore() + players.get(2).getScore();
             int team2 = players.get(1).getScore() + players.get(3).getScore();
 
+
             scoreText = "FINAL SCORE:\n" +
-                    "TEAM 1 - " + players.get(0).getName() + " and " + players.get(2).getName() + ":\n" +
+                    "TEAM 1 - " + firstTeam + ":\n" +
                     team1 + "\n ____________________________________________\n" +
-                    "TEAM 2 - " + players.get(1).getName() + " and " + players.get(3).getName() + ":\n" +
+                    "TEAM 2 - " + secondTeam + ":\n" +
                     team2 + "\n ____________________________________________\n" +
                     "THE WINNER IS " + (team1 > team2 ? "TEAM 1!" : "TEAM 2!");
 
@@ -298,18 +301,20 @@ public class SuecaGame implements Game, Runnable {
 
             if (players.get(0).getName().equals(cheaterPlayer) || players.get(2).getName().equals(cheaterPlayer)) {
 
-                scoreText = cheaterPlayer + " WAIVED and was caught!\n" +
-                        "TEAM 1 - LOST! \n" +
-                        "_______________________________\n"+
-                        "TEAM 2 - WINS!\n";
-
+                scoreText = cheaterPlayer + " WAIVED and was caught! WHAT A SHAME!!\n" +
+                        "TEAM 1 - " + firstTeam + ":\n" +
+                        "YOU LOST!\n" +
+                        "_________________________________________\n"+
+                        "TEAM 2 - " + secondTeam + ":\n" +
+                        "YOU WON!\n";
             }else {
 
-                scoreText = cheaterPlayer + " WAIVED and was caught!\n" +
-                        "TEAM 1 - WINS! \n" +
-                        "_______________________________\n"+
-                        "TEAM 2 - LOST!\n";
-
+                scoreText = cheaterPlayer + " WAIVED and was caught! WHAT A SHAME!!\n" +
+                        "TEAM 1 - " + firstTeam + ":\n" +
+                        " YOU WON!\n" +
+                        "__________________________________________\n"+
+                        "TEAM 2 - " + secondTeam + ":\n" +
+                        "- LOST!\n";
             }
 
             sendAll(scoreText);
