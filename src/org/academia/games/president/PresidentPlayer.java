@@ -9,8 +9,6 @@ import java.util.List;
 
 public class PresidentPlayer extends GameClient {
 
-    //TODO:extend GameClientTest! (to see if its ok)
-
     private List<PCard> hand;
     private String name;
     private boolean passed = false;
