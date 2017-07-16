@@ -54,7 +54,7 @@ public class RouletteGame implements Runnable {
     private void showRound(RouletteOptions number) {
 
         for (RoulettePlayer client : players) {
-            client.sayToPlayer("THE ROULETTE STOPPED AT:\n" + number.toString());
+            client.sayToPlayer("\nTHE ROULETTE STOPPED AT:\n" + number.toString());
         }
     }
 
@@ -63,53 +63,38 @@ public class RouletteGame implements Runnable {
 
             if (player.getPlayNumber() != null) {
                 if (player.getPlayNumber().equals(number)) {
-                    player.addChips(player.getBetValue() * 36);
-                    player.sayToPlayer("You won! Your chips are: " + player.getChips());
+                    handleWinningBet(player,36);
                     continue;
                 }
-                player.sayToPlayer("You lost! Now you have " + player.getChips());
-                continue;
             }
 
             if (player.getPlay().equals(RouletteBets.BLACK) || player.getPlay().equals(RouletteBets.RED)) {
                 if (player.getPlay().getName().equals(number.getColor())) {
-                    System.out.println(player.getBetValue());
-                    player.addChips(player.getBetValue() * 2);
-                    player.sayToPlayer("You won! Your chips are: " + player.getChips());
+                    handleWinningBet(player,2);
                     continue;
                 }
-                player.sayToPlayer("You lost! Now you have " + player.getChips());
-                continue;
             }
 
             if (player.getPlay().equals(RouletteBets.ODD) || player.getPlay().equals(RouletteBets.EVEN)) {
                 if (player.getPlay().getName().equals(number.getOddOrEven())) {
-                    player.addChips(player.getBetValue() * 2);
-                    player.sayToPlayer("You won! Your chips are: " + player.getChips());
+                    handleWinningBet(player,2);
                     continue;
                 }
-                player.sayToPlayer("You lost! Now you have " + player.getChips());
-                continue;
             }
 
             if (player.getPlay().equals(RouletteBets.UP) || player.getPlay().equals(RouletteBets.DOWN)) {
                 if (player.getPlay().getName().equals(number.getUpOrDown())) {
-                    player.addChips(player.getBetValue() * 2);
-                    player.sayToPlayer("You won! Your chips are: " + player.getChips());
+                    handleWinningBet(player,2);
                     continue;
                 }
-                player.sayToPlayer("You lost! Now you have " + player.getChips());
+            }
+
+            if (player.getPlay().getName().equals(number.getDozen())) {
+                handleWinningBet(player,3);
                 continue;
             }
 
-            //  if (player.getPlay().equals(RouletteBets.DOZEN1) || player.getPlay().equals(RouletteBets.DOZEN2) || player.getPlay().equals(RouletteBets.DOZEN3)) {
-            if (player.getPlay().getName().equals(number.getDozen())) {
-                player.addChips(player.getBetValue() * 3);
-                player.sayToPlayer("You won! Your chips are: " + player.getChips());
-                continue;
-            }
             player.sayToPlayer("You lost! Now you have " + player.getChips());
-            //   }
         }
     }
 
@@ -127,7 +112,7 @@ public class RouletteGame implements Runnable {
         for (RoulettePlayer player : players) {
 
             if (player.getChips() == 0 ){
-                player.sayToPlayer("YOu have no more chips get the fck out!");
+                player.sayToPlayer("You have no chips get back to chat!");
                 toRemove.add(player);
                 continue;
             }
@@ -151,7 +136,7 @@ public class RouletteGame implements Runnable {
     public void addPlayer(RoulettePlayer client) {
 
         if(client.getChips() == 0){
-            client.sayToPlayer("You have no chips get the fck out!");
+            client.sayToPlayer("You have no chips get back to chat!");
             client.getBacktoChat();
             return;
         }
@@ -163,6 +148,11 @@ public class RouletteGame implements Runnable {
             welcomeMsg(client);
             notifyAll();
         }
+    }
+
+    private void handleWinningBet(RoulettePlayer player, int multiple){
+        player.addChips(player.getBetValue() * multiple);
+        player.sayToPlayer("You won! Your chips are: " + player.getChips());
     }
 
     private void welcomeMsg(RoulettePlayer client) {

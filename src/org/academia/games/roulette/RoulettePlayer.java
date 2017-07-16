@@ -39,7 +39,7 @@ public class RoulettePlayer extends GameClient {
         while (!validPlay) {
 
             out.println("\nPlease chose your bet from the following options:");
-            out.println(" Number 0  |  Number [1-36]  |  BLACK  |  RED  |  ODD  |  EVEN  |  UP [1-18] |  DOWN [19-36] | 1st Dozen [1-12] |  2nd Dozen [13-24] | 3rd Dozen [25-36]");
+            out.println(" Number 0  |  Number [1-36]  |  BLACK  |  RED  |  ODD  |  EVEN  |  DOWN [1-18] |  UP [19-36] | 1st Dozen [1-12] |  2nd Dozen [13-24] | 3rd Dozen [25-36]");
             out.println("    0              1              2        3       4       5          6              7                 8                   9                  10    ");
 
             try {
@@ -109,26 +109,27 @@ public class RoulettePlayer extends GameClient {
             return false;
         }
 
-
         switch (number) {
             case 0:
                 this.play = RouletteBets.ZERO;
                 break;
             case 1:
 
-                //TODO: test if number is ok!
-                out.println("Please enter the specific number you want to bet [between 1 and 36]");
-                try {
-                    int numberBet = Integer.parseInt(in.readLine());
-                    this.playNumber = RouletteOptions.values()[numberBet];
+                int numberBet =0;
 
-                } catch (IOException e) {
-                    System.err.println("Error: " + e.getMessage());
-                    System.exit(1);
+                while(numberBet < 1 || numberBet > 36) {
+                    out.println("Please enter the specific number you want to bet [between 1 and 36]");
+                    try {
+                        numberBet = Integer.parseInt(in.readLine());
+                        handleNumberBet(numberBet);
+
+                    } catch (IOException e) {
+                        System.err.println("Error: " + e.getMessage());
+                        System.exit(1);
+                    }
                 }
 
                 this.play = RouletteBets.NUMBER;
-
                 break;
             case 2:
                 this.play = RouletteBets.BLACK;
@@ -143,10 +144,10 @@ public class RoulettePlayer extends GameClient {
                 this.play = RouletteBets.EVEN;
                 break;
             case 6:
-                this.play = RouletteBets.UP;
+                this.play = RouletteBets.DOWN;
                 break;
             case 7:
-                this.play = RouletteBets.DOWN;
+                this.play = RouletteBets.UP;
                 break;
             case 8:
                 this.play = RouletteBets.DOZEN1;
@@ -164,6 +165,14 @@ public class RoulettePlayer extends GameClient {
         }
 
         return true;
+    }
+
+    private void handleNumberBet(int numberBet) {
+        if(numberBet < 1 || numberBet > 36){
+            out.println("You entered an invalid number!");
+            return;
+        }
+        this.playNumber = RouletteOptions.values()[numberBet];
     }
 
 

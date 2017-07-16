@@ -97,6 +97,6 @@ public enum RouletteOptions {
                 "\nCOLOR = " + color +
                 "\n" + oddOrEven +
                 "\n" + upOrDown +
-                "\nDOZEN = " + dozen;
+                "\nDOZEN = " + dozen +"\n";
     }
 }
