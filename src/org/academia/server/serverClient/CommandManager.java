@@ -67,10 +67,7 @@ public class CommandManager {
         handler.send("!help -> List all commands!");
         handler.send("!getchips -> get 100 chips ");
         handler.send("!play sueca -> Enter queue for sueca!");
-        handler.send("!exit sueca -> Exits queue for sueca");
         handler.send("!play roulette -> Play a roulette");
-        handler.send("!play president -> Enter queue for president!");
-        handler.send("!exit president -> Exits queue for president!");
     }
 
     private void getChips(Server.ClientHandler handler){
