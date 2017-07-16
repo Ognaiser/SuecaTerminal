@@ -67,13 +67,13 @@ public class CommandManager {
 
         if (handler.getClient().getChips() == 0){
             handler.getClient().addChips(100);
-            handler.send("You recived 100 chips! Your chips: " + handler.getClient().getChips());
+            handler.send("You received 100 chips! Your chips: " + handler.getClient().getChips());
             handler.getClient().setChipsCoolddown(System.currentTimeMillis());
         }
 
         if (System.currentTimeMillis() > (handler.getClient().getChipsCoolddown() + Server.CHIPSCOOLDOWN)){
             handler.getClient().addChips(100);
-            handler.send("You recived 100 chips! Your chips: " + handler.getClient().getChips());
+            handler.send("You received 100 chips! Your chips: " + handler.getClient().getChips());
             handler.getClient().setChipsCoolddown(System.currentTimeMillis());
         }else{
             handler.send("Get Chips still in cooldown, " + ((Server.CHIPSCOOLDOWN - (System.currentTimeMillis() - handler.getClient().getChipsCoolddown())) / 1000) + "seconds to go!");
