@@ -30,7 +30,7 @@ public class PCard {
     }
 
     public String getValueSymbol() {
-        return value.getValue();
+        return value.getSymbol();
     }
 
     public String getHandRep() {
@@ -71,6 +71,31 @@ public class PCard {
     }
 
     public String getRepresentation() {
+
+        if (getValueSymbol().equals("Joker")) {
+
+            return "┌───────┐" + "\r\n" +
+                    "│" + getValueSymbol() + "  │\r\n" +
+                    "│       │" + "\r\n" +
+                    "│   " + getSuitSymbol() + "   │" + "\r\n" +
+                    "│       │" + "\r\n" +
+                    "│ " + getValueSymbol() + " │" + "\r\n" +
+                    "└───────┘";
+
+        }
+
+        if (getValueSymbol().equals("10")) {
+
+            return "┌───────┐" + "\r\n" +
+                    "│" + getValueSymbol() + getSuitSymbol() + "    │\r\n" +
+                    "│       │" + "\r\n" +
+                    "│   " + getSuitSymbol() + "   │" + "\r\n" +
+                    "│       │" + "\r\n" +
+                    "│    " + getSuitSymbol() + getValueSymbol() + "│" + "\r\n" +
+                    "└───────┘";
+
+        }
+
         return "┌───────┐" + "\r\n" +
                 "│" + getValueSymbol() + getSuitSymbol() + "     │" + "\r\n" +
                 "│       │" + "\r\n" +

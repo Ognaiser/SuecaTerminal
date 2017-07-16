@@ -25,7 +25,7 @@ public enum PCardValues {
         this.value = value;
     }
 
-    public String getValue() {
+    public String getSymbol() {
         return value;
     }
 
