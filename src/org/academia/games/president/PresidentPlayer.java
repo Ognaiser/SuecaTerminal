@@ -36,10 +36,11 @@ public class PresidentPlayer extends GameClient {
             out.println();
         }
 
-        for (int i = 1; i <= hand.size(); i++) {
-            out.print("    " + i + "     ");
-        }
         out.println();
+    }
+    public void sendMessage(String msg) {
+
+        out.println(msg);
     }
 
     public LinkedList<PCard> firstPlay() {
@@ -320,15 +321,9 @@ public class PresidentPlayer extends GameClient {
         //TODO check how to do the pass
 
     }
-
-
-    public boolean isValidPlay() {
+    
+    private boolean isValidPlay() {
         return validPlay;
-    }
-
-    public void sendMessage(String msg) {
-
-        out.println(msg);
     }
 
     public String getName() {
@@ -374,7 +369,6 @@ public class PresidentPlayer extends GameClient {
 
         return false;
     }
-
 
     public List<PCard> getHand() {
         return hand;
