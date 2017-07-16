@@ -1,12 +1,9 @@
 package org.academia.games.president;
-
+import java.util.LinkedList;
 
 //TODO: Implement the logic: Joker beats all
 //TODO: Reorganize players (higher card wins the turn)
 //TODO: Player with 3 of Clubs starts to play the game
-//TODO:
-
-import java.util.LinkedList;
 
 public class PresidentGame implements Runnable {
 
@@ -18,6 +15,7 @@ public class PresidentGame implements Runnable {
     public PresidentGame(LinkedList<PresidentPlayer> playersInGame) {
         this.playersInGame = playersInGame;
         numberOfPlayersInGame = playersInGame.size();
+        firstPlayer = getFirstPlayer();
     }
 
     @Override
@@ -64,14 +62,16 @@ public class PresidentGame implements Runnable {
         }
     }
 
-    private void getFirstPlayer() {
+    private PresidentPlayer getFirstPlayer() {
         for (int i = 1; i < playersInGame.size(); i++) {
 
             if (playersInGame.get(i).hasThreeOfClubs()) {
                 firstPlayer = playersInGame.get(i);
-                break;
+               return firstPlayer;
             }
         }
+        return null; // atention to this for null pointers
+
     }
 
     private void playGame() {
@@ -82,7 +82,7 @@ public class PresidentGame implements Runnable {
         LinkedList<PCard> lastPlayedCards = null;
         PCard cardPlayedBefore;
         int numberOfCards = 0;
-
+        int winner = -1;
         while (!gameFinished(numberOfPlayersInGame)) {
 
             System.out.println("\n--New while loop starting--");
@@ -106,7 +106,11 @@ public class PresidentGame implements Runnable {
                     cardPlayedBefore = stackOfPlayedCards.peek();
                     lastPlayedCards = player.assistPlay(cardPlayedBefore,numberOfCards);
 
-                    if(lastPlayedCards == null){
+                    if(!(lastPlayedCards == null)){
+
+                        winner = playersInGame.indexOf(player);
+                    }else{
+
                         continue;
                     }
 
@@ -123,6 +127,10 @@ public class PresidentGame implements Runnable {
                     break;
 
                 }
+
+
+
+                setFirstPlayer(winner);
             }
 
         }
@@ -147,6 +155,28 @@ public class PresidentGame implements Runnable {
 
         for (int i = 1; i < playersInGame.size(); i++) {
             playersInGame.get(i).printHand();
+        }
+
+    }
+
+    private void setFirstPlayer(int roundWinner) {
+
+        if(roundWinner==-1){
+            System.out.println("Houston we have a problem on setting first player");
+        }
+        System.out.println("Winner is: " + playersInGame.get(roundWinner).getName());
+        PresidentPlayer toRemove;
+
+        for (int i = 0; i < playersInGame.size(); i++) {
+
+            if (i == roundWinner) {
+                return;
+            }
+
+            toRemove = playersInGame.removeFirst();
+            //System.out.println("\nto Remove -> " + toRemove.getName());
+            playersInGame.addLast(toRemove);
+
         }
 
     }
