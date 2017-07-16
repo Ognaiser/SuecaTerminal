@@ -101,7 +101,7 @@ public class PresidentGame implements Runnable {
         //numberOfPlayersInGame = playersInGame.size();
 
         printStartingHands();
-        LinkedList<PCard> stackOfPlayedCards = new LinkedList<>();
+        LinkedList<PCard> stackOfPlayedCards;
         LinkedList<PCard> lastPlayedCards;
         PCard cardPlayedBefore;
         int numberOfCards = 0;
@@ -112,10 +112,13 @@ public class PresidentGame implements Runnable {
         while (!gameFinished(numberOfPlayersInGame)) {
 
             System.out.println("\n--------------------- New turn ------------------------");
+
+
+            stackOfPlayedCards = new LinkedList<>();
+
             boolean turnStart = true;
 
-
-            while (!allButOnePassed() || stackOfPlayedCards.peek().getValue().equals(PCardValues.JOKER)) {
+            while (!allButOnePassed() || stackOfPlayedCards.peekLast().getValue().equals(PCardValues.JOKER)) {
 
                 for (PresidentPlayer player : this.playersInGame) {
 
@@ -132,12 +135,13 @@ public class PresidentGame implements Runnable {
                         lastPlayedCards = player.firstPlay();
                         numberOfCards = lastPlayedCards.size();
 
+
                         turnStart = false;
 
                     } else {
                         System.out.println("*********** ASSISTING play ");
 
-                        cardPlayedBefore = stackOfPlayedCards.peek();
+                        cardPlayedBefore = stackOfPlayedCards.peekLast();
                         lastPlayedCards = player.assistPlay(cardPlayedBefore, numberOfCards);
 
                         if (player.hasPassed()) {
@@ -167,8 +171,9 @@ public class PresidentGame implements Runnable {
                 System.out.println("out of for loop");
             }
 
-            System.out.println(winnerIndex);
+            System.out.println("Winner is -> " + winnerIndex);
             setFirstPlayer(winnerIndex);
+            resetPlayers();
         }
     }
 

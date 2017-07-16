@@ -11,6 +11,7 @@ public class ClientPOJO {
     private Socket socket;
     private boolean isAdmin = false;
     private int chips = 500;
+    private boolean onQueue = false;
     private Server.ClientHandler clientHandler;
 
     public ClientPOJO(Server.ClientHandler clientHandler) {
@@ -74,5 +75,18 @@ public class ClientPOJO {
 
     public void setChips(int chips) {
         this.chips = chips;
+    }
+
+    public void removeFromList(){
+        clientHandler.disconnect();
+        clientHandler.delete();
+    }
+
+    public boolean isOnQueue() {
+        return onQueue;
+    }
+
+    public void setOnQueue(boolean onQueue) {
+        this.onQueue = onQueue;
     }
 }

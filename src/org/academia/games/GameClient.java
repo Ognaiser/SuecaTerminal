@@ -45,5 +45,12 @@ public abstract class GameClient {
         client.getBackToList();
     }
 
+    public void removeFromLobby(){
+        client.removeFromList();
+    }
+
+    public void removeFromQueue(){
+        client.setOnQueue(false);
+    }
 
 }
