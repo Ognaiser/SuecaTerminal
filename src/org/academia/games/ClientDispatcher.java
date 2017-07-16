@@ -14,10 +14,15 @@ import java.util.concurrent.Executors;
 
 public class ClientDispatcher {
 
-    private RouletteGame game = new RouletteGame();
+    private RouletteGame rouletteGame = new RouletteGame();
     private ExecutorService pool = Executors.newFixedThreadPool(25);
     private LinkedList<SuecaPlayer> suecaPlayerList = new LinkedList<>();
     private LinkedList<PresidentPlayer> presidentPlayerList= new LinkedList<>();
+
+    public ClientDispatcher() {
+        Thread rouletteGame = new Thread(this.rouletteGame);
+        rouletteGame.start();
+    }
 
     public void addToSuecaQueue(Server.ClientHandler clientHandler) {
 
@@ -35,7 +40,7 @@ public class ClientDispatcher {
 
     public void startRoulette(Server.ClientHandler client){
 
-        game.addPlayer(new RoulettePlayer(client.getClient()));
+        rouletteGame.addPlayer(new RoulettePlayer(client.getClient()));
     }
 
     public void addToPresidentQueue(Server.ClientHandler clientHandler) {

@@ -26,7 +26,7 @@ public class PresidentPlayer extends GameClient {
     }
 
 
-    public void showHand() {
+    public void printHand() {
 
         for (int line = 0; line < 7; line++) {
             for (int i = 0; i < hand.size(); i++) {
@@ -37,7 +37,9 @@ public class PresidentPlayer extends GameClient {
         }
 
         out.println();
+
     }
+
     public void sendMessage(String msg) {
 
         out.println(msg);
@@ -45,10 +47,13 @@ public class PresidentPlayer extends GameClient {
 
     public LinkedList<PCard> firstPlay() {
         LinkedList<PCard> cardsPlayed = null;
+        validPlay = false;
+
+        System.out.println("Asking first player to pick card(s)");
 
         while (!isValidPlay()) {
 
-            showHand();
+            printHand();
             cardsPlayed = getFirstPlayerCards();
 
         }
@@ -60,10 +65,11 @@ public class PresidentPlayer extends GameClient {
     public LinkedList<PCard> assistPlay(PCard cardToAssist, int numberOfCards) {
 
         LinkedList<PCard> cardsPlayed = null;
+        validPlay = false;
 
         while (!isValidPlay()) {
             System.out.println("Inside while loop on assistPlay()");
-            showHand();
+            printHand();
             cardsPlayed = getAssistingPlayerCards(cardToAssist, numberOfCards);
 
         }
@@ -74,8 +80,8 @@ public class PresidentPlayer extends GameClient {
     private LinkedList<PCard> getAssistingPlayerCards(PCard cardToAssist, int numberOfCardsToAssist) {
 
         out.println("Please pick a card and number of cards:");
-        String cardSymbol = "";
-        String numberOfCardsPlayed = "0";
+        String firstString = "";
+        String secondString = "0";
 
         passed = false;
 
@@ -88,16 +94,14 @@ public class PresidentPlayer extends GameClient {
                 return null;
             }
 
-            cardSymbol = input.split(" ")[0];
-            numberOfCardsPlayed = input.split(" ")[1];
+            firstString = input.split(" ")[0];
+            secondString = input.split(" ")[1];
 
 
-
-            if (!isInputValid(cardSymbol, numberOfCardsPlayed, cardToAssist, numberOfCardsToAssist)) {
-                numberOfCardsPlayed = "0";
+            if (!isInputValid(firstString, secondString, cardToAssist, numberOfCardsToAssist)) {
                 validPlay = false;
-
                 return null;
+
             } else {
 
                 validPlay = true;
@@ -114,24 +118,23 @@ public class PresidentPlayer extends GameClient {
 
         System.out.println("Going to update hand");
 
-        return updateHand(cardSymbol, numberOfCardsPlayed);
+        return updateHand(firstString, secondString);
 
     }
 
-    private boolean isInputValid(String symbol, String numberOfCardsPlayed, PCard cardToAssist, int numberOfCardsToAssist) {
+    private boolean isInputValid(String firstString, String secondString, PCard cardToAssist, int numberOfCardsToAssist) {
 
-        if (!symbolIsValid(symbol)) {
-            out.println("That's not a valid card, choose other");
+        if (!symbolIsValid(firstString)) {
+            out.println("That's not a valid card, choose another");
             return false;
         }
 
-        if (!playerHasCards(symbol, numberOfCardsPlayed)) {
-            out.println("you dont have that many cards");
+        if (!playerHasCards(firstString, secondString)) {
+            out.println("You don't have that many cards!");
             return false;
         }
 
-
-        if (!compareCards(symbol, numberOfCardsPlayed, cardToAssist, numberOfCardsToAssist)) {
+        if (!compareCards(firstString, secondString, cardToAssist, numberOfCardsToAssist)) {
             return false;
 
         }
@@ -146,24 +149,22 @@ public class PresidentPlayer extends GameClient {
         System.out.println("Inside compareCards.");
         System.out.println("\nsymbol is -> " + symbol + "\nnumberOfCardsPlayed is -> " + numberOfCardsPlayed + "\ncardToAssist is:\n" + cardToAssist.getRepresentation() + "\nnumberOfCardsToAssist -> " + numberOfCardsToAssist);
 
-        System.out.println(" is higher to "+  cardToAssist.getValue().ordinal());
+        System.out.println(" is higher to " + cardToAssist.getValue().ordinal());
 
-        if (PCardValues.getCardValue(symbol).ordinal() >  cardToAssist.getValue().ordinal()) {//TODO: BUG is here
+        if (PCardValues.getCardBySymbol(symbol).ordinal() > cardToAssist.getValue().ordinal()) {
 
             System.out.println("Inside first If");
-            out.println("you must choose a higher card than " + symbol + " and played " + cardToAssist.getValue());
+            out.println("You played " + symbol + " which is not high enough\nYou must choose a card higher than " + cardToAssist.getValueSymbol());
             return false;
         }
 
-        System.out.println("\n 1 - After first If");
 
-        if (Integer.parseInt(numberOfCardsPlayed) != numberOfCardsToAssist ) {
+        if (Integer.parseInt(numberOfCardsPlayed) != numberOfCardsToAssist) {
             System.out.println("Inside second If");
-            out.println("You need to play " + numberOfCardsToAssist + "cards and played only " + numberOfCardsPlayed);
+            out.println("You need to play " + numberOfCardsToAssist + " equal cards and higher than " + cardToAssist.getValueSymbol());
             return false;
         }
 
-        System.out.println("\n 2 - After second If");
 
         System.out.println("returned true");
         return true;
@@ -214,37 +215,38 @@ public class PresidentPlayer extends GameClient {
     private boolean hasPassed(String input) {
 
         passed = input.equals("pass");
-        System.out.println(name + " has passed " + passed);
+        System.out.println(name + " has passed? " + passed);
+        validPlay = true;
         return passed;
     }
 
+    //TODO: Bug is here. Doesn't remove more than one card!
     private LinkedList<PCard> updateHand(String cardSymbol, String numberOfCardsPlayed) {
 
         LinkedList<PCard> cardsPlayed = new LinkedList<>();
+        int numberOfRemovedCards = 0;
+        int numberOfCardsToRemove = Integer.parseInt(numberOfCardsPlayed);
+        int cardIndex;
 
-        int counter = 0;
-        int iterator = 0;
+        System.out.println("Trying to remove " + numberOfCardsToRemove + " card(s) " + cardSymbol);
 
-        for (PCard card : hand) {
+        while (numberOfRemovedCards < numberOfCardsToRemove) {
 
-            System.out.println("trying to remove " + cardSymbol+"times "+Integer.parseInt(numberOfCardsPlayed));
+            for (PCard card : hand) {
 
-            if (card.getValue().getValue().equals(cardSymbol) &&
-                    counter <= Integer.parseInt(numberOfCardsPlayed)) {
+                System.out.println("Looking to ->" + card.toString() + "| In position " + hand.indexOf(card));
 
-                PCard toRemove = hand.remove(iterator);
-                cardsPlayed.add(toRemove);
-                counter++;
-                System.out.println("removed card "+ cardSymbol);
+                if (card.getValueSymbol().equals(cardSymbol) ) {
+
+                    cardIndex = hand.indexOf(card);
+                    PCard toRemove = hand.remove(cardIndex);
+                    cardsPlayed.add(toRemove);
+
+                    numberOfRemovedCards++;
+                    System.out.println("removed card(s) " + cardsPlayed.toString());
+                    break;
+                }
             }
-
-            if (counter == Integer.parseInt(numberOfCardsPlayed)){
-                return cardsPlayed;
-            }
-
-            iterator++;
-
-            System.out.println("counter -> " + counter + "\niterator -> " + iterator);
         }
 
         System.out.println("cards played " + cardsPlayed.toString());
@@ -271,8 +273,6 @@ public class PresidentPlayer extends GameClient {
     }
 
     private boolean playerHasCards(String symbol, String numberOfCards) {
-
-        System.out.println("Inside Player.playerHasCards");
 
         int counter = 0;
 
@@ -321,7 +321,12 @@ public class PresidentPlayer extends GameClient {
         //TODO check how to do the pass
 
     }
+<<<<<<< HEAD
     
+=======
+
+
+>>>>>>> f903c02f7c847d38e2a39b70f738c6c1549e1e2f
     private boolean isValidPlay() {
         return validPlay;
     }
