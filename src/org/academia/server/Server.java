@@ -52,7 +52,7 @@ public class Server {
 
         System.out.println("before loop!");
 
-        while (true){
+        while (true) {
             System.out.println("started loop!");
             try {
 
@@ -76,8 +76,7 @@ public class Server {
     public void sendAll(String msg, String name) {
         for (ClientHandler handler : clientHandlers) {
             if (!handler.getClient().getName().equals(name)) {
-                handler.out.println();
-                handler.out.println(name + " said: " + msg);
+                handler.out.println("\n" + name + " said -->  " + msg + "\n");
                 handler.out.print("Say:");
                 handler.out.flush();
             }
@@ -86,12 +85,12 @@ public class Server {
 
     public class ClientHandler implements Runnable {
 
-        private ClientPOJO client ;
+        private ClientPOJO client;
         private boolean connected = true;
         private PrintWriter out;
         private BufferedReader in;
 
-        public ClientHandler(ClientPOJO client){
+        public ClientHandler(ClientPOJO client) {
 
             this.client = client;
 
@@ -127,7 +126,7 @@ public class Server {
 
         public void askNick() {
 
-            out.println("Enter your nickname:");
+            out.println("Please enter your nickname:");
 
             try {
 
@@ -144,7 +143,7 @@ public class Server {
         @Override
         public void run() {
 
-            if (client.getName() == null){
+            if (client.getName() == null) {
                 askNick();
                 out.println("\nYou are in the lobby!\n");
             }
@@ -198,7 +197,7 @@ public class Server {
             connected = false;
         }
 
-        public void getBackToList(){
+        public void getBackToList() {
             send("You are back to the chat!");
             ClientHandler newClient = new ClientHandler(client);
             clientHandlers.add(newClient);

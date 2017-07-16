@@ -32,8 +32,8 @@ public class ClientDispatcher {
 
         suecaPlayerList.add(new SuecaPlayer(clientHandler.getClient()));
 
-        suecaPlayerList.getLast().sendMessage("You left the lobby!");
-        suecaPlayerList.getLast().sendMessage("Waiting for more players!!!!");
+        suecaPlayerList.getLast().sendMessage("You left the lobby and entered SUECA GAME!");
+        suecaPlayerList.getLast().sendMessage("Waiting for more players......");
 
         if (suecaPlayerList.size() == 4){
 
@@ -55,10 +55,9 @@ public class ClientDispatcher {
 
         presidentPlayerList.add(new PresidentPlayer(clientHandler.getClient()));
 
-        presidentPlayerList.getLast().sendMessage("Waiting !!!!");
+        presidentPlayerList.getLast().sendMessage("Waiting for more players ......");
 
         if (presidentPlayerList.size() == 3){
-            System.out.println("enough players");
             PresidentGame game = new PresidentGame(presidentPlayerList);
             pool.submit(game);
             suecaPlayerList = new LinkedList<>();
