@@ -7,6 +7,8 @@ import java.util.List;
 
 public class CommandManager {
 
+    //TODO: alow players to leave queue
+
     private List<Server.ClientHandler> clientHandlers ;
     private ClientDispatcher clientDispatcher = new ClientDispatcher();
 

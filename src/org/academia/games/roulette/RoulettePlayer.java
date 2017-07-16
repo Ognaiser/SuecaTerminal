@@ -70,7 +70,7 @@ public class RoulettePlayer extends GameClient {
                 System.exit(1);
             }
 
-            if (!validPlay) {
+            if (!validAmount) {
                 out.println("Invalid Amount! Please type again!");
             }
         }
@@ -84,12 +84,7 @@ public class RoulettePlayer extends GameClient {
         } catch (NumberFormatException nfe) {
             return false;
         }
-        if (getChips() == 0) {
-            out.println("\nSorry but you have no more chips!");
-            askOut();
-            getBacktoChat();
-            return false;
-        }
+
 
         if (getChips() < betValue) {
             return false;
@@ -110,7 +105,7 @@ public class RoulettePlayer extends GameClient {
             return false;
         }
 
-        if (number < 0) {
+        if (number < 0 || number >10) {
             return false;
         }
 
@@ -121,6 +116,7 @@ public class RoulettePlayer extends GameClient {
                 break;
             case 1:
 
+                //TODO: test if number is ok!
                 out.println("Please enter the specific number you want to bet [between 1 and 36]");
                 try {
                     int numberBet = Integer.parseInt(in.readLine());
@@ -130,6 +126,7 @@ public class RoulettePlayer extends GameClient {
                     System.err.println("Error: " + e.getMessage());
                     System.exit(1);
                 }
+
                 this.play = RouletteBets.NUMBER;
 
                 break;

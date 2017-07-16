@@ -127,6 +127,13 @@ public class RouletteGame implements Runnable {
         List<RoulettePlayer> toRemove = new ArrayList<>();
 
         for (RoulettePlayer player : players) {
+
+            if (player.getChips() == 0 ){
+                player.sayToPlayer("YOu have no more chips get the fck out!");
+                toRemove.add(player);
+                continue;
+            }
+
             if (player.askOut()) {
                 toRemove.add(player);
             }
@@ -144,6 +151,12 @@ public class RouletteGame implements Runnable {
     }
 
     public void addPlayer(RoulettePlayer client) {
+
+        if(client.getChips() == 0){
+            client.sayToPlayer("You have no chips get the fck out!");
+            client.getBacktoChat();
+            return;
+        }
 
         client.sayToPlayer("Waiting for Turn to end!");
 

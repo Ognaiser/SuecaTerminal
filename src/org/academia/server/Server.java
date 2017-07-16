@@ -23,7 +23,6 @@ public class Server {
     private CommandManager commandManager;
     private ExecutorService pool;
 
-    //TODO:(Probably fix needs testing) FIX forced shutdown try to catch the force quit signal from terminal
     //TODO: save username and chips
     //TODO: Strip club easter egg!
     //TODO: prettify things

@@ -321,12 +321,7 @@ public class PresidentPlayer extends GameClient {
         //TODO check how to do the pass
 
     }
-<<<<<<< HEAD
-    
-=======
 
-
->>>>>>> f903c02f7c847d38e2a39b70f738c6c1549e1e2f
     private boolean isValidPlay() {
         return validPlay;
     }
