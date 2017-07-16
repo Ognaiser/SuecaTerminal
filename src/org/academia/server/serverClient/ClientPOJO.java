@@ -6,7 +6,8 @@ import java.net.Socket;
 
 public class ClientPOJO {
 
-    private String name;
+    private long chipsCoolddown = 0;
+    private String name = null;
     private Socket socket;
     private boolean isAdmin = false;
     private int chips = 500;
@@ -59,5 +60,13 @@ public class ClientPOJO {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public long getChipsCoolddown() {
+        return chipsCoolddown;
+    }
+
+    public void setChipsCoolddown(long chipsCoolddown) {
+        this.chipsCoolddown = chipsCoolddown;
     }
 }

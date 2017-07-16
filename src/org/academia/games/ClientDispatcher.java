@@ -28,7 +28,8 @@ public class ClientDispatcher {
 
         suecaPlayerList.add(new SuecaPlayer(clientHandler.getClient()));
 
-        suecaPlayerList.getLast().sendMessage("Waiting !!!!");
+        suecaPlayerList.getLast().sendMessage("You left the lobby!");
+        suecaPlayerList.getLast().sendMessage("Waiting for more players!!!!");
 
         if (suecaPlayerList.size() == 4){
 
