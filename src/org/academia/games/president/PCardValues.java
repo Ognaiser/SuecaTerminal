@@ -2,7 +2,7 @@ package org.academia.games.president;
 
 public enum PCardValues {
 
-    JOKER("Joker"),//TODO fix this
+    JOKER("Joker"),
     TWO("2"),
     ACE("A"),
     KING("K"),
