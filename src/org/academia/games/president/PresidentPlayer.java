@@ -9,8 +9,6 @@ import java.util.List;
 
 public class PresidentPlayer extends GameClient {
 
-    //TODO:extend GameClientTest! (to see if its ok)
-
     private List<PCard> hand;
     private String name;
     private boolean passed = false;
@@ -91,6 +89,7 @@ public class PresidentPlayer extends GameClient {
 
 
             if (hasPassed(input)) {
+                sendMessage(this.name + " has passed.");
                 return null;
             }
 
@@ -220,7 +219,6 @@ public class PresidentPlayer extends GameClient {
         return passed;
     }
 
-    //TODO: Bug is here. Doesn't remove more than one card!
     private LinkedList<PCard> updateHand(String cardSymbol, String numberOfCardsPlayed) {
 
         LinkedList<PCard> cardsPlayed = new LinkedList<>();
@@ -310,16 +308,6 @@ public class PresidentPlayer extends GameClient {
             }
         }
         return false;
-    }
-
-    public void checkCommand(String input) {
-
-        String[] words = input.split(" ");
-        if (words[0].equals("!pass")) {
-            validPlay = true;
-        }
-        //TODO check how to do the pass
-
     }
 
     private boolean isValidPlay() {
