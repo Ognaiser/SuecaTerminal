@@ -41,9 +41,9 @@ public class PCard {
             return "┌───────┐" + ":" +
                     "│" + getValueSymbol() + "  │:" +
                     "│       │" + ":" +
-                    "│   " + getSuitSymbol() + "   │" + ":" +
+                    "│   " + getSuitSymbol() + "   │:" +
                     "│       │" + ":" +
-                    "│ " + getValueSymbol() + " │" + ":" +
+                    "│ " + getValueSymbol() + " │:" +
                     "└───────┘";
 
         }
@@ -53,9 +53,9 @@ public class PCard {
             return "┌───────┐" + ":" +
                     "│" + getValueSymbol() + getSuitSymbol() + "    │:" +
                     "│       │" + ":" +
-                    "│   " + getSuitSymbol() + "   │" + ":" +
+                    "│   " + getSuitSymbol() + "   │:" +
                     "│       │" + ":" +
-                    "│    " + getSuitSymbol() + getValueSymbol() + "│" + ":" +
+                    "│    " + getSuitSymbol() + getValueSymbol() + "│:" +
                     "└───────┘";
 
         }
@@ -63,9 +63,9 @@ public class PCard {
         return "┌───────┐" + ":" +
                 "│" + getValueSymbol() + getSuitSymbol() + "     │:" +
                 "│       │" + ":" +
-                "│   " + getSuitSymbol() + "   │" + ":" +
+                "│   " + getSuitSymbol() + "   │:" +
                 "│       │" + ":" +
-                "│     " + getSuitSymbol() + getValueSymbol() + "│" + ":" +
+                "│     " + getSuitSymbol() + getValueSymbol() + "│:" +
                 "└───────┘";
 
     }
