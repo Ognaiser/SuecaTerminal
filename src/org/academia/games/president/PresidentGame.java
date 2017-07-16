@@ -4,8 +4,6 @@ import java.util.LinkedList;
 
 //TODO: Implement the logic: Joker beats all
 //TODO: Reorganize players (higher card wins the turn)
-//TODO:
-
 
 public class PresidentGame implements Runnable {
 
@@ -14,6 +12,7 @@ public class PresidentGame implements Runnable {
     private int numberOfPlayersInGame;
 
     public PresidentGame(LinkedList<PresidentPlayer> playersInGame) {
+
         this.playersInGame = playersInGame;
         numberOfPlayersInGame = playersInGame.size();
     }
@@ -66,6 +65,7 @@ public class PresidentGame implements Runnable {
         for (int i = 0; i < playersInGame.size(); i++) {
 
             if (playersInGame.get(i).hasThreeOfClubs()) {
+
                 return i;
             }
         }
@@ -105,10 +105,10 @@ public class PresidentGame implements Runnable {
         LinkedList<PCard> lastPlayedCards = null;
         PCard cardPlayedBefore;
         int numberOfCards = 0;
-        int winnerIndex = -1;
+        int winnerIndex = getFirstPlayer();
 
         setFirstPlayer(getFirstPlayer());
-
+        greetPlayer();
         while (!gameFinished(numberOfPlayersInGame)) {
 
             System.out.println("\n--------------------- New turn ------------------------");
@@ -131,6 +131,9 @@ public class PresidentGame implements Runnable {
                     System.out.println("\nWho is playing? -> " + player.getName());
 
                     if (turnStart) {
+
+                        sendAll(playersInGame.get(winnerIndex).getName()+ "has won the round");
+
                         System.out.println("************ ON FIRST PLAY");//TODO: player cant pass on 1st play
 
                         lastPlayedCards = player.firstPlay();
@@ -332,5 +335,25 @@ public class PresidentGame implements Runnable {
             player.setPassed(false);
         }
 
+    }
+
+    private void greetPlayer() {
+        sendAll(" ___        _______   _________   ________           ________   ___        ________       ___    ___ \n" +
+                "|\\  \\      |\\  ___ \\ |\\___   ___\\|\\   ____\\         |\\   __  \\ |\\  \\      |\\   __  \\     |\\  \\  /  /|\n" +
+                "\\ \\  \\     \\ \\   __/|\\|___ \\  \\_|\\ \\  \\___|_        \\ \\  \\|\\  \\\\ \\  \\     \\ \\  \\|\\  \\    \\ \\  \\/  / /\n" +
+                " \\ \\  \\     \\ \\  \\_|/__   \\ \\  \\  \\ \\_____  \\        \\ \\   ____\\\\ \\  \\     \\ \\   __  \\    \\ \\    / / \n" +
+                "  \\ \\  \\____ \\ \\  \\_|\\ \\   \\ \\  \\  \\|____|\\  \\        \\ \\  \\___| \\ \\  \\____ \\ \\  \\ \\  \\    \\/  /  /  \n" +
+                "   \\ \\_______\\\\ \\_______\\   \\ \\__\\   ____\\_\\  \\        \\ \\__\\     \\ \\_______\\\\ \\__\\ \\__\\ __/  / /    \n" +
+                "    \\|_______| \\|_______|    \\|__|  |\\_________\\        \\|__|      \\|_______| \\|__|\\|__||\\___/ /     \n" +
+                "                                    \\|_________|                                        \\|___|/      \n");
+
+        sendAll(" /$$$$$$$                               /$$       /$$                       /$$            /$$$$$$                                   \n" +
+                "| $$__  $$                             |__/      | $$                      | $$           /$$__  $$                                  \n" +
+                "| $$  \\ $$ /$$$$$$   /$$$$$$   /$$$$$$$ /$$  /$$$$$$$  /$$$$$$  /$$$$$$$  /$$$$$$        | $$  \\__/  /$$$$$$  /$$$$$$/$$$$   /$$$$$$ \n" +
+                "| $$$$$$$//$$__  $$ /$$__  $$ /$$_____/| $$ /$$__  $$ /$$__  $$| $$__  $$|_  $$_/        | $$ /$$$$ |____  $$| $$_  $$_  $$ /$$__  $$\n" +
+                "| $$____/| $$  \\__/| $$$$$$$$|  $$$$$$ | $$| $$  | $$| $$$$$$$$| $$  \\ $$  | $$          | $$|_  $$  /$$$$$$$| $$ \\ $$ \\ $$| $$$$$$$$\n" +
+                "| $$     | $$      | $$_____/ \\____  $$| $$| $$  | $$| $$_____/| $$  | $$  | $$ /$$      | $$  \\ $$ /$$__  $$| $$ | $$ | $$| $$_____/\n" +
+                "| $$     | $$      |  $$$$$$$ /$$$$$$$/| $$|  $$$$$$$|  $$$$$$$| $$  | $$  |  $$$$/      |  $$$$$$/|  $$$$$$$| $$ | $$ | $$|  $$$$$$$\n" +
+                "|__/     |__/       \\_______/|_______/ |__/ \\_______/ \\_______/|__/  |__/   \\___/         \\______/  \\_______/|__/ |__/ |__/ \\_______/");
     }
 }
