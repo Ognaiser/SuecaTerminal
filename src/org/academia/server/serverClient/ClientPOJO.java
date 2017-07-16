@@ -27,6 +27,7 @@ public class ClientPOJO {
 
     public void addChips(int chips){
         this.chips+=chips;
+        clientHandler.updatePlayerMap();
     }
 
     public boolean removeChips(int chips){
@@ -34,6 +35,7 @@ public class ClientPOJO {
             return false;
         }else{
             this.chips -=chips;
+            clientHandler.updatePlayerMap();
             return true;
         }
     }
@@ -68,5 +70,9 @@ public class ClientPOJO {
 
     public void setChipsCoolddown(long chipsCoolddown) {
         this.chipsCoolddown = chipsCoolddown;
+    }
+
+    public void setChips(int chips) {
+        this.chips = chips;
     }
 }
