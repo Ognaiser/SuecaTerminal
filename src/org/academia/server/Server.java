@@ -199,6 +199,7 @@ public class Server {
         }
 
         public void getBackToList(){
+            send("You are back to the chat!");
             ClientHandler newClient = new ClientHandler(client);
             clientHandlers.add(newClient);
             pool.submit(newClient);

@@ -40,6 +40,11 @@ public class CommandManager {
                 clientHandler.disconnect();
                 clientDispatcher.addToPresidentQueue(clientHandler);
                 break;
+            case "!enter stripclub":
+                clientHandler.delete();
+                clientHandler.disconnect();
+                clientDispatcher.enterClub(clientHandler);
+                break;
             default:
                 defaultMsg(clientHandler);
                 break;
