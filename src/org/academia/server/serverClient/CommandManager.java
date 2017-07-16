@@ -7,6 +7,8 @@ import java.util.List;
 
 public class CommandManager {
 
+    //TODO: alow players to leave queue
+
     private List<Server.ClientHandler> clientHandlers ;
     private ClientDispatcher clientDispatcher = new ClientDispatcher();
 
@@ -37,6 +39,11 @@ public class CommandManager {
                 clientHandler.delete();
                 clientHandler.disconnect();
                 clientDispatcher.addToPresidentQueue(clientHandler);
+                break;
+            case "!enter stripclub":
+                clientHandler.delete();
+                clientHandler.disconnect();
+                clientDispatcher.enterClub(clientHandler);
                 break;
             default:
                 defaultMsg(clientHandler);

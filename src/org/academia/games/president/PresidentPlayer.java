@@ -314,7 +314,6 @@ public class PresidentPlayer extends GameClient {
         return false;
     }
 
-
     private boolean isValidPlay() {
         return validPlay;
     }

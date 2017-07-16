@@ -23,7 +23,6 @@ public class Server {
     private CommandManager commandManager;
     private ExecutorService pool;
 
-    //TODO:(Probably fix needs testing) FIX forced shutdown try to catch the force quit signal from terminal
     //TODO: save username and chips
     //TODO: Strip club easter egg!
     //TODO: prettify things
@@ -200,6 +199,7 @@ public class Server {
         }
 
         public void getBackToList(){
+            send("You are back to the chat!");
             ClientHandler newClient = new ClientHandler(client);
             clientHandlers.add(newClient);
             pool.submit(newClient);
