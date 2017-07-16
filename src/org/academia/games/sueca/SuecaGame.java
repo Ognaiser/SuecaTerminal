@@ -145,7 +145,7 @@ public class SuecaGame implements Game, Runnable {
                 winningPlayer.addScore(turnSuecaCards);
                 setFirstPlayer(winner);
 
-                sendAll("THE WINNER OF TURN " + turn + " IS -->  " + winningPlayer + "\r\n" +
+                sendAll("THE WINNER OF TURN " + turn + " IS -->  " + winningPlayer.getName() + "\r\n" +
                         "______________________________" + turn + "__________________________________");
 
                 turn++;
@@ -212,7 +212,6 @@ public class SuecaGame implements Game, Runnable {
 
             winnerSuecaCard = compareCards(winnerSuecaCard, turnSuecaCards[playerCard]);
 
-
         }
         System.out.println("Winner PCard is \n " + winnerSuecaCard.getRepresentation());
 
@@ -228,7 +227,7 @@ public class SuecaGame implements Game, Runnable {
                 index = i;
             }
         }
-        System.out.println("Index of winner card is: " + index);
+
         return index;
     }
 
