@@ -103,42 +103,39 @@ public class PresidentGame implements Runnable {
         printStartingHands();
         LinkedList<PCard> stackOfPlayedCards = new LinkedList<>();
         LinkedList<PCard> lastPlayedCards;
-        PCard cardPlayedBefore; //TODO WTF IS THIS JOAAO???????????????????????????????????
+        PCard cardPlayedBefore;
         int numberOfCards = 0;
         int winnerIndex = -1;
+
+        setFirstPlayer(getFirstPlayer());
 
         while (!gameFinished(numberOfPlayersInGame)) {
 
             System.out.println("\n--------------------- New turn ------------------------");
-
-            setFirstPlayer(getFirstPlayer());
-
             boolean turnStart = true;
+
 
             while (!allButOnePassed() || stackOfPlayedCards.peek().getValue().equals(PCardValues.JOKER)) {
 
                 for (PresidentPlayer player : this.playersInGame) {
 
                     if (player.hasPassed()) {
+                        System.err.println(player.getName()+" has passed");
                         continue;
                     }
 
                     System.out.println("\nWho is playing? -> " + player.getName());
 
                     if (turnStart) {
+                        System.out.println("************ ON FIRST PLAY");//TODO: player cant pass on 1st play
 
-                        //stackOfPlayedCards = firstPlayer.firstPlay();
                         lastPlayedCards = player.firstPlay();
-                        System.out.println("************ON FIRST PLAY");
                         numberOfCards = lastPlayedCards.size();
-
-                        //System.out.println("Number of cards played -> " + numberOfCards);
 
                         turnStart = false;
 
                     } else {
-
-                        System.out.println("*********** Assisting play now");
+                        System.out.println("*********** ASSISTING play ");
 
                         cardPlayedBefore = stackOfPlayedCards.peek();
                         lastPlayedCards = player.assistPlay(cardPlayedBefore, numberOfCards);
@@ -147,17 +144,14 @@ public class PresidentGame implements Runnable {
                             sendAll(player.getName() + " has passed.");
 
                             if (allButOnePassed()) {
-                                System.out.println("On breaking for");
+                                System.out.println("ALL but one have passed");
                                 break;
                             }
-
                             continue;
                         }
-
                     }
 
                     stackOfPlayedCards.addAll(lastPlayedCards);
-
                     showPlay(player, stackOfPlayedCards, numberOfCards);
 
                     winnerIndex = playersInGame.indexOf(player);
@@ -168,17 +162,13 @@ public class PresidentGame implements Runnable {
                         showResult(player);
                         playersInGame.remove(player);
                         break;
-
                     }
-
                 }
-
                 System.out.println("out of for loop");
-
             }
 
+            System.out.println(winnerIndex);
             setFirstPlayer(winnerIndex);
-
         }
     }
 
