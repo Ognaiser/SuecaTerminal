@@ -26,9 +26,13 @@ public class CommandManager {
                 getChips(clientHandler);
                 break;
             case "!play sueca":
-                clientHandler.disconnect();
-                clientHandler.delete();
                 clientDispatcher.addToSuecaQueue(clientHandler);
+                break;
+            case "!exit sueca":
+                clientDispatcher.removeFromSueca(clientHandler);
+                break;
+            case "!exit president":
+                clientDispatcher.removeFromPresident(clientHandler);
                 break;
             case "!play roulette":
                 clientHandler.delete();
@@ -36,14 +40,16 @@ public class CommandManager {
                 clientDispatcher.startRoulette(clientHandler);
                 break;
             case "!play president":
-                clientHandler.delete();
-                clientHandler.disconnect();
                 clientDispatcher.addToPresidentQueue(clientHandler);
                 break;
             case "!enter stripclub":
                 clientHandler.delete();
                 clientHandler.disconnect();
                 clientDispatcher.enterClub(clientHandler);
+                break;
+            case "!exit":
+                clientHandler.delete();
+                clientHandler.disconnect();
                 break;
             default:
                 defaultMsg(clientHandler);
@@ -58,9 +64,11 @@ public class CommandManager {
     private void list(Server.ClientHandler handler){
         handler.send("!help -> List all commands!");
         handler.send("!getchips -> get 100 chips ");
-        handler.send("!play sueca -> Play a game of sueca!");
+        handler.send("!play sueca -> Enter queue for sueca!");
+        handler.send("!exit sueca -> Exits queue for sueca");
         handler.send("!play roulette -> Play a roulette");
-        handler.send("!play president -> Play a game of president!");
+        handler.send("!play president -> Enter queue for president!");
+        handler.send("!exit president -> Exits queue for president!");
     }
 
     private void getChips(Server.ClientHandler handler){
