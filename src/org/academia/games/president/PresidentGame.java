@@ -4,6 +4,7 @@ package org.academia.games.president;
 //TODO: Implement the logic: Joker beats all
 //TODO: Reorganize players (higher card wins the turn)
 //TODO: Player with 3 of Clubs starts to play the game
+//TODO:
 
 import java.util.LinkedList;
 

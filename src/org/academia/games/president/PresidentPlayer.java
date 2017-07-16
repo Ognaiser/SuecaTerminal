@@ -220,7 +220,6 @@ public class PresidentPlayer extends GameClient {
         return passed;
     }
 
-    //TODO: Bug is here. Doesn't remove more than one card!
     private LinkedList<PCard> updateHand(String cardSymbol, String numberOfCardsPlayed) {
 
         LinkedList<PCard> cardsPlayed = new LinkedList<>();
@@ -312,21 +311,6 @@ public class PresidentPlayer extends GameClient {
         return false;
     }
 
-    public void checkCommand(String input) {
-
-        String[] words = input.split(" ");
-        if (words[0].equals("!pass")) {
-            validPlay = true;
-        }
-        //TODO check how to do the pass
-
-    }
-<<<<<<< HEAD
-    
-=======
-
-
->>>>>>> f903c02f7c847d38e2a39b70f738c6c1549e1e2f
     private boolean isValidPlay() {
         return validPlay;
     }
