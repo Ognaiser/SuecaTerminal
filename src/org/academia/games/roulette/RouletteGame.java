@@ -5,11 +5,10 @@ import java.util.List;
 
 public class RouletteGame implements Runnable {
 
-    //TODO: add wait message
+    //TODO: BUG: when you dont have chips to bet or you put more chips then you have game fricks out remove form the game and reset status
+    //(dont let people with 0 chips keep playing)!
 
     private List<RoulettePlayer> players = new ArrayList<>();
-    private boolean isOver = false;
-
 
     @Override
     public void run() {
@@ -144,10 +143,15 @@ public class RouletteGame implements Runnable {
         }
     }
 
-    public synchronized void addPlayer(RoulettePlayer client) {
-        players.add(client);
-        welcomeMsg(client);
-        notifyAll();
+    public void addPlayer(RoulettePlayer client) {
+
+        client.sayToPlayer("Waiting for Turn to end!");
+
+        synchronized (this) {
+            players.add(client);
+            welcomeMsg(client);
+            notifyAll();
+        }
     }
 
     private void welcomeMsg(RoulettePlayer client) {

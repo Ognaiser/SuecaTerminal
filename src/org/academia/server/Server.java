@@ -16,16 +16,17 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
-    //TODO: when someone is writing a name any one else can write!
-
-
+    public final static long CHIPSCOOLDOWN = 180000;
     public static final int PORT = 8080;
     private ServerSocket ss;
     private List<ClientHandler> clientHandlers;
     private CommandManager commandManager;
     private ExecutorService pool;
 
-    //TODO: FIX forced shutdown try to catch the force quit signal from terminal
+    //TODO:(Probably fix needs testing) FIX forced shutdown try to catch the force quit signal from terminal
+    //TODO: save username and chips
+    //TODO: Strip club easter egg!
+    //TODO: prettify things
 
     public static void main(String[] args) throws IOException {
         Server server = new Server();
@@ -75,7 +76,12 @@ public class Server {
 
     public void sendAll(String msg, String name) {
         for (ClientHandler handler : clientHandlers) {
-            handler.send(name + " said: "+ msg);
+            if (!handler.getClient().getName().equals(name)) {
+                handler.out.println();
+                handler.out.println(name + " said: " + msg);
+                handler.out.print("Say:");
+                handler.out.flush();
+            }
         }
     }
 
@@ -118,7 +124,6 @@ public class Server {
                     "   \\ \\____________\\\\ \\_______\\\\ \\_______\\\\ \\_______\\\\ \\_______\\\\ \\__\\    \\ \\__\\\\ \\_______\\\n" +
                     "    \\|____________| \\|_______| \\|_______| \\|_______| \\|_______| \\|__|     \\|__| \\|_______|\n");
 
-            askNick();
         }
 
         public void askNick() {
@@ -140,11 +145,18 @@ public class Server {
         @Override
         public void run() {
 
+            if (client.getName() == null){
+                askNick();
+                out.println("\nYou are in the lobby!\n");
+            }
+
             String msg;
 
             while (connected) {
 
                 try {
+                    out.print("Say:");
+                    out.flush();
                     msg = in.readLine();
 
                     if (msg == null) {

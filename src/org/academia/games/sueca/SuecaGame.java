@@ -8,13 +8,15 @@ import java.util.LinkedList;
 
 public class SuecaGame implements Game, Runnable {
 
+    //TODO: ctl c fila de esepra
+
     private final int MAX_TURNS = 10;
     private final int MAX_PLAYERS = 4;
     private final int INITIAL_HANDSIZE = 10;
     private LinkedList<SuecaCard> deck = new LinkedList<>();
     private LinkedList<SuecaPlayer> players;
     private SuecaCard trump;
-
+    private String cheaterPlayer = null;
 
     public SuecaGame(LinkedList<SuecaPlayer> players) {
         this.players = players;
@@ -91,12 +93,13 @@ public class SuecaGame implements Game, Runnable {
 
     public void playGame() {
 
-        boolean waived = false;
         int turn = 1;
+        int turnPlayer ;
+        boolean waived = false;
+
         SuecaCard[] turnSuecaCards = new SuecaCard[MAX_PLAYERS];
 
         SuecaCard turnSuecaCard ;
-        int i ;
 
         greetPlayer();
 
@@ -106,7 +109,7 @@ public class SuecaGame implements Game, Runnable {
 
         while (turn <= MAX_TURNS) {
 
-            i = 0;
+            turnPlayer = 0;
 
             for (SuecaPlayer player : players) {
 
@@ -115,6 +118,7 @@ public class SuecaGame implements Game, Runnable {
                 if (player.isCommand()) {
 
                     if(checkForCheater(player.getAccusedPlayer())){
+                        cheaterPlayer = player.getAccusedPlayer();
                         waived = true;
                         break;
                     }else{
@@ -124,7 +128,7 @@ public class SuecaGame implements Game, Runnable {
                 }
 
 
-                if (i != 0 && !validCard(turnSuecaCard, turnSuecaCards[0], player)) {
+                if (turnPlayer != 0 && !validCard(turnSuecaCard, turnSuecaCards[0], player)) {
                     player.hasCheated();
                     System.out.println("player " + player + " has cheated");
                 }
@@ -132,8 +136,8 @@ public class SuecaGame implements Game, Runnable {
 
                 sendAll(player.getName() + " played: \n\r" + turnSuecaCard.getRepresentation());
 
-                turnSuecaCards[i] = turnSuecaCard;
-                i++;
+                turnSuecaCards[turnPlayer] = turnSuecaCard;
+                turnPlayer++;
             }
 
             if (!waived) {
@@ -176,23 +180,10 @@ public class SuecaGame implements Game, Runnable {
 
         System.out.println("Winner is: " + players.get(roundWinner).getName());
         SuecaPlayer toRemove;
-/*
-        System.out.print("BEFORE: ");
-        for (SuecaPlayer each : players) {
-            System.out.print(each.getName() + " ");
-        }
-*/
+
         for (int i = 0; i < players.size(); i++) {
 
             if (i == roundWinner) {
-/*
-                System.out.println();
-
-                System.out.print("NEW order of players: ");
-                for (SuecaPlayer each : players) {
-                    System.out.print(each.getName() + " ");
-                }
-  */
                 return;
             }
 
@@ -276,32 +267,55 @@ public class SuecaGame implements Game, Runnable {
     }
 
     private boolean sameSuit(SuecaCard first, SuecaCard second) {
-
         return first.getSuecaSuit().equals(second.getSuecaSuit());
     }
 
 
     private boolean isTrump(SuecaCard first) {
-
         return first.getSuecaSuit().equals(trump.getSuecaSuit());
     }
 
 
     private void showScore() {
 
-        //TODO: fix scorebord in case of waived
+        String scoreText = "";
 
-        int team1 = players.get(0).getScore() + players.get(2).getScore();
-        int team2 = players.get(1).getScore() + players.get(3).getScore();
+        if (cheaterPlayer == null) {
 
-        String scoreText = "FINAL SCORE:\n" +
-                "TEAM 1 - " + players.get(0).getName() + " and " + players.get(2).getName() + ":\n" +
-                team1 + "\n ____________________________________________\n" +
-                "TEAM 2 - " + players.get(1).getName() + " and " + players.get(3).getName() + ":\n" +
-                team2 + "\n ____________________________________________\n" +
-                "THE WINNER IS " + (team1 > team2 ? "TEAM 1!" : "TEAM 2!");
+            int team1 = players.get(0).getScore() + players.get(2).getScore();
+            int team2 = players.get(1).getScore() + players.get(3).getScore();
 
-        sendAll(scoreText);
+            scoreText = "FINAL SCORE:\n" +
+                    "TEAM 1 - " + players.get(0).getName() + " and " + players.get(2).getName() + ":\n" +
+                    team1 + "\n ____________________________________________\n" +
+                    "TEAM 2 - " + players.get(1).getName() + " and " + players.get(3).getName() + ":\n" +
+                    team2 + "\n ____________________________________________\n" +
+                    "THE WINNER IS " + (team1 > team2 ? "TEAM 1!" : "TEAM 2!");
+
+            sendAll(scoreText);
+
+        }else {
+
+            if (players.get(0).getName().equals(cheaterPlayer) || players.get(2).getName().equals(cheaterPlayer)) {
+
+                scoreText = cheaterPlayer + " WAIVED and was caught!\n" +
+                        "TEAM 1 - LOST! \n" +
+                        "_______________________________\n"+
+                        "TEAM 2 - WINS!\n";
+
+            }else {
+
+                scoreText = cheaterPlayer + " WAIVED and was caught!\n" +
+                        "TEAM 1 - WINS! \n" +
+                        "_______________________________\n"+
+                        "TEAM 2 - LOST!\n";
+
+            }
+
+            sendAll(scoreText);
+
+        }
+
     }
 
     private void greetPlayer() {
