@@ -70,7 +70,6 @@ public class StripClub implements Runnable {
         }
     }
 
-
     public void addPlayer(Server.ClientHandler clientHandler) {
 
         if (imageNumber > 1 ) {

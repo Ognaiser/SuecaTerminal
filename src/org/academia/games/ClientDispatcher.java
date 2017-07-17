@@ -40,7 +40,7 @@ public class ClientDispatcher {
 
         suecaPlayerList.add((SuecaPlayer) clientHandler.getGameClient());
 
-        clientHandler.send("Waiting for more players for Sueca......");
+        clientHandler.send("Waiting for more players to play Sueca......");
 
         if (suecaPlayerList.size() == 4) {
 
@@ -94,7 +94,7 @@ public class ClientDispatcher {
 
         presidentPlayerList.getLast().sendMessage("Waiting for more players ......");
 
-        if (presidentPlayerList.size() == 3) {
+        if (presidentPlayerList.size() == 4) {
 
             for (PresidentPlayer client : presidentPlayerList) {
                 //client.removeFromLobby();

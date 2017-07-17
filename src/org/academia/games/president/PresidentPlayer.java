@@ -23,7 +23,6 @@ public class PresidentPlayer extends GameClient {
         out.println("In President Game");
     }
 
-
     public void printHand() {
 
         for (int line = 0; line < 7; line++) {

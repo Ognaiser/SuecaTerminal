@@ -175,7 +175,6 @@ public class RoulettePlayer extends GameClient {
         this.playNumber = RouletteOptions.values()[numberBet];
     }
 
-
     public boolean askOut() {
 
         String option = null;

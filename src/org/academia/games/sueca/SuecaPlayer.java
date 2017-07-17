@@ -4,8 +4,6 @@ import org.academia.server.serverClient.ClientPOJO;
 import org.academia.games.GameClient;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,9 +43,10 @@ public class SuecaPlayer extends GameClient {
         this.name = super.getName();
     }
 
-    public void accused() {
+    /*public void accused() {
+
         this.hasAccused = true;
-    }
+    }*/
 
     public SuecaCard play() {
 
@@ -65,14 +64,19 @@ public class SuecaPlayer extends GameClient {
                 return null;
             }
 
-            boolean test = false;
-            while (!test) {
+            boolean validPlay = false;
+
+            while (!validPlay) {
                 try {
                     cardPlayed = Integer.parseInt(input);
-                    test = true;
                 } catch (NumberFormatException nfe) {
                     out.println("That is not a valid card number. \nPlease insert a number between 1 and " + (hand.size()));
+                    System.out.println(validPlay);
+                    System.out.println(Integer.parseInt(input));
+                    play();
+                    nfe.getStackTrace();
                 }
+                validPlay = true;
             }
 
 
@@ -99,7 +103,8 @@ public class SuecaPlayer extends GameClient {
 
     public void checkCommand(String input) {
 
-        String[] words = input.split(" ");
+        String[] words = input.split(" ")
+                ;
         if (words[0].equals("!waived")) {
             isCommand = true;
         }
@@ -137,7 +142,6 @@ public class SuecaPlayer extends GameClient {
         }
         return false;
     }
-
 
     public String getName() {
         return name;

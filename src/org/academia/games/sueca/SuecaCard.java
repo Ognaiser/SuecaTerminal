@@ -10,7 +10,6 @@ public class SuecaCard {
         this.cardNumber = cardNumber;
     }
 
-
     public SuecaSuit getSuecaSuit() {
         return suecaSuit;
     }

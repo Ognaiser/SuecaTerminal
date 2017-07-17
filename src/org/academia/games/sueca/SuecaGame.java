@@ -104,7 +104,7 @@ public class SuecaGame implements Game, Runnable {
         greetPlayer();
 
         sendAll( "TEAM 1 - " + players.get(0).getName() + " and " + players.get(2).getName() );
-        sendAll( "TEAM 1 - " + players.get(1).getName() + " and " + players.get(3).getName() );
+        sendAll( "TEAM 2 - " + players.get(1).getName() + " and " + players.get(3).getName() );
         sendAll( "");
 
         sendAll("The TRUMP is: \r\n" + trump.getRepresentation() + "\n\r");
@@ -160,7 +160,6 @@ public class SuecaGame implements Game, Runnable {
         }
 
     }
-
 
     private void showHands() {
 
@@ -250,7 +249,6 @@ public class SuecaGame implements Game, Runnable {
 
     }
 
-
     private boolean validCard(SuecaCard playedSuecaCard, SuecaCard firstSuecaCard, SuecaPlayer player) {
 
         SuecaSuit turnSuecaSuit = firstSuecaCard.getSuecaSuit();
@@ -274,11 +272,9 @@ public class SuecaGame implements Game, Runnable {
         return first.getSuecaSuit().equals(second.getSuecaSuit());
     }
 
-
     private boolean isTrump(SuecaCard first) {
         return first.getSuecaSuit().equals(trump.getSuecaSuit());
     }
-
 
     private void showScore() {
 
