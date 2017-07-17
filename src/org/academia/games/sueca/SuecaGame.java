@@ -103,6 +103,10 @@ public class SuecaGame implements Game, Runnable {
 
         greetPlayer();
 
+        sendAll( "TEAM 1 - " + players.get(0).getName() + " and " + players.get(2).getName() );
+        sendAll( "TEAM 1 - " + players.get(1).getName() + " and " + players.get(3).getName() );
+        sendAll( "");
+
         sendAll("The TRUMP is: \r\n" + trump.getRepresentation() + "\n\r");
 
         showHands();

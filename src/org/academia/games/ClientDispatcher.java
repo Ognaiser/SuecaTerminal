@@ -45,7 +45,7 @@ public class ClientDispatcher {
         if (suecaPlayerList.size() == 4) {
 
             for (GameClient client : suecaPlayerList) {
-                client.removeFromLobby();
+                //client.removeFromLobby();
                 client.removeFromQueue();
             }
 
@@ -97,7 +97,7 @@ public class ClientDispatcher {
         if (presidentPlayerList.size() == 3) {
 
             for (PresidentPlayer client : presidentPlayerList) {
-                client.removeFromLobby();
+                //client.removeFromLobby();
                 client.removeFromQueue();
             }
 

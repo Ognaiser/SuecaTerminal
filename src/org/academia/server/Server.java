@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,9 +20,7 @@ public class Server {
     private List<ClientHandler> clientHandlers;
     private CommandManager commandManager;
     private ExecutorService pool;
-    private Map<String, String[]> hosts = new HashMap<>();
-
-    //TODO: prettify things
+    private Map<String, String[]> hosts = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws IOException {
         Server server = new Server();
@@ -61,7 +60,6 @@ public class Server {
             for (String host : ips) {
                 values = hosts.get(host);
                 writer.println(host + " " + values[0] + " " + values[1]);
-                System.out.println(host + " " + values[0] + " " + values[1]);
             }
 
             writer.close();
@@ -79,17 +77,21 @@ public class Server {
             BufferedReader reader = new BufferedReader(new FileReader("resources/know-host"));
 
             String line;
-            String[] values = new String[2];
             String ip;
 
             while ((line = reader.readLine()) != null) {
 
+                String[] values = new String[2];
 
                 ip = line.split(" ")[0];
                 values[0] = line.split(" ")[1];
                 values[1] = line.split(" ")[2];
-
+                System.out.println(ip);
+                System.out.println(values[0]);
+                System.out.println(values[1]);
                 hosts.put(ip, values);
+                System.out.println(values.toString());
+                System.out.println(hosts.toString());
 
             }
 
@@ -198,12 +200,16 @@ public class Server {
         }
 
         private boolean checkKnow(String hostAddress) {
-            String[] values;
 
+            String[] cenas;
 
-            if ((values = hosts.get(hostAddress)) != null) {
-                client.setName(values[0]);
-                client.setChips(Integer.parseInt(values[1]));
+            System.out.println(hostAddress);
+
+            if ((cenas = hosts.get(hostAddress)) != null) {
+                System.out.println();
+                System.out.println(cenas[0]);
+                client.setName(cenas[0]);
+                client.setChips(Integer.parseInt(cenas[1]));
                 return true;
             }
 
@@ -253,13 +259,18 @@ public class Server {
         @Override
         public void run() {
 
-            if (client.getName() == null) {
+            synchronized (this) {
 
-                if (!checkKnow(socket.getInetAddress().getHostAddress())) {
-                    askNick();
-                    addToKnow(socket.getInetAddress().getHostAddress(), client.getName(), 500);
-                    out.println("\nYou are in the lobby!\n");
+                if (client.getName() == null) {
+
+                    if (!checkKnow(socket.getInetAddress().getHostAddress())) {
+                        askNick();
+                        addToKnow(socket.getInetAddress().getHostAddress(), client.getName(), 500);
+                        out.println("\nYou are in the lobby!\n");
+                    }
+
                 }
+
             }
 
             String msg;

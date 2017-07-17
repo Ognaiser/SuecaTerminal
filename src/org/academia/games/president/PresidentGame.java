@@ -4,8 +4,6 @@ import java.util.LinkedList;
 
 //TODO: Implement the logic: Joker beats all
 //TODO: Reorganize players (higher card wins the turn)
-//TODO:
-
 
 public class PresidentGame implements Runnable {
 
@@ -14,6 +12,7 @@ public class PresidentGame implements Runnable {
     private int numberOfPlayersInGame;
 
     public PresidentGame(LinkedList<PresidentPlayer> playersInGame) {
+
         this.playersInGame = playersInGame;
         numberOfPlayersInGame = playersInGame.size();
     }
@@ -66,6 +65,7 @@ public class PresidentGame implements Runnable {
         for (int i = 0; i < playersInGame.size(); i++) {
 
             if (playersInGame.get(i).hasThreeOfClubs()) {
+
                 return i;
             }
         }
@@ -84,12 +84,12 @@ public class PresidentGame implements Runnable {
         for (int i = 0; i < playersInGame.size(); i++) {
 
             if (i == roundWinner) {
-                System.out.println("first player: " + playersInGame.get(i).getName());
+                //System.out.println("first player: " + playersInGame.get(i).getName());
                 return;
             }
 
             toRemove = playersInGame.removeFirst();
-            System.out.println("\nto Remove -> " + toRemove.getName());
+            //System.out.println("\nto Remove -> " + toRemove.getName());
             playersInGame.addLast(toRemove);
 
         }
@@ -102,26 +102,27 @@ public class PresidentGame implements Runnable {
 
         printStartingHands();
         LinkedList<PCard> stackOfPlayedCards;
-        LinkedList<PCard> lastPlayedCards;
-        PCard cardPlayedBefore; //TODO WTF IS THIS JOAAO???????????????????????????????????
+        LinkedList<PCard> lastPlayedCards = null;
+        PCard cardPlayedBefore;
         int numberOfCards = 0;
-        int winnerIndex = -1;
+        int winnerIndex = getFirstPlayer();
 
         setFirstPlayer(getFirstPlayer());
-
+        greetPlayer();
         while (!gameFinished(numberOfPlayersInGame)) {
 
             System.out.println("\n--------------------- New turn ------------------------");
 
             stackOfPlayedCards = new LinkedList<>();
-
+            resetPlayers();
             boolean turnStart = true;
 
-            while (!allButOnePassed() || stackOfPlayedCards.peek().getValue().equals(PCardValues.JOKER)) {
+            while (!allButOnePassed()) {
 
                 for (PresidentPlayer player : this.playersInGame) {
 
                     if (player.hasPassed()) {
+                        System.err.println(player.getName() + " has passed");
                         continue;
                     }
 
@@ -129,16 +130,17 @@ public class PresidentGame implements Runnable {
 
                     if (turnStart) {
 
-                        lastPlayedCards = player.firstPlay();
-                        System.out.println("************ON FIRST PLAY");
-                        numberOfCards = lastPlayedCards.size();
+                        sendAll(playersInGame.get(winnerIndex).getName()+ "has won the round");
 
+                        System.out.println("************ ON FIRST PLAY");//TODO: player cant pass on 1st play
+
+                        lastPlayedCards = player.firstPlay();
+                        numberOfCards = lastPlayedCards.size();
 
                         turnStart = false;
 
                     } else {
-
-                        System.out.println("*********** Assisting play now");
+                        System.out.println("*********** ASSISTING play ");
 
                         cardPlayedBefore = stackOfPlayedCards.peek();
                         lastPlayedCards = player.assistPlay(cardPlayedBefore, numberOfCards);
@@ -147,39 +149,63 @@ public class PresidentGame implements Runnable {
                             sendAll(player.getName() + " has passed.");
 
                             if (allButOnePassed()) {
-                                System.out.println("On breaking for");
+
+                                System.out.println("ALL but one have passed");
                                 break;
                             }
-
                             continue;
                         }
-
                     }
 
                     stackOfPlayedCards.addAll(lastPlayedCards);
-
                     showPlay(player, stackOfPlayedCards, numberOfCards);
+
+                    if (cardPlayedIsJoker(lastPlayedCards.get(0))) {
+
+                        winnerIndex = playersInGame.indexOf(player);
+                        setFirstPlayer(winnerIndex);
+
+                        if (player.getHand().size() == 0) {
+
+                            System.out.println("Player has no more cards");
+                            showResult(player);
+                            playersInGame.remove(player);
+                        }
+
+                        break;
+                    }
 
                     winnerIndex = playersInGame.indexOf(player);
                     System.out.println("round winner: ->->->->->" + winnerIndex);
 
                     if (player.getHand().size() == 0) {
+
                         System.out.println("Player has no more cards");
                         showResult(player);
                         playersInGame.remove(player);
                         break;
-
                     }
+                }
 
+                if (cardPlayedIsJoker(stackOfPlayedCards.peekLast())) {
+                    break;
                 }
 
                 System.out.println("out of for loop");
-
             }
-            System.out.println("Winner is -> " + winnerIndex);
-            setFirstPlayer(winnerIndex);
+            if (cardPlayedIsJoker(stackOfPlayedCards.peekLast())) {
 
+                System.out.println("Winner is -> " + winnerIndex);
+                setFirstPlayer(winnerIndex);
+                resetPlayers();
+            }
         }
+    }
+
+    private boolean cardPlayedIsJoker(PCard pCard) {
+
+        return pCard.getValueSymbol().equals("Joker");
+
     }
 
     private void returnToChat() {
@@ -289,7 +315,6 @@ public class PresidentGame implements Runnable {
             //System.out.println("numberOfPlayersThatPassed : " + numberOfPlayersThatPassed + " && " + (playersInGame.size() - 1));
 
             if (numberOfPlayersThatPassed == playersInGame.size() - 1) {
-                resetPlayers();
                 System.out.println("all but one player have passed the turn");
                 return true;
             }
@@ -308,5 +333,25 @@ public class PresidentGame implements Runnable {
             player.setPassed(false);
         }
 
+    }
+
+    private void greetPlayer() {
+        sendAll(" ___        _______   _________   ________           ________   ___        ________       ___    ___ \n" +
+                "|\\  \\      |\\  ___ \\ |\\___   ___\\|\\   ____\\         |\\   __  \\ |\\  \\      |\\   __  \\     |\\  \\  /  /|\n" +
+                "\\ \\  \\     \\ \\   __/|\\|___ \\  \\_|\\ \\  \\___|_        \\ \\  \\|\\  \\\\ \\  \\     \\ \\  \\|\\  \\    \\ \\  \\/  / /\n" +
+                " \\ \\  \\     \\ \\  \\_|/__   \\ \\  \\  \\ \\_____  \\        \\ \\   ____\\\\ \\  \\     \\ \\   __  \\    \\ \\    / / \n" +
+                "  \\ \\  \\____ \\ \\  \\_|\\ \\   \\ \\  \\  \\|____|\\  \\        \\ \\  \\___| \\ \\  \\____ \\ \\  \\ \\  \\    \\/  /  /  \n" +
+                "   \\ \\_______\\\\ \\_______\\   \\ \\__\\   ____\\_\\  \\        \\ \\__\\     \\ \\_______\\\\ \\__\\ \\__\\ __/  / /    \n" +
+                "    \\|_______| \\|_______|    \\|__|  |\\_________\\        \\|__|      \\|_______| \\|__|\\|__||\\___/ /     \n" +
+                "                                    \\|_________|                                        \\|___|/      \n");
+
+        sendAll(" /$$$$$$$                               /$$       /$$                       /$$            /$$$$$$                                   \n" +
+                "| $$__  $$                             |__/      | $$                      | $$           /$$__  $$                                  \n" +
+                "| $$  \\ $$ /$$$$$$   /$$$$$$   /$$$$$$$ /$$  /$$$$$$$  /$$$$$$  /$$$$$$$  /$$$$$$        | $$  \\__/  /$$$$$$  /$$$$$$/$$$$   /$$$$$$ \n" +
+                "| $$$$$$$//$$__  $$ /$$__  $$ /$$_____/| $$ /$$__  $$ /$$__  $$| $$__  $$|_  $$_/        | $$ /$$$$ |____  $$| $$_  $$_  $$ /$$__  $$\n" +
+                "| $$____/| $$  \\__/| $$$$$$$$|  $$$$$$ | $$| $$  | $$| $$$$$$$$| $$  \\ $$  | $$          | $$|_  $$  /$$$$$$$| $$ \\ $$ \\ $$| $$$$$$$$\n" +
+                "| $$     | $$      | $$_____/ \\____  $$| $$| $$  | $$| $$_____/| $$  | $$  | $$ /$$      | $$  \\ $$ /$$__  $$| $$ | $$ | $$| $$_____/\n" +
+                "| $$     | $$      |  $$$$$$$ /$$$$$$$/| $$|  $$$$$$$|  $$$$$$$| $$  | $$  |  $$$$/      |  $$$$$$/|  $$$$$$$| $$ | $$ | $$|  $$$$$$$\n" +
+                "|__/     |__/       \\_______/|_______/ |__/ \\_______/ \\_______/|__/  |__/   \\___/         \\______/  \\_______/|__/ |__/ |__/ \\_______/");
     }
 }
